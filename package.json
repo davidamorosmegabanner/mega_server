@@ -1,0 +1,37 @@
+{
+  "name": "mega_server",
+  "version": "1.0.0",
+  "description": "Megabanner Server",
+  "main": "./bin/www",
+  "scripts": {
+    "start": "tsc && node bin/www",
+    "dist": "rm -rd dist && npm start",
+    "debugger": "tsc && node --inspect-brk bin/www",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marctorrelles/mega_server.git"
+  },
+  "author": "Marc Torrelles",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marctorrelles/mega_server/issues"
+  },
+  "homepage": "https://github.com/marctorrelles/mega_server#readme",
+  "engines": {
+    "node": "~8.6"
+  },
+  "dependencies": {
+    "@types/body-parser": "^1.16.8",
+    "@types/express": "^4.11.1",
+    "@types/express-serve-static-core": "^4.11.1",
+    "@types/mime": "^2.0.0",
+    "@types/node": "^9.4.7",
+    "@types/serve-static": "^1.13.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "mongoose": "^5.0.10",
+    "typescript": "^2.6.2"
+  }
+}
