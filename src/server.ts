@@ -5,6 +5,8 @@ import * as express from "express";
 import * as mongoose from "mongoose";
 import config from "./config/config";
 
+import UserRouter from "./controller/user/user.router";
+
 /**
  * The server.
  *
@@ -20,18 +22,25 @@ export class Server {
     private constructor() {
         this.app = express();
         this.config();
-        // TODO
-        // this.routes();
-    };
+        this.routes();
+    }
 
     public config() {
         mongoose.connect(config.db, (err) => {
             if (err) {
-                console.error('Could not connect to MongoDB!');
+                console.error("Could not connect to MongoDB!");
                 console.log(err);
             }
         });
         this.app.use(bodyParser.urlencoded({extended: true}));
-        this.app.use(bodyParser.json({limit: '50mb'}));
+        this.app.use(bodyParser.json({limit: "50mb"}));
     }
+
+    public routes() {
+        [
+          UserRouter.create()
+        ].forEach(route => {
+          route.decorate(this.app);
+        });
+      }
 }
