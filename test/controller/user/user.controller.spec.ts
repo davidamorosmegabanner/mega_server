@@ -19,7 +19,7 @@ describe("User controller test", () => {
             .expect(200)
             .end(function(err, res) {
                 if (err) throw err;
-                // expect(res.body).to.have.property('user.token');
+                expect(res.body).to.be.not.empty;
                 done();
             });
     });
