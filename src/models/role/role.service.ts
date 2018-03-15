@@ -12,4 +12,8 @@ export class RoleService {
     async findByName(name: string) {
         return await this.mongoModel.findOne({name: name});
     }
+
+    async findById(id: string) {
+        return await this.mongoModel.findById(id);
+    }
 }

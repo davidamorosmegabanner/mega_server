@@ -5,7 +5,7 @@ import * as express from "express";
 import * as mongoose from "mongoose";
 import config from "./config/config";
 
-import UserRouter from "./controller/user/user.router";
+import UserRouter from "./controllers/user/user.router";
 
 /**
  * The server.
@@ -37,10 +37,10 @@ export class Server {
     }
 
     public routes() {
-        [
-          UserRouter.create()
-        ].forEach(route => {
-          route.decorate(this.app);
+        [ UserRouter.create() ].forEach(route => {
+            route.decorate(this.app);
         });
-      }
+    }
+
+    // TODO logger
 }
