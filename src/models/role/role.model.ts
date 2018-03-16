@@ -2,6 +2,7 @@ import {Model, Schema, Document} from "mongoose";
 import * as mongoose from "mongoose";
 
 export interface Role extends Document {
+    _id: string;
     name: string;
     key: string;
     description: string

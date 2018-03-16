@@ -3,10 +3,11 @@
 
 const Server = require('../dist/src/server').Server,
     http = require("http"),
-    debug = require("debug")("express:server");
+    debug = require("debug")("express:server"),
+    config = require("../dist/src/config/config");
 
 const serverInstance = Server.bootstrap();
-const port = 8080;
+const port = config.default.port;
 
 serverInstance.app.set('port', port);
 

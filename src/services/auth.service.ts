@@ -16,7 +16,6 @@ const roleService = new RoleService();
 export class AuthService {
 
     async isAllowed(roles: Array<string>, token: string): Promise<boolean> {
-        console.log("in");
         let user = await userService.findByToken(token);
         if (user) {
             let role = await roleService.findById(user.role);

@@ -2,6 +2,7 @@ import {Model, Schema, Document} from "mongoose";
 import * as mongoose from "mongoose";
 
 export interface User extends Document {
+  _id: string;
   token: string;
   name: string;
   email: string;

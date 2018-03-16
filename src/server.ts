@@ -30,6 +30,8 @@ export class Server {
             if (err) {
                 console.error("Could not connect to MongoDB!");
                 console.log(err);
+            } else {
+                console.log("Connected to MongoDB")
             }
         });
         this.app.use(bodyParser.urlencoded({extended: true}));

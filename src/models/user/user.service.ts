@@ -23,9 +23,22 @@ export class UserService {
             role: role
         });
 
-        phone ? user.phone = phone : {};
-
         return await user.save();
+    }
+
+    async update(id: string, name: string, email: string, password: string, phone: string): Promise<User> {
+        //TODO!!!!!
+        let user = {
+            name: name,
+            email: email,
+            password: password,
+            phone: phone,
+        };
+
+        if (typeof(id) !== "string")
+            throw("Param id is required")
+
+        return await this.mongoModel.findOneAndUpdate({_id: id}, user);
     }
 
     async findByToken(token: string): Promise<User> {

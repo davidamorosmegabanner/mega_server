@@ -2,6 +2,7 @@ import {Model, Schema, Document} from "mongoose";
 import * as mongoose from "mongoose";
 
 export interface Ad extends Document {
+    _id: string;
     name: string;
     owner: string;
     campaign: string;
