@@ -6,7 +6,7 @@ import {Token} from "./token";
 import {Role} from "../role/role.model";
 
 export class UserService {
-  mongoModel: Model<User>;
+    mongoModel: Model<User>;
 
     constructor(mongoModel?: Model<User>) {
         this.mongoModel = mongoModel || UserMongo;
@@ -27,7 +27,6 @@ export class UserService {
     }
 
     async update(id: string, name: string, email: string, password: string, phone: string): Promise<User> {
-        //TODO!!!!!
         let user = {
             name: name,
             email: email,
@@ -35,10 +34,29 @@ export class UserService {
             phone: phone,
         };
 
-        if (typeof(id) !== "string")
-            throw("Param id is required")
+        if (id == undefined) throw("Param id is required");
+
+        if (user.name == undefined) delete user.name;
+        if (user.email == undefined) delete user.email;
+        if (user.password == undefined) delete user.password;
+        if (user.phone == undefined) delete user.phone;
 
         return await this.mongoModel.findOneAndUpdate({_id: id}, user);
+    }
+
+    async remove(id: string): Promise<User> {
+        if (id == undefined) throw("Param id is required");
+
+        return await this.mongoModel.findByIdAndRemove(id);
+    }
+
+    async listUsers(role: Role): Promise< Array<User> > {
+        let find:any = {};
+
+        find.active = true;
+        if (role != undefined) find.role = role;
+
+        return await this.mongoModel.find(find, {id: 1, name: 1, email: 1});
     }
 
     async findByToken(token: string): Promise<User> {

@@ -9,6 +9,8 @@ export interface User extends Document {
   password: string;
   phone: string;
   role: string;
+  active: boolean;
+  deleted: boolean;
 }
 
 const UserSchema = new Schema({
@@ -40,6 +42,16 @@ const UserSchema = new Schema({
     phone: {
         type: String
     },
+    active: {
+        type: Boolean,
+        required: true,
+        default: true
+    },
+    deleted: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
 });
 
 const UserMongo: Model<User> = mongoose.model<User>("User", UserSchema);
