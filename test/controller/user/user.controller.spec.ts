@@ -1,6 +1,7 @@
 import {expect, assert} from 'chai';
-import {Server} from "../../../src/server";
 import * as supertest from 'supertest';
+import * as mongoose from 'mongoose';
+import {Server} from "../../../src/server";
 import config from "../../../src/config/config";
 
 const server = Server.bootstrap();
@@ -14,7 +15,7 @@ describe("User controller test", () => {
 
     let receivedId = "";
 
-    it("should create user", done => {
+    it("Should create user", done => {
         supertest(server.app)
             .post("/user/register")
             .set({
@@ -37,7 +38,7 @@ describe("User controller test", () => {
             });
     });
 
-    it("should edit user name and email", done => {
+    it("Should edit user name and email", done => {
         supertest(server.app)
             .post("/user/edit")
             .set({
@@ -58,7 +59,7 @@ describe("User controller test", () => {
             });
     });
 
-    it("should delete the user created before", done => {
+    it("Should delete the user created before", done => {
         supertest(server.app)
             .post("/user/edit")
             .set({
@@ -79,7 +80,7 @@ describe("User controller test", () => {
             });
     });
 
-    it("should list users", done => {
+    it("Should list users - Only passes if there is at least one user in db", done => {
         supertest(server.app)
             .post("/user/list")
             .set({
@@ -98,7 +99,7 @@ describe("User controller test", () => {
     after(done => {
         // Done with remove
         // mongoose.connection.collections['users'].findOneAndDelete({email:"email@test.com"})
-        // mongoose.connection.close();
+        mongoose.connection.close();
         done();
     });
 });

@@ -95,8 +95,6 @@ export let list: ExpressSignature = async (request, response, next) => {
 
         let user: Array<User> = await userService.listUsers(role);
 
-        console.log(user)
-
         response.status(200).send({
             user
         });
