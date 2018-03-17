@@ -6,7 +6,7 @@ export class Token {
       return new Token(email, pass);
   }
 
-  private readonly value: string;
+  public readonly value: string;
 
   constructor(email: string, pass: string) {
     this.value = jwt.sign({ email: (email), pass: (pass) }, config.serverToken);

@@ -7,7 +7,7 @@ export class Password {
       return new Password(password);
   }
 
-  private readonly value: string;
+  public readonly value: string;
 
   constructor(p: string) {
     this.value = crypto.pbkdf2Sync(p, config.passwordSalt, 1000, 64, 'sha256').toString('base64');
