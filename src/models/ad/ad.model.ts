@@ -1,4 +1,4 @@
-import {Model, Schema, Document} from "mongoose";
+import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
 
 export interface Ad extends Document {
@@ -7,53 +7,52 @@ export interface Ad extends Document {
     owner: string;
     campaign: string;
     adType: string;
-    creativities: Array<string>;
+    creativities: string[];
     deleted: boolean;
     created: Date;
     updated: Date;
 }
 
-let AdSchema = new Schema({
+const AdSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     owner: {
-        type: Schema.Types.ObjectId, 
+        type: Schema.Types.ObjectId,
         required: true,
-        ref: 'User'
+        ref: "User",
     },
     campaign: {
-        type: Schema.Types.ObjectId, 
+        type: Schema.Types.ObjectId,
         required: true,
-        ref: 'Campaign'
+        ref: "Campaign",
     },
     adType: {
-        type: Schema.Types.ObjectId, 
+        type: Schema.Types.ObjectId,
         required: true,
-        ref: 'AdType'
+        ref: "AdType",
     },
     creativities: [{
-        type: Schema.Types.ObjectId, 
-        ref: 'Creativity'
+        type: Schema.Types.ObjectId,
+        ref: "Creativity",
     }],
-    deleted: { 
-        type: Boolean, 
-        required: true, 
-        default: false 
+    deleted: {
+        type: Boolean,
+        required: true,
+        default: false,
     },
-    created: { 
-        type: Date, 
-        required: true, 
-        default: Date.now 
+    created: {
+        type: Date,
+        required: true,
+        default: Date.now,
     },
-    updated: { 
-        type: Date, 
-        required: true, 
-        default: Date.now 
-    }
+    updated: {
+        type: Date,
+        required: true,
+        default: Date.now,
+    },
 });
 
-
-const AdMongo: Model<Ad> = mongoose.model<Ad>('Ad', AdSchema);
+const AdMongo: Model<Ad> = mongoose.model<Ad>("Ad", AdSchema);
 export default AdMongo;

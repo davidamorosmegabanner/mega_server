@@ -1,13 +1,13 @@
-import {expect, assert} from 'chai';
-import * as supertest from 'supertest';
-import * as mongoose from 'mongoose';
-import {Server} from "../../../src/server";
+import {expect, assert} from "chai";
+import * as mongoose from "mongoose";
+import * as supertest from "supertest";
 import config from "../../../src/config/config";
+import {Server} from "../../../src/server";
 
 const server = Server.bootstrap();
 
 describe("User controller test", () => {
-    let name = "name2",
+    const name = "name2",
         email = "email2@test.com",
         password = "passwordpassword",
         phone = "666666666",
@@ -19,19 +19,19 @@ describe("User controller test", () => {
         supertest(server.app)
             .post("/user/register")
             .set({
-                'x-access-token': config.superToken.value,
-                'Content-Type': 'application/json'
+                "x-access-token": config.superToken.value,
+                "Content-Type": "application/json"
             })
             .send({
-                "name": name,
-                "email": email,
-                "password": password,
-                "phone": phone,
-                "role": role
+                name: (name),
+                email: (email),
+                password: (password),
+                phone: (phone),
+                role: (role),
             })
             .expect(200)
-            .end(function(err, res) {
-                if (err) throw err;
+            .end((err, res) => {
+                if (err) {throw new Error(err)}
                 expect(res.body).to.have.property("name");
                 receivedId = res.body.id;
                 done();
@@ -42,13 +42,13 @@ describe("User controller test", () => {
         supertest(server.app)
             .post("/user/edit")
             .set({
-                'x-access-token': config.superToken.value,
-                'Content-Type': 'application/json'
+                "x-access-token": config.superToken.value,
+                "Content-Type": "application/json"
             })
             .send({
-                "id": receivedId,
-                "name": "NEW NAME",
-                "email": "new@email.com"
+                id: (receivedId),
+                name: "NEW NAME",
+                email: "new@email.com",
             })
             .expect(200)
             .end(function(err, res) {
@@ -63,19 +63,19 @@ describe("User controller test", () => {
         supertest(server.app)
             .post("/user/edit")
             .set({
-                'x-access-token': config.superToken.value,
-                'Content-Type': 'application/json'
+                "x-access-token": config.superToken.value,
+                "Content-Type": "application/json"
             })
             .send({
-                "id": receivedId,
+                "id": (receivedId),
                 "name": "NEW NAME",
-                "email": "new@email.com"
+                "email": "new@email.com",
             })
             .expect(200)
-            .end(function(err, res) {
-                if (err) throw err;
+            .end((err, res) => {
+                if (err) {throw new Error(err)};
                 expect(res.body).to.have.property("name");
-                expect(res.body.phone).to.not.be.a('null');
+                expect(res.body.phone).to.not.be.a("null");
                 done();
             });
     });
@@ -84,17 +84,16 @@ describe("User controller test", () => {
         supertest(server.app)
             .post("/user/list")
             .set({
-                'x-access-token': config.superToken.value,
-                'Content-Type': 'application/json'
+                "x-access-token": config.superToken.value,
+                "Content-Type": "application/json"
             })
             .expect(200)
-            .end(function(err, res) {
-                if (err) throw err;
+            .end((err, res) => {
+                if (err) {throw new Error(err)}
                 expect(res.body).to.have.length;
                 done();
             });
     });
-
 
     after(done => {
         // Done with remove

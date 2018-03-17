@@ -3,6 +3,6 @@ export default {
     port: 3000,
     superToken: {
         isActive: true,
-        value: "8dab98ca9e27007f83e088a5bea17e7d"
-    }
+        value: "8dab98ca9e27007f83e088a5bea17e7d",
+    },
 };

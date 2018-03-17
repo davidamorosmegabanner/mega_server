@@ -1,13 +1,19 @@
 {
-    "defaultSeverity": "error",
-    "extends": [
-        "tslint:recommended"
-    ],
-    "jsRules": {},
-    "rules": {},
-    "rulesDirectory": [],
-    "compilerOptions": {
-        "noUnusedLocals": true,
-        "noUnusedParameters": true
-    }
+  "defaultSeverity": "error",
+  "extends": "tslint:recommended",
+  "jsRules": {
+    "max-line-length": [false],
+    "interface-name": ["never-prefix"],
+    "object-literal-sort-keys": false
+  },
+  "rules": {
+    "max-line-length": [false],
+    "interface-name": ["never-prefix"],
+    "object-literal-sort-keys": false
+  },
+  "rulesDirectory": [],
+  "compilerOptions": {
+  "noUnusedLocals": true,
+  "noUnusedParameters": true
+  }
 }

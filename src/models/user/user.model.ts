@@ -1,4 +1,4 @@
-import {Model, Schema, Document} from "mongoose";
+import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
 
 export interface User extends Document {
@@ -32,25 +32,25 @@ const UserSchema = new Schema({
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
     role: {
         type: Schema.Types.ObjectId,
-        ref: 'Role',
+        ref: "Role",
         required: true,
     },
     phone: {
-        type: String
+        type: String,
     },
     active: {
         type: Boolean,
         required: true,
-        default: true
+        default: true,
     },
     deleted: {
         type: Boolean,
         required: true,
-        default: false
+        default: false,
     }
 });
 
