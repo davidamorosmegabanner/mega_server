@@ -51,7 +51,7 @@ const UserSchema = new Schema({
         type: Boolean,
         required: true,
         default: false,
-    }
+    },
 });
 
 const UserMongo: Model<User> = mongoose.model<User>("User", UserSchema);

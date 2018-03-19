@@ -37,13 +37,13 @@ export let login: ExpressSignature = async (request, response, next) => {
             name: user.name,
             email: user.email,
             role: role.name,
-            phone: user.phone
+            phone: user.phone,
         });
     } catch (err) {
-        console.log(err);
-        response.status(400).send(err);
+        console.error(err);
+        response.status(400).send(err.toString());
     }
-}
+};
 
 export let register: ExpressSignature = async (request, response, next) => {
 
@@ -70,8 +70,8 @@ export let register: ExpressSignature = async (request, response, next) => {
             role: role.name,
         });
     } catch (err) {
-        console.log(err);
-        response.status(400).send(err);
+        console.error(err);
+        response.status(400).send(err.toString());
     }
 };
 
@@ -98,8 +98,8 @@ export let edit: ExpressSignature = async (request, response, next) => {
             phone: user.phone,
         });
     } catch (err) {
-        console.log(err);
-        response.status(400).send(err);
+        console.error(err);
+        response.status(400).send(err.toString());
     }
 };
 
@@ -116,13 +116,13 @@ export let remove: ExpressSignature = async (request, response, next) => {
     }
 
     try {
-        let user: User = await userService.remove(params.id);
+        await userService.remove(params.id);
         response.status(200).send({
             executed: true,
         });
     } catch (err) {
-        console.log(err);
-        response.status(400).send(err);
+        console.error(err);
+        response.status(400).send(err.toString());
     }
 };
 
@@ -150,16 +150,13 @@ export let list: ExpressSignature = async (request, response, next) => {
             user,
         });
     } catch (err) {
-        console.log(err);
-        response.status(400).send(err);
+        console.error(err);
+        response.status(400).send(err.toString());
     }
 };
 
 export let getInfo: ExpressSignature = async (request, response, next) => {
 
-    // params -> id:string
-
-    const params = request.body;
     const xAccessToken = request.headers["x-access-token"].toString();
     const allowedRoles = ["admin"];
 
@@ -167,32 +164,7 @@ export let getInfo: ExpressSignature = async (request, response, next) => {
         return response.status(401).send("Unauthorized");
     }
     try {
-        const user: User = await userService.findById(params.id);
-        const role: Role = await roleService.findById(user.role);
-
-        response.status(200).send({
-            email: user.email,
-            id: user._id,
-            name: user.name,
-            phone: user.phone,
-            role: role.name,
-        });
-    } catch (err) {
-        console.log(err);
-        response.status(400).send(err);
-    }
-};
-
-export let getOwnInfo: ExpressSignature = async (request, response, next) => {
-
-    const xAccessToken = request.headers["x-access-token"].toString();
-    const allowedRoles = ["admin"];
-
-    if (!xAccessToken || await !authService.isAllowed(allowedRoles, xAccessToken)) {
-        return response.status(401).send("Unauthorized");
-    }
-    try {
-        //TODO FIX
+        // TODO FIX
         const user: User = await userService.findByToken(xAccessToken);
         console.log(user);
         const role: Role = await roleService.findById(user.role);
@@ -207,7 +179,7 @@ export let getOwnInfo: ExpressSignature = async (request, response, next) => {
             role: role.name,
         });
     } catch (err) {
-        console.log(err);
-        response.status(400).send(err);
+        console.error(err);
+        response.status(400).send(err.toString());
     }
 };

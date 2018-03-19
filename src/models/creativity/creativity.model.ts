@@ -1,16 +1,23 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
+import {User} from "../user/user.model";
+
+export interface Size {
+    width: number;
+    height: number;
+}
 
 export interface Creativity extends Document {
     _id: string;
     name: string;
-    owner: string;
-    ad: string;
+    owner: User;
     path: string;
     mimetype: string;
     fileformat: string;
+    filetype: string;
     deleted: boolean;
-    created: Date
+    size: Size;
+    created: Date;
 }
 
 const CreativitySchema = new Schema({
@@ -23,12 +30,7 @@ const CreativitySchema = new Schema({
         required: true,
         ref: "User",
     },
-    ad: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: "Ad",
-    },
-    path: {
+    source: {
         type: String,
         required: true,
     },
@@ -40,6 +42,20 @@ const CreativitySchema = new Schema({
         type: String,
         required: true,
     },
+    filetype: {
+        type: String,
+        required: true,
+    },
+    size: {
+        width: {
+            type: Number,
+            required: true,
+        },
+        height: {
+            type: Number,
+            required: true,
+        },
+    },
     deleted: {
         type: Boolean,
         required: true,
@@ -49,7 +65,7 @@ const CreativitySchema = new Schema({
         type: Date,
         required: true,
         default: Date.now,
-    }
+    },
 });
 
 const CreativityMongo: Model<Creativity> = mongoose.model<Creativity>("Creativity", CreativitySchema);

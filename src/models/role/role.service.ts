@@ -1,19 +1,23 @@
-import {Role, default as RoleMongo} from "../role/role.model";
+import {default as RoleMongo, Role} from "../role/role.model";
 
 import {Model} from "mongoose";
 
 export class RoleService {
-    mongoModel: Model<Role>;
+    public mongoModel: Model<Role>;
 
     constructor(mongoModel?: Model<Role>) {
         this.mongoModel = mongoModel || RoleMongo;
     }
 
-    async findByName(name: string) {
-        return await this.mongoModel.findOne({name: name});
+    public async listRoles(): Promise<Role[]> {
+        return await this.mongoModel.find({}, {_id: 0, name: 1, description: 1});
     }
 
-    async findById(id: string) {
+    public async findByName(name: string) {
+        return await this.mongoModel.findOne({name});
+    }
+
+    public async findById(id: string) {
         return await this.mongoModel.findById(id);
     }
 }

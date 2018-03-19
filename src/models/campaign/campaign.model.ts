@@ -1,11 +1,13 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
+import {Ad} from "../ad/ad.model";
+import {User} from "../user/user.model";
 
 export interface Campaign extends Document {
     _id: string;
     name: string;
-    owner: string;
-    ads: string[];
+    owner: User;
+    ads: Ad[];
     budget: number;
     dailyBudget: number;
     startDate: Date;

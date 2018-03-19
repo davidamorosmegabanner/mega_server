@@ -2,16 +2,14 @@
 
 import * as bodyParser from "body-parser";
 import * as express from "express";
+import * as fileUpload from "express-fileupload";
 import * as mongoose from "mongoose";
-import config from "./config/config";
 
+import config from "./config/config";
+import CreativityRouter from "./controllers/creativity/creativity.router";
+import RoleRouter from "./controllers/role/role.router";
 import UserRouter from "./controllers/user/user.router";
 
-/**
- * The server.
- *
- * @class Server
- */
 export class Server {
     public static bootstrap(): Server {
         return new Server();
@@ -21,27 +19,55 @@ export class Server {
 
     private constructor() {
         this.app = express();
-        this.config();
-        this.routes();
+        this.load();
     }
 
-    public config() {
-        mongoose.connect(config.db, (err) => {
-            if (err) {
-                console.error("Could not connect to MongoDB!");
-                console.log(err);
-            } else {
-                console.log("Connected to MongoDB")
-            }
+    public async load() {
+        console.log("*****************************");
+        console.log("*** Mega server initiated ***");
+        console.log("*****************************");
+
+        this.files();
+        await this.config();
+        await this.routes();
+
+        this.app.get("/", (response: express.Response) => {
+            response.json({
+                welcome: "Megabanner Server",
+            });
         });
-        this.app.use(bodyParser.urlencoded({extended: true}));
-        this.app.use(bodyParser.json({limit: "50mb"}));
     }
 
-    public routes() {
-        [ UserRouter.create() ].forEach(route => {
-            route.decorate(this.app);
-        });
+    public async config() {
+        try {
+            await mongoose.connect(config.db);
+            console.log("Connected to MongoDB");
+            this.app.use(bodyParser.urlencoded({extended: true}));
+            this.app.use(bodyParser.json({limit: "50mb"}));
+        } catch (err) {
+            console.error("Could not connect to MongoDB!");
+            console.log(err);
+            throw new Error(err);
+        }
+    }
+
+    public async routes() {
+        try {
+            ([ UserRouter.create() ]).forEach((route) => { route.decorate(this.app); });
+            ([ CreativityRouter.create() ]).forEach((route) => { route.decorate(this.app); });
+            ([ RoleRouter.create() ]).forEach((route) => { route.decorate(this.app); });
+            console.log("All routes were loaded successfully");
+        } catch (err) {
+            console.error("Could not load all routes!");
+            console.log(err);
+        }
+    }
+
+    public files() {
+        this.app.use(fileUpload({
+            limits: { fileSize: config.maxFileSize },
+        }));
+        console.log("Files configuration loaded successfully");
     }
 
     // TODO logger
