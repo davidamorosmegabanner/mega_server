@@ -9,6 +9,7 @@ import config from "./config/config";
 import CreativityRouter from "./controllers/creativity/creativity.router";
 import RoleRouter from "./controllers/role/role.router";
 import UserRouter from "./controllers/user/user.router";
+import InsertPlatforms from "./services/inserts/platform.insert";
 
 export class Server {
     public static bootstrap(): Server {
@@ -30,6 +31,7 @@ export class Server {
         this.files();
         await this.config();
         await this.routes();
+        await this.inserts();
 
         this.app.get("/", (response: express.Response) => {
             response.json({
@@ -68,6 +70,13 @@ export class Server {
             limits: { fileSize: config.maxFileSize },
         }));
         console.log("Files configuration loaded successfully");
+    }
+
+    public async inserts() {
+        const insertPlatforms = new InsertPlatforms();
+        await insertPlatforms.insert();
+
+        console.log("Database collections inserted");
     }
 
     // TODO logger
