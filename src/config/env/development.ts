@@ -8,7 +8,7 @@ export default {
     acceptedMedia:[
         "image/jpeg",
         "image/png",
-        "image/gif",
         "video/mp4",
+        "video/mov",
     ],
 };
