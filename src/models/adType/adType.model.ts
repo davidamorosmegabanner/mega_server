@@ -4,7 +4,6 @@ import {Size} from "../creativity/creativity.model";
 import {Platform} from "../platform/platform.model";
 
 export interface AdType extends Document {
-    _id: string;
     name: string;
     key: string;
     description: string;

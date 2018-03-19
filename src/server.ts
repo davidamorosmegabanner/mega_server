@@ -10,6 +10,7 @@ import CreativityRouter from "./controllers/creativity/creativity.router";
 import RoleRouter from "./controllers/role/role.router";
 import UserRouter from "./controllers/user/user.router";
 import InsertPlatforms from "./services/inserts/platform.insert";
+import InsertAdTypes from "./services/inserts/adType.insert";
 
 export class Server {
     public static bootstrap(): Server {
@@ -74,7 +75,10 @@ export class Server {
 
     public async inserts() {
         const insertPlatforms = new InsertPlatforms();
+        const insertAdTypes = new InsertAdTypes();
+
         await insertPlatforms.insert();
+        await insertAdTypes.insert();
 
         console.log("Database collections inserted");
     }

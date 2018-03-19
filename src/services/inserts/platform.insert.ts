@@ -25,7 +25,7 @@ export default class InsertPlatforms {
         };
         const platforms = [facebook, instagram, youtube];
 
-        await platformService.insert(platforms);
+        await platformService.insertBulk(platforms);
     }
 
 }

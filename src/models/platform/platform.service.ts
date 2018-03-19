@@ -8,13 +8,9 @@ export class PlatformService {
         this.mongoModel = mongoModel || PlatformMongo;
     }
 
-    public async insert(platforms: Platform[]) {
+    public async insertBulk(platforms: Platform[]) {
         platforms.map(async (platform) => {
-            const platformMongo = new this.mongoModel({
-                name: (platform.name),
-                key: (platform.key),
-                description: (platform.description),
-            });
+            const platformMongo = new this.mongoModel(platform);
             platformMongo.save();
         });
     }
@@ -22,4 +18,13 @@ export class PlatformService {
     public async drop() {
         await this.mongoModel.remove({});
     }
+
+    public async list(): Promise<Platform[]> {
+        return await this.mongoModel.find();
+    }
+
+    public async getPlatformByKey(platformKey: string): Promise<Platform> {
+        return await this.mongoModel.findOne({ key: platformKey });
+    }
+
 }

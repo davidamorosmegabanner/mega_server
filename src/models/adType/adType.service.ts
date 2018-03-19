@@ -1,7 +1,8 @@
 import {Model} from "mongoose";
-import {AdType, default as AdTypeMongo, Size} from "./adType.model";
+import {AdType, default as AdTypeMongo} from "./adType.model";
+import {Platform} from "../platform/platform.model";
 
-export class CreativityService {
+export class AdTypeService {
     private mongoModel: Model<AdType>;
 
     constructor(mongoModel?: Model<AdType>) {
@@ -9,12 +10,17 @@ export class CreativityService {
     }
 
     public async drop(): Promise<AdType[]> {
-        return await this.mongoModel.drop();
+        return await this.mongoModel.remove({});
     }
 
-    public async insert(adTypes: AdType[]): Promise<void> {
-        await adTypes.map(async (adType) => {
-            const adTypeInsert = this.mongoModel.insert(adType);
+    public async insertBulk(adTypes: AdType[]) {
+        adTypes.map(async (adType) => {
+            const adTypeMongo = new this.mongoModel(adType);
+            adTypeMongo.save();
         });
+    }
+
+    public async list(): Promise<Platform[]> {
+        return await this.mongoModel.find();
     }
 }
