@@ -14,7 +14,7 @@ serverInstance.app.set('port', port);
 const httpServer = http.createServer(serverInstance.app);
 httpServer.listen(port);
 
-console.log(`App is active on port ${port}`);
+console.log(`App is active and listening on port ${port}`);
 
 function onError(error) {
     if (error.syscall !== "listen") {
