@@ -27,6 +27,8 @@ export interface AdType extends Document {
     key: string;
     description: string;
     platform: Platform;
+    numCreativities: NumCreativities;
+    __t?: AdType;
 }
 
 const AdTypeSchema = new Schema({
@@ -38,6 +40,7 @@ const AdTypeSchema = new Schema({
     key: {
         type: String,
         required: true,
+        unique: true,
     },
     description: {
         type: String,
@@ -47,6 +50,16 @@ const AdTypeSchema = new Schema({
         required: true,
         ref: "Platform",
         upsert: true,
+    },
+    numCreativities: {
+        min: {
+            type: Number,
+            required: true,
+        },
+        max: {
+            type: Number,
+            required: true,
+        },
     },
 });
 

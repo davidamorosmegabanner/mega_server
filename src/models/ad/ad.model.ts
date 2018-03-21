@@ -9,7 +9,6 @@ export interface Ad extends Document {
     _id: string;
     name: string;
     owner: User;
-    campaign: Campaign;
     adType: AdType;
     creativities: Creativity[];
     deleted: boolean;
@@ -26,11 +25,6 @@ const AdSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
         ref: "User",
-    },
-    campaign: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: "Campaign",
     },
     adType: {
         type: Schema.Types.ObjectId,

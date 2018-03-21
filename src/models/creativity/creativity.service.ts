@@ -25,6 +25,20 @@ export class CreativityService {
         return await creativity.save();
     }
 
+    public async find(creativities: string[]): Promise<Creativity[]> {
+        return await this.mongoModel.find(
+            {
+                _id: creativities
+            }, {
+                deleted: 0,
+                created: 0,
+                owner: 0,
+                fileformat: 0,
+                filetype: 0,
+                __v: 0,
+            });
+    }
+
     public async remove(id: string): Promise<Creativity> {
         if (id === undefined) { throw new Error("Param id is required"); }
 

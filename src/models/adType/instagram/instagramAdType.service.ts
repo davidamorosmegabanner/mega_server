@@ -13,9 +13,9 @@ export class InstagramAdTypeService {
     }
 
     public async insertBulk(instagramAdTypes: InstagramAdType[]) {
-        instagramAdTypes.map(async (instagramAdTypes) => {
-            const instgaramAdTypeMongo = new this.mongoModel(instagramAdTypes);
-            instgaramAdTypeMongo.save();
+        instagramAdTypes.map(async (instagramAdType) => {
+            const instagramAdTypeMongo = new this.mongoModel(instagramAdType);
+            instagramAdTypeMongo.save();
         });
     }
 }

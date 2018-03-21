@@ -1,20 +1,18 @@
-import {AdTypeService} from "../../models/adType/adType.service";
-import {PlatformService} from "../../models/platform/platform.service";
 import {InstagramAdType} from "../../models/adType/instagram/instagramAdType.model";
-import {NumCreativities} from "../../models/adType/adType.model";
-import {InstagramAdTypeService} from "../../models/adType/instagram/instagramAdType.Service";
+import {InstagramAdTypeService} from "../../models/adType/instagram/instagramAdType.service";
+import {PlatformService} from "../../models/platform/platform.service";
 
 const platformService = new PlatformService();
-const instgramAdTypeService = new InstagramAdTypeService();
+const instagramAdTypeService = new InstagramAdTypeService();
 
-export default class insertAdTypes {
+export default class InsertAdTypes {
     public async insert() {
 
-        await instgramAdTypeService.drop();
+        await instagramAdTypeService.drop();
 
         const instagramImage: InstagramAdType = {
             name: "Instagram feed image",
-            key: "IG_feed",
+            key: "IG_IMAGE",
             description: "Instagram image that appears in the feed",
             platform: await platformService.getPlatformByKey("IG"),
             mimetypes: ["image/jpg", "image/png"],
@@ -48,7 +46,7 @@ export default class insertAdTypes {
 
         const instagramVideo: InstagramAdType = {
             name: "Instagram feed video",
-            key: "IG_feed",
+            key: "IG_VIDEO",
             description: "Instagram video that appears in the feed",
             platform: await platformService.getPlatformByKey("IG"),
             mimetypes: ["video/mp4", "video/mov"],
@@ -82,7 +80,7 @@ export default class insertAdTypes {
 
         const instagramStory: InstagramAdType = {
             name: "Instagram story",
-            key: "IG_story",
+            key: "IG_STORY",
             description: "Instagram image that appears while viewing stories",
             platform: await platformService.getPlatformByKey("IG"),
             mimetypes: ["image/jpg", "image/png"],
@@ -115,8 +113,8 @@ export default class insertAdTypes {
         };
 
         const instagramSetOfImages: InstagramAdType = {
-            name: "Instagram set of images",
-            key: "IG_set",
+            name: "Instagram carousel of images",
+            key: "IG_CAROUSEL",
             description: "Instagram set of images that appear in the feed",
             platform: await platformService.getPlatformByKey("IG"),
             mimetypes: ["image/jpg", "image/png"],
@@ -155,7 +153,7 @@ export default class insertAdTypes {
             instagramSetOfImages,
         ];
 
-        await instgramAdTypeService.insertBulk(instagramAdTypes);
+        await instagramAdTypeService.insertBulk(instagramAdTypes);
     }
 
 }

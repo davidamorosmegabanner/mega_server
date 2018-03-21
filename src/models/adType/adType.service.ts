@@ -1,12 +1,20 @@
 import {Model} from "mongoose";
 import {AdType, default as AdTypeMongo} from "./adType.model";
-import {Platform} from "../platform/platform.model";
+import {Creativity} from "../creativity/creativity.model";
 
 export class AdTypeService {
     private mongoModel: Model<AdType>;
 
     constructor(mongoModel?: Model<AdType>) {
         this.mongoModel = mongoModel || AdTypeMongo;
+    }
+
+    public async findById(id: string): Promise<AdType> {
+        return await this.mongoModel.findById(id);
+    }
+
+    public async findByKey(key: string): Promise<AdType> {
+        return await this.mongoModel.findOne({key: key});
     }
 
     public async drop(): Promise<AdType[]> {
@@ -18,16 +26,5 @@ export class AdTypeService {
             const adTypeMongo = new this.mongoModel(adType);
             adTypeMongo.save();
         });
-    }
-
-    public async list(): Promise<Platform[]> {
-        return await this.mongoModel.find();
-    }
-
-    public async insert(adType: AdType) {
-        let insert = new this.mongoModel(adType);
-        insert.save().then((err) => {
-            console.log(err);
-        }).catch((err) => console.error(err));
     }
 }

@@ -9,8 +9,9 @@ import config from "./config/config";
 import CreativityRouter from "./controllers/creativity/creativity.router";
 import RoleRouter from "./controllers/role/role.router";
 import UserRouter from "./controllers/user/user.router";
-import InsertPlatforms from "./services/inserts/platform.insert";
-import InsertAdTypes from "./services/inserts/adType.insert";
+
+import InsertAll from "./services/inserts/main.insert";
+import AdRouter from "./controllers/ad/ad.route";
 
 export class Server {
     public static bootstrap(): Server {
@@ -59,6 +60,7 @@ export class Server {
             ([ UserRouter.create() ]).forEach((route) => { route.decorate(this.app); });
             ([ CreativityRouter.create() ]).forEach((route) => { route.decorate(this.app); });
             ([ RoleRouter.create() ]).forEach((route) => { route.decorate(this.app); });
+            ([ AdRouter.create() ]).forEach((route) => { route.decorate(this.app); });
             console.log("All routes were loaded successfully");
         } catch (err) {
             console.error("Could not load all routes!");
@@ -74,13 +76,9 @@ export class Server {
     }
 
     public async inserts() {
-        const insertPlatforms = new InsertPlatforms();
-        const insertAdTypes = new InsertAdTypes();
+        const insertAll = new InsertAll();
 
-        await insertPlatforms.insert();
-        await insertAdTypes.insert();
-
-        console.log("Database collections inserted");
+        await insertAll.insert();
     }
 
     // TODO logger
