@@ -3,7 +3,7 @@ import * as ffmpeg from "ffmpeg";
 import * as fs from "fs";
 import * as sizeOf from "image-size";
 import * as path from "path";
-import * as shortid from "shortid";
+import * as uuidv4 from "uuid/v4";
 import config from "../config/config";
 import {Size} from "../models/creativity/creativity.model";
 import {User} from "../models/user/user.model";
@@ -64,7 +64,13 @@ export class FileService {
         return size;
     }
 
-    public createPath(user: User, file: UploadedFile): string {
+    public async getDuration(fileSource: string, filetype: string): Promise<number> {
+        const video = await ffmpeg(fileSource);
+        console.log(video);
+        return video.metadata.duration.seconds * 1000;
+    }
+
+    public createPath(user: User): string {
         const mediaDirectory = path.basename(path.join(__dirname, "media"));
         const envDirectory = path.join(mediaDirectory, (process.env.NODE_ENV || "development"));
         const userDirectory = path.join(envDirectory, user._id.toString());
@@ -77,6 +83,6 @@ export class FileService {
     }
 
     public makeFileName(fileformat: string): string {
-        return shortid.generate() + "." + fileformat;
+        return uuidv4() + "." + fileformat;
     }
 }

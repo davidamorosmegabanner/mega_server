@@ -13,7 +13,7 @@ const fileService = new FileService();
 const userService = new UserService();
 
 export let create: ExpressSignature = async (request, response, next) => {
-    // TODO upload files to another server
+    // TODO upload files to another static server
 
     const params = request.body;
     const xAccessToken = request.headers["x-access-token"].toString();
@@ -45,11 +45,13 @@ export let create: ExpressSignature = async (request, response, next) => {
 
         file.name = fileService.makeFileName(fileformat);
 
-        const fileSource: string = path.join(fileService.createPath(user, file), file.name);
+        const fileSource: string = path.join(fileService.createPath(user), file.name);
         await file.mv(fileSource);
         const size: Size = await fileService.getSize(fileSource, filetype);
+        let duration: number = 0;
+        if (filetype === "video") { duration = await fileService.getDuration(fileSource, filetype); }
 
-        const creativity: Creativity = await creativityService.create(request.body.name, user, fileSource, mimetype, fileformat, filetype, size);
+        const creativity: Creativity = await creativityService.create(request.body.name, user, fileSource, mimetype, fileformat, filetype, size, duration);
 
         response.status(200).send({
             id: creativity._id,

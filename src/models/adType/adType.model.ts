@@ -1,24 +1,32 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
-import {Size} from "../creativity/creativity.model";
 import {Platform} from "../platform/platform.model";
+
+export interface Size {
+    width: number;
+    height: number;
+}
+
+export interface AllowedSize {
+    min: Size;
+    max: Size;
+}
+
+export interface AllowedRelation {
+    min: Size;
+    max: Size;
+}
+
+export interface NumCreativities {
+    min: number;
+    max: number;
+}
 
 export interface AdType extends Document {
     name: string;
     key: string;
     description: string;
     platform: Platform;
-    creativities: {
-        min: number;
-        max: number;
-        size: Size;
-        type: string;
-    };
-}
-
-export interface Size {
-    width: number;
-    height: number;
 }
 
 const AdTypeSchema = new Schema({
@@ -38,25 +46,7 @@ const AdTypeSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
         ref: "Platform",
-    },
-    creativities: {
-        min: {
-            type: Number,
-        },
-        max: {
-            type: Number,
-        },
-        size: {
-            width: {
-                type: Number,
-            },
-            height: {
-                type: Number,
-            },
-        },
-        type: {
-            type: String,
-        },
+        upsert: true,
     },
 });
 

@@ -9,8 +9,7 @@ export class CreativityService {
         this.mongoModel = mongoModel || CreativityMongo;
     }
 
-    public async create(name: string, owner: User, source: string, mimetype: string, fileformat: string, filetype: string, size: Size): Promise<Creativity> {
-
+    public async create(name: string, owner: User, source: string, mimetype: string, fileformat: string, filetype: string, size: Size, duration: number): Promise<Creativity> {
         const creativity = new this.mongoModel({
             name: (name),
             owner: (owner),
@@ -20,6 +19,8 @@ export class CreativityService {
             filetype: (filetype),
             size: (size),
         });
+
+        if (filetype === "video") { creativity.duration = (duration); }
 
         return await creativity.save();
     }

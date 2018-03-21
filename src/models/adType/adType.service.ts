@@ -23,4 +23,11 @@ export class AdTypeService {
     public async list(): Promise<Platform[]> {
         return await this.mongoModel.find();
     }
+
+    public async insert(adType: AdType) {
+        let insert = new this.mongoModel(adType);
+        insert.save().then((err) => {
+            console.log(err);
+        }).catch((err) => console.error(err));
+    }
 }
