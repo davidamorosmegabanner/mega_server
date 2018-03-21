@@ -1,10 +1,11 @@
 import {Model, Schema} from "mongoose";
-import {AdType, AllowedRelation, AllowedSize, default as AdTypeMongo} from "../adType.model";
+import {AdType, AllowedRatio, AllowedSize, default as AdTypeMongo, Duration} from "../adType.model";
 
 export interface InstagramAdType extends AdType {
     mimetypes: [string];
     allowedSize: AllowedSize;
-    allowedRelation: AllowedRelation;
+    allowedRatio: AllowedRatio;
+    duration?: Duration;
     actions: [string];
     objectives: [string];
 }
@@ -36,7 +37,7 @@ const InstagramAdTypeSchema = new Schema({
             },
         },
     },
-    allowedRelation: {
+    allowedRatio: {
         min: {
             width: {
                 type: Number,
@@ -56,6 +57,14 @@ const InstagramAdTypeSchema = new Schema({
                 type: Number,
                 required: true,
             },
+        },
+    },
+    duration: {
+        min: {
+            type: Number,
+        },
+        max: {
+            type: Number,
         },
     },
     actions: [{

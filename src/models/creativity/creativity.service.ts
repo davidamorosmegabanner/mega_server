@@ -25,27 +25,24 @@ export class CreativityService {
         return await creativity.save();
     }
 
-    public async find(creativities: string[]): Promise<Creativity[]> {
-        return await this.mongoModel.find(
-            {
-                _id: creativities
-            }, {
-                deleted: 0,
-                created: 0,
-                owner: 0,
-                fileformat: 0,
-                filetype: 0,
-                __v: 0,
-            });
+    public async findById(creativities: string[]): Promise<Creativity[]> {
+        return await this.mongoModel
+            .find({_id: creativities, deleted: false}, {deleted: 0, created: 0, owner: 0, fileformat: 0, filetype: 0, __v: 0});
+    }
+
+    public async get(id: string[]): Promise<Creativity> {
+        return await this.mongoModel.find({_id: id, deleted: false});
     }
 
     public async remove(id: string): Promise<Creativity> {
         if (id === undefined) { throw new Error("Param id is required"); }
 
-        return await this.mongoModel.findByIdAndRemove(id);
+        return await this.mongoModel.findOneAndUpdate({_id: id}, {$set: {deleted: true}});
     }
 
     public async list(user: User): Promise<Creativity[]> {
         return await this.mongoModel.find({owner: user, deleted: false}, {size: 1, name: 1, mimetype: 1, fileformat: 1, source: 1});
     }
+
+
 }

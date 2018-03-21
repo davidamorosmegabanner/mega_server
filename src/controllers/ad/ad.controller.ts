@@ -7,6 +7,7 @@ import {CreativityService} from "../../models/creativity/creativity.service";
 import {User} from "../../models/user/user.model";
 import {UserService} from "../../models/user/user.service";
 import {AuthService} from "../../services/auth.service";
+import {Validator} from "../../services/validator.service";
 import {ExpressSignature} from "../Route";
 
 const authService = new AuthService();
@@ -14,6 +15,7 @@ const userService = new UserService();
 const adTypeService = new AdTypeService();
 const adService = new AdService();
 const creativityService = new CreativityService();
+const validator = new Validator();
 
 export let create: ExpressSignature = async (request, response, next) => {
     const params = request.body;
@@ -28,10 +30,9 @@ export let create: ExpressSignature = async (request, response, next) => {
         const name: string = params.name;
         const owner: User = await userService.findById(params.owner);
         const adType: AdType = await adTypeService.findByKey(params.adType);
-        const creativities: Creativity[] = await creativityService.find(params.creativities);
+        const creativities: Creativity[] = await creativityService.findById(params.creativities);
 
-        // TODO check creativities
-        // await adTypeService.checkCreativities(AdType, creativities)
+        await validator.validateCreativities(adType, creativities);
 
         const ad: Ad = await adService.create(name, owner, adType, creativities);
 
@@ -49,16 +50,3 @@ export let create: ExpressSignature = async (request, response, next) => {
         response.status(400).send(err.toString());
     }
 };
-
-// Auxiliary functions
-function invalidNumberCreativities(adType): string {
-    return(
-        "Invalid number of creativities. AdType " +
-        adType.key +
-        " accepts " +
-        adType.numCreativities.min +
-        " creativity as minimum and " +
-        adType.numCreativities.max +
-        " creativity as maximum!"
-    );
-}

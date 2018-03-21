@@ -5,7 +5,7 @@ export default {
         isActive: true,
         value: "8dab98ca9e27007f83e088a5bea17e7d",
     },
-    acceptedMedia:[
+    acceptedMedia: [
         "image/jpeg",
         "image/png",
         "video/mp4",

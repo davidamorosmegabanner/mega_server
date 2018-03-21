@@ -6,12 +6,12 @@ import * as fileUpload from "express-fileupload";
 import * as mongoose from "mongoose";
 
 import config from "./config/config";
+import AdRouter from "./controllers/ad/ad.route";
 import CreativityRouter from "./controllers/creativity/creativity.router";
 import RoleRouter from "./controllers/role/role.router";
 import UserRouter from "./controllers/user/user.router";
 
 import InsertAll from "./services/inserts/main.insert";
-import AdRouter from "./controllers/ad/ad.route";
 
 export class Server {
     public static bootstrap(): Server {

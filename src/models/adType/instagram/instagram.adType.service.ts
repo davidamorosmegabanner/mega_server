@@ -1,5 +1,6 @@
 import {Model} from "mongoose";
-import {default as InstagramAdTypeMongo, InstagramAdType} from "./instagramAdType.model";
+import {AdType} from "../adType.model";
+import {default as InstagramAdTypeMongo, InstagramAdType} from "./instagram.adType.model";
 
 export class InstagramAdTypeService {
     private mongoModel: Model<InstagramAdType>;
@@ -17,5 +18,9 @@ export class InstagramAdTypeService {
             const instagramAdTypeMongo = new this.mongoModel(instagramAdType);
             instagramAdTypeMongo.save();
         });
+    }
+
+    public async findByAdType(id: AdType): Promise<InstagramAdType> {
+        return await this.mongoModel.findById(id);
     }
 }

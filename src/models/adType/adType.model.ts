@@ -12,9 +12,14 @@ export interface AllowedSize {
     max: Size;
 }
 
-export interface AllowedRelation {
+export interface AllowedRatio {
     min: Size;
     max: Size;
+}
+
+export interface Duration {
+    min: number;
+    max: number;
 }
 
 export interface NumCreativities {

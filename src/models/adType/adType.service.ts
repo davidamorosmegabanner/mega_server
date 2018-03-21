@@ -1,6 +1,5 @@
 import {Model} from "mongoose";
 import {AdType, default as AdTypeMongo} from "./adType.model";
-import {Creativity} from "../creativity/creativity.model";
 
 export class AdTypeService {
     private mongoModel: Model<AdType>;
@@ -14,11 +13,7 @@ export class AdTypeService {
     }
 
     public async findByKey(key: string): Promise<AdType> {
-        return await this.mongoModel.findOne({key: key});
-    }
-
-    public async drop(): Promise<AdType[]> {
-        return await this.mongoModel.remove({});
+        return await this.mongoModel.findOne({key: (key)}).populate("platform");
     }
 
     public async insertBulk(adTypes: AdType[]) {

@@ -103,3 +103,23 @@ export let list: ExpressSignature = async (request, response, next) => {
         response.status(400).send(err.toString());
     }
 };
+
+export let get: ExpressSignature = async (request, response, next) => {
+    const xAccessToken = request.headers["x-access-token"].toString();
+    const allowedRoles = ["admin"];
+
+    if (!xAccessToken || await !authService.isAllowed(allowedRoles, xAccessToken)) {
+        return response.status(401).send("Unauthorized");
+    }
+
+    try {
+        const user: User = await userService.findByToken(xAccessToken);
+        const creativities: Creativity[] = await creativityService.list(user);
+        response.status(200).send(
+            creativities,
+        );
+    } catch (err) {
+        console.error(err);
+        response.status(400).send(err.toString());
+    }
+};

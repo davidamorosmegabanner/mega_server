@@ -1,5 +1,5 @@
-import {InstagramAdType} from "../../models/adType/instagram/instagramAdType.model";
-import {InstagramAdTypeService} from "../../models/adType/instagram/instagramAdType.service";
+import {InstagramAdType} from "../../models/adType/instagram/instagram.adType.model";
+import {InstagramAdTypeService} from "../../models/adType/instagram/instagram.adType.service";
 import {PlatformService} from "../../models/platform/platform.service";
 
 const platformService = new PlatformService();
@@ -32,13 +32,13 @@ export default class InsertAdTypes {
                     height: 2400,
                 },
             },
-            allowedRelation: {
+            allowedRatio: {
                 min: {
-                    width: 1,
-                    height: 1,
+                    width: 4,
+                    height: 5,
                 },
                 max: {
-                    width: 1,
+                    width: 1.91,
                     height: 1,
                 },
             },
@@ -58,23 +58,27 @@ export default class InsertAdTypes {
             },
             allowedSize: {
                 min: {
-                    width: 1200,
-                    height: 1200,
+                    width: 1080,
+                    height: 1920,
                 },
                 max: {
                     width: 2400,
                     height: 2400,
                 },
             },
-            allowedRelation: {
+            allowedRatio: {
                 min: {
-                    width: 1,
-                    height: 1,
+                    width: 4,
+                    height: 5,
                 },
                 max: {
-                    width: 1,
+                    width: 1.91,
                     height: 1,
                 },
+            },
+            duration: {
+                min: 1 * 1000,
+                max: 60 * 1000,
             },
         };
 
@@ -83,7 +87,7 @@ export default class InsertAdTypes {
             key: "IG_STORY",
             description: "Instagram image that appears while viewing stories",
             platform: await platformService.getPlatformByKey("IG"),
-            mimetypes: ["image/jpg", "image/png"],
+            mimetypes: ["image/jpg", "image/png", "video/mp4", "video/mov"],
             actions: ["ACTION1", "ACTION2", "ACTION3"],
             objectives: ["OBJECTIVE1", "OBJECTIVE2", "OBJECTIVE3"],
             numCreativities: {
@@ -92,32 +96,36 @@ export default class InsertAdTypes {
             },
             allowedSize: {
                 min: {
-                    width: 1200,
-                    height: 1200,
+                    width: 1080,
+                    height: 1920,
                 },
                 max: {
-                    width: 2400,
-                    height: 2400,
+                    width: 1080,
+                    height: 1920,
                 },
             },
-            allowedRelation: {
+            allowedRatio: {
                 min: {
-                    width: 1,
-                    height: 1,
+                    width: 9,
+                    height: 16,
                 },
                 max: {
-                    width: 1,
-                    height: 1,
+                    width: 9,
+                    height: 16,
                 },
+            },
+            duration: {
+                min: 1 * 1000,
+                max: 15 * 1000,
             },
         };
 
-        const instagramSetOfImages: InstagramAdType = {
+        const instagramCarousel: InstagramAdType = {
             name: "Instagram carousel of images",
             key: "IG_CAROUSEL",
             description: "Instagram set of images that appear in the feed",
             platform: await platformService.getPlatformByKey("IG"),
-            mimetypes: ["image/jpg", "image/png"],
+            mimetypes: ["image/jpg", "image/png", "video/mp4", "video/mov"],
             actions: ["ACTION1", "ACTION2", "ACTION3"],
             objectives: ["OBJECTIVE1", "OBJECTIVE2", "OBJECTIVE3"],
             numCreativities: {
@@ -134,13 +142,13 @@ export default class InsertAdTypes {
                     height: 2400,
                 },
             },
-            allowedRelation: {
+            allowedRatio: {
                 min: {
-                    width: 1,
-                    height: 1,
+                    width: 4,
+                    height: 5,
                 },
                 max: {
-                    width: 1,
+                    width: 1.91,
                     height: 1,
                 },
             },
@@ -150,7 +158,7 @@ export default class InsertAdTypes {
             instagramImage,
             instagramVideo,
             instagramStory,
-            instagramSetOfImages,
+            instagramCarousel,
         ];
 
         await instagramAdTypeService.insertBulk(instagramAdTypes);
