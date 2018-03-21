@@ -10,9 +10,6 @@
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "test": "mocha dist/test/**/**/*.spec.js -R spec --bail"
   },
-  "bin": {
-    "hello-typescript": "./lib/index.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/marctorrelles/mega_server.git"
