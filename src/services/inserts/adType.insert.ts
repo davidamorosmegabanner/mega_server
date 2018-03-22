@@ -8,6 +8,7 @@ const instagramAdTypeService = new InstagramAdTypeService();
 export default class InsertAdTypes {
     public async insert() {
 
+        // ******** INSTAGRAM ********
         await instagramAdTypeService.drop();
 
         const instagramImage: InstagramAdType = {
