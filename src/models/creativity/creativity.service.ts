@@ -9,11 +9,12 @@ export class CreativityService {
         this.mongoModel = mongoModel || CreativityMongo;
     }
 
-    public async create(name: string, owner: User, source: string, mimetype: string, fileformat: string, filetype: string, size: Size, duration: number): Promise<Creativity> {
+    public async create(name: string, owner: User, source: string, thumbnail: string, mimetype: string, fileformat: string, filetype: string, size: Size, duration: number): Promise<Creativity> {
         const creativity = new this.mongoModel({
             name: (name),
             owner: (owner),
             source: (source),
+            thumbnail: (thumbnail),
             mimetype: (mimetype),
             fileformat: (fileformat),
             filetype: (filetype),
@@ -30,8 +31,8 @@ export class CreativityService {
             .find({_id: creativities, deleted: false}, {deleted: 0, created: 0, owner: 0, fileformat: 0, filetype: 0, __v: 0});
     }
 
-    public async get(id: string[]): Promise<Creativity> {
-        return await this.mongoModel.find({_id: id, deleted: false});
+    public async get(user: User, id: string[]): Promise<Creativity> {
+        return await this.mongoModel.find({_id: id, owner: user, deleted: false}, {_id: 1, name: 1, source: 1, mimetype: 1, fileformat: 1, filetype: 1, size: 1, duration: 1});
     }
 
     public async remove(id: string): Promise<Creativity> {
@@ -41,7 +42,8 @@ export class CreativityService {
     }
 
     public async list(user: User): Promise<Creativity[]> {
-        return await this.mongoModel.find({owner: user, deleted: false}, {size: 1, name: 1, mimetype: 1, fileformat: 1, source: 1});
+        return await this.mongoModel
+            .find({owner: user, deleted: false}, {_id: 1, name: 1, source: 1, mimetype: 1, fileformat: 1, filetype: 1, size: 1, duration: 1});
     }
 
 

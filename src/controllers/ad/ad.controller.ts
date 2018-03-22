@@ -36,7 +36,6 @@ export let create: ExpressSignature = async (request, response, next) => {
 
         const ad: Ad = await adService.create(name, owner, adType, creativities);
 
-        console.log(creativities);
         response.status(200).send({
             ad: ad._id,
             name: ad.name,

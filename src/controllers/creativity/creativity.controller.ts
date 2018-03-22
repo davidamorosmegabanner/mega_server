@@ -48,10 +48,11 @@ export let create: ExpressSignature = async (request, response, next) => {
         const fileSource: string = path.join(fileService.createPath(user), file.name);
         await file.mv(fileSource);
         const size: Size = await fileService.getSize(fileSource, filetype);
+        const thumbnail = await fileService.createThumbnail(fileSource, filetype);
         let duration: number = 0;
         if (filetype === "video") { duration = await fileService.getDuration(fileSource, filetype); }
 
-        const creativity: Creativity = await creativityService.create(request.body.name, user, fileSource, mimetype, fileformat, filetype, size, duration);
+        const creativity: Creativity = await creativityService.create(params.name, user, fileSource, thumbnail, mimetype, fileformat, filetype, size, duration);
 
         response.status(200).send({
             id: creativity._id,
@@ -104,9 +105,10 @@ export let list: ExpressSignature = async (request, response, next) => {
     }
 };
 
-export let get: ExpressSignature = async (request, response, next) => {
+export let getInfo: ExpressSignature = async (request, response, next) => {
     const xAccessToken = request.headers["x-access-token"].toString();
     const allowedRoles = ["admin"];
+    const params = request.body;
 
     if (!xAccessToken || await !authService.isAllowed(allowedRoles, xAccessToken)) {
         return response.status(401).send("Unauthorized");
@@ -114,9 +116,9 @@ export let get: ExpressSignature = async (request, response, next) => {
 
     try {
         const user: User = await userService.findByToken(xAccessToken);
-        const creativities: Creativity[] = await creativityService.list(user);
+        const creativity: Creativity = await creativityService.get(user, params.id);
         response.status(200).send(
-            creativities,
+            creativity,
         );
     } catch (err) {
         console.error(err);

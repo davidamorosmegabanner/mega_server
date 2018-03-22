@@ -1,9 +1,10 @@
-import {UploadedFile} from "express-fileupload";
 import * as ffmpeg from "ffmpeg";
 import * as fs from "fs";
+import * as gm from "gm";
 import * as sizeOf from "image-size";
 import * as path from "path";
 import * as uuidv4 from "uuid/v4";
+import * as thumbler from "video-thumb";
 import config from "../config/config";
 import {Size} from "../models/creativity/creativity.model";
 import {User} from "../models/user/user.model";
@@ -59,14 +60,31 @@ export class FileService {
                 height: video.metadata.video.resolution.h,
             };
 
-        } else { throw new Error("Check size: invalid filetype"); }
+        } else { throw new Error("Check size failed"); }
 
         return size;
     }
 
+    public async createThumbnail(fileSource: string, filetype: string): Promise<string> {
+        const fileName = fileSource.substr(0, fileSource.lastIndexOf("."));
+        const fileAdded = "_120x180.";
+        const fileExtension = fileSource.substr(fileSource.lastIndexOf(".") + 1);
+        let fileDestination: string = "";
+
+        if (filetype === "image") {
+            fileDestination = fileName + fileAdded + fileExtension;
+            fs.createReadStream(fileSource).pipe(fs.createWriteStream(fileDestination));
+            gm(fileDestination).resize(180, 120);
+        }
+        if (filetype === "video") {
+            fileDestination = fileName + fileAdded + "png";
+            await this.makeThumbnail(fileSource, fileDestination);
+        }
+        return fileDestination;
+    }
+
     public async getDuration(fileSource: string, filetype: string): Promise<number> {
         const video = await ffmpeg(fileSource);
-        console.log(video);
         return video.metadata.duration.seconds * 1000;
     }
 
@@ -84,5 +102,14 @@ export class FileService {
 
     public makeFileName(fileformat: string): string {
         return uuidv4() + "." + fileformat;
+    }
+
+    private makeThumbnail(fileSource: string, fileDestination: string): Promise<void> {
+        return new Promise<void>((resolve) => {
+            thumbler.extract(fileSource, fileDestination, "00:00:01", "180x120", (err) => {
+                if (err) { throw new Error(err); }
+                resolve();
+            });
+        });
     }
 }

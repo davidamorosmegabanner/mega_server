@@ -12,6 +12,7 @@ export interface Creativity extends Document {
     name: string;
     owner: User;
     path: string;
+    thumbnail: string;
     mimetype: string;
     fileformat: string;
     filetype: string;
@@ -32,6 +33,10 @@ const CreativitySchema = new Schema({
         ref: "User",
     },
     source: {
+        type: String,
+        required: true,
+    },
+    thumbnail: {
         type: String,
         required: true,
     },
