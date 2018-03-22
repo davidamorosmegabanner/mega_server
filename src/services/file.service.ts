@@ -78,7 +78,7 @@ export class FileService {
         }
         if (filetype === "video") {
             fileDestination = fileName + fileAdded + "png";
-            await this.makeThumbnail(fileSource, fileDestination);
+            await this.makeVideoThumbnail(fileSource, fileDestination);
         }
         return fileDestination;
     }
@@ -104,7 +104,7 @@ export class FileService {
         return uuidv4() + "." + fileformat;
     }
 
-    private makeThumbnail(fileSource: string, fileDestination: string): Promise<void> {
+    private makeVideoThumbnail(fileSource: string, fileDestination: string): Promise<void> {
         return new Promise<void>((resolve) => {
             thumbler.extract(fileSource, fileDestination, "00:00:01", "180x120", (err) => {
                 if (err) { throw new Error(err); }

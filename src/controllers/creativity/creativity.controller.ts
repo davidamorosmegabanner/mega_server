@@ -55,8 +55,15 @@ export let create: ExpressSignature = async (request, response, next) => {
         const creativity: Creativity = await creativityService.create(params.name, user, fileSource, thumbnail, mimetype, fileformat, filetype, size, duration);
 
         response.status(200).send({
-            id: creativity._id,
+            _id: creativity._id,
             name: creativity.name,
+            source: creativity.path,
+            thumbnail: creativity.thumbnail,
+            mimetype: creativity.mimetype,
+            filetype: creativity.filetype,
+            fileformat: creativity.fileformat,
+            duration: creativity.duration,
+            size: creativity.size,
         });
 
     } catch (err) {

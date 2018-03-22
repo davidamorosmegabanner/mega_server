@@ -13,7 +13,7 @@ export class CreativityService {
         const creativity = new this.mongoModel({
             name: (name),
             owner: (owner),
-            source: (source),
+            path: (source),
             thumbnail: (thumbnail),
             mimetype: (mimetype),
             fileformat: (fileformat),

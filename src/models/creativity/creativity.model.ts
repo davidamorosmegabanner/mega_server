@@ -32,7 +32,7 @@ const CreativitySchema = new Schema({
         required: true,
         ref: "User",
     },
-    source: {
+    path: {
         type: String,
         required: true,
     },

@@ -30,7 +30,7 @@ export let login: ExpressSignature = async (request, response, next) => {
         }
 
         response.status(200).send({
-            id: user._id,
+            _id: user._id,
             token: user.token,
             name: user.name,
             email: user.email,
@@ -61,7 +61,7 @@ export let register: ExpressSignature = async (request, response, next) => {
         const user: User = await userService.create(params.name, params.email, params.password, role, params.phone);
         response.status(200).send({
             token: user.token,
-            id: user._id,
+            _id: user._id,
             email: user.email,
             name: user.name,
             phone: user.phone,
@@ -91,7 +91,7 @@ export let edit: ExpressSignature = async (request, response, next) => {
         );
         response.status(200).send({
             email: user.email,
-            id: user._id,
+            _id: user._id,
             name: user.name,
             phone: user.phone,
         });
