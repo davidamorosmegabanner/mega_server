@@ -19,7 +19,7 @@ export class AdTypeService {
     public async insertBulk(adTypes: AdType[]) {
         adTypes.map(async (adType) => {
             const adTypeMongo = new this.mongoModel(adType);
-            adTypeMongo.save();
+            await adTypeMongo.save();
         });
     }
 }

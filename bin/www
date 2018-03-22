@@ -3,7 +3,6 @@
 
 const Server = require('../dist/src/server').Server,
     http = require("http"),
-    debug = require("debug")("express:server"),
     config = require("../dist/src/config/config");
 
 const serverInstance = Server.bootstrap();
@@ -14,7 +13,7 @@ serverInstance.app.set('port', port);
 const httpServer = http.createServer(serverInstance.app);
 httpServer.listen(port);
 
-console.log(`App is active and listening on port ${port}`);
+console.log(`App is active`);
 
 function onError(error) {
     if (error.syscall !== "listen") {
@@ -45,7 +44,7 @@ function onListening() {
     var bind = typeof addr === "string"
         ? "pipe " + addr
         : "port " + addr.port;
-    debug("Listening on " + bind);
+    console.log("Listening on " + bind);
 }
 
 httpServer.on("error", onError);

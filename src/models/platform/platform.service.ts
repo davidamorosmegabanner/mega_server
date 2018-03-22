@@ -11,7 +11,7 @@ export class PlatformService {
     public async insertBulk(platforms: Platform[]) {
         platforms.map(async (platform) => {
             const platformMongo = new this.mongoModel(platform);
-            platformMongo.save();
+            await platformMongo.save();
         });
     }
 

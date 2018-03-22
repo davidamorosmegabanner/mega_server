@@ -11,6 +11,7 @@ import {Creativity} from "../models/creativity/creativity.model";
 
 export class Validator {
 
+    // Public validator called when Ad is created
     public async validateCreativities(adType: AdType, creativities: Creativity[]): Promise<boolean> {
         let validation: boolean = true;
         try {
@@ -33,45 +34,23 @@ export class Validator {
 
     }
 
+    // Functions used to validate ads internally
     private async validateInstagramCreativities(adType: InstagramAdType, creativities: Creativity[]): Promise<boolean> {
 
-        // Error responses
-        function errorMimetype(): string {
-            return (`One or more creativities mimetypes are not compatible with this AdType!`);
-        }
-        function errorSize(size: string): string {
-            return (`One or more creativities are too ${size}.\n` +
-                `Allowed creativity sizes for this AdType are:\n` +
-                `Minimum: ${adType.allowedSize.min.width} x ${adType.allowedSize.min.height}\n` +
-                `Maximum: ${adType.allowedSize.max.width} x ${adType.allowedSize.max.height}`);
-        }
-        function errorRatio(): string {
-            return ("One or more creativities have incorrect ratio aspect.\n" +
-                "Allowed ratios for this AdType are:\n" +
-                "Minimum ratio: " + adType.allowedRatio.min.width + ":" + adType.allowedRatio.min.width + "\n" +
-                "Maximum ratio: " + adType.allowedRatio.max.width + ":" + adType.allowedRatio.max.width + "\n");
-        }
-        function errorDuration(): string {
-            return ("One or more creativities have incorrect duration.\n" +
-                "Allowed ratios for this AdType are:\n" +
-                "Minimum duration: " + adType.duration.min / 1000 + "sec\n" +
-                "Maximum duration: " + adType.duration.max / 1000 + "sec");
-        }
-
-        // Validations
+        // Validations for every creativity
         creativities.map((creativity) => {
 
             // Validate mimetypes
             if (adType.mimetypes.indexOf(creativity.mimetype) === -1) {
-                throw new Error(errorMimetype());
+                throw new Error(this.errorMimetype());
             }
 
             // Validate sizes
             if (creativity.size.height < adType.allowedSize.min.height || creativity.size.width < adType.allowedSize.min.width) {
-                throw new Error(errorSize("small"));
+                throw new Error(this.errorSize("small", adType.allowedSize));
             }
             if (creativity.size.height > adType.allowedSize.max.height || creativity.size.width > adType.allowedSize.max.width) {
-                throw new Error(errorSize("big"));
+                throw new Error(this.errorSize("big", adType.allowedSize));
             }
 
             // Validate ratios
@@ -80,17 +59,40 @@ export class Validator {
             const creativityRatios: number = creativity.size.width / creativity.size.height;
 
             if (creativityRatios < minRatios || creativityRatios > maxRatios) {
-                throw new Error(errorRatio());
+                throw new Error(this.errorRatio(adType.allowedRatio));
             }
 
-            // Validate duration
-            if (adType.duration) {
+            // Validate duration if video
+            if (adType.duration && creativity.filetype === "video") {
                 if (adType.duration.min < creativity.duration || adType.duration.max > creativity.duration) {
-                    throw new Error(errorDuration());
+                    throw new Error(this.errorDuration(adType.duration));
                 }
             }
         });
 
         return true;
+    }
+
+    // Error responses
+    private errorMimetype(): string {
+        return (`One or more creativities mimetypes are not compatible with this AdType`);
+    }
+    private errorSize(size: string, allowedSize: any): string {
+        return (`One or more creativities are too ${size}.\n` +
+            `Allowed creativity sizes for this AdType are:\n` +
+            `Minimum: ${allowedSize.min.width} x ${allowedSize.min.height}\n` +
+            `Maximum: ${allowedSize.max.width} x ${allowedSize.max.height}`);
+    }
+    private errorRatio(allowedRatio: any): string {
+        return (`One or more creativities have incorrect ratio aspect\n` +
+            `Allowed ratios for this AdType are:\n` +
+            `Minimum ratio: ${allowedRatio.min.width}:${allowedRatio.min.width}\n` +
+            `Maximum ratio: ${allowedRatio.max.width}:${allowedRatio.max.width}\n`);
+    }
+    private errorDuration(duration): string {
+        return (`One or more creativities have incorrect duration\n` +
+            `Allowed ratios for this AdType are:\n` +
+            `Minimum duration: ${duration.min / 1000} sec\n` +
+            `Maximum duration: ${duration.max / 1000} sec`);
     }
 }
