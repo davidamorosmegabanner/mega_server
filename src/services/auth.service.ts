@@ -25,8 +25,7 @@ export class AuthService {
 
         const user = await userService.findByToken(token);
         if (user) {
-            const role = await roleService.findById(user.role);
-            return (roles.indexOf(role.name) !== -1);
+            return (roles.indexOf(user.role.name) !== -1);
         } else {
             return false;
         }

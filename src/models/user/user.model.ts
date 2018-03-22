@@ -1,5 +1,6 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
+import {Role} from "../role/role.model";
 
 export interface User extends Document {
   _id: string;
@@ -8,7 +9,7 @@ export interface User extends Document {
   email: string;
   password: string;
   phone: string;
-  role: string;
+  role: Role;
   active: boolean;
   deleted: boolean;
 }
@@ -41,11 +42,6 @@ const UserSchema = new Schema({
     },
     phone: {
         type: String,
-    },
-    active: {
-        type: Boolean,
-        required: true,
-        default: true,
     },
     deleted: {
         type: Boolean,

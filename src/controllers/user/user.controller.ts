@@ -29,14 +29,12 @@ export let login: ExpressSignature = async (request, response, next) => {
             return response.status(401).send("Email and password do not match!");
         }
 
-        const role: Role = await roleService.findById(user.role);
-
         response.status(200).send({
             id: user._id,
             token: user.token,
             name: user.name,
             email: user.email,
-            role: role.name,
+            role: user.role.name,
             phone: user.phone,
         });
     } catch (err) {
@@ -164,20 +162,8 @@ export let getInfo: ExpressSignature = async (request, response, next) => {
         return response.status(401).send("Unauthorized");
     }
     try {
-        // TODO FIX
-        const user: User = await userService.findByToken(xAccessToken);
-        console.log(user);
-        const role: Role = await roleService.findById(user.role);
-
-        console.log(role);
-
-        response.status(200).send({
-            email: user.email,
-            id: user._id,
-            name: user.name,
-            phone: user.phone,
-            role: role.name,
-        });
+        const user: User = await userService.getUserProfile(xAccessToken);
+        response.status(200).send(user);
     } catch (err) {
         console.error(err);
         response.status(400).send(err.toString());

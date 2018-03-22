@@ -43,30 +43,42 @@ export class UserService {
         return await this.mongoModel.findOneAndUpdate({_id: id}, user);
     }
 
-    public async remove(id: string): Promise<User> {
-        if (id === undefined) {throw new Error("Param id is required"); }
-
-        return await this.mongoModel.findByIdAndRemove(id);
-    }
-
-    public async listUsers(role: Role): Promise<User[]> {
-        const find: any = {};
-
-        find.active = true;
-        if (role !== undefined) {find.role = role; }
-
-        return await this.mongoModel.find(find, {id: 1, name: 1, email: 1}).populate("role", {name: 1, _id: 0});
-    }
-
     public async findByToken(token: string): Promise<User> {
-        return await this.mongoModel.findOne({token: (token)});
+        return await this.mongoModel
+            .findOne({token: (token), deleted: false})
+            .populate("role");
     }
 
     public async findById(id: string): Promise<User> {
-        return await this.mongoModel.findById(id);
+        return await this.mongoModel
+            .findOne({id: (id), deleted: false});
     }
 
     public async findByEmail(email: string): Promise<User> {
-        return await this.mongoModel.findOne({email: (email)});
+        return await this.mongoModel
+            .findOne({email: (email), deleted: false})
+            .populate("role");
+    }
+
+    public async remove(id: string): Promise<User> {
+        if (id === undefined) {throw new Error("Param id is required"); }
+
+        return await this.mongoModel.findOneAndUpdate({_id: id}, {$set: {deleted: true}});
+    }
+
+    public async listUsers(role?: Role): Promise<User[]> {
+        const find: any = {};
+        find.deleted = false;
+        if (role && role !== undefined) {find.role = role; }
+
+        return await this.mongoModel
+            .find(find, {id: 1, name: 1, email: 1})
+            .populate("role", {name: 1, _id: 0});
+    }
+
+    public async getUserProfile(token: string): Promise<User> {
+        return await this.mongoModel
+            .findOne({ token: (token), deleted: false }, { _id: 1, token: 1, email: 1, name: 1, phone: 1})
+            .populate("role", {name: 1, _id: 0});
     }
 }

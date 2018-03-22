@@ -26,9 +26,9 @@ export class Server {
     }
 
     public async load() {
-        console.log("*****************************");
-        console.log("*** Mega server initiated ***");
-        console.log("*****************************");
+        console.log("***************************************");
+        console.log("******** MEGA SERVER INITIATED ********");
+        console.log("***************************************");
 
         this.files();
         await this.config();
@@ -76,9 +76,10 @@ export class Server {
     }
 
     public async inserts() {
-        const insertAll = new InsertAll();
-
-        await insertAll.insert();
+        if (process.env.INSERT === "true") {
+            const insertAll = new InsertAll();
+            await insertAll.insert();
+        }
     }
 
     // TODO logger
