@@ -40,7 +40,6 @@ const AdTypeSchema = new Schema({
     name: {
         type: String,
         required: true,
-        unique: true,
     },
     key: {
         type: String,
@@ -54,7 +53,6 @@ const AdTypeSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
         ref: "Platform",
-        upsert: true,
     },
     numCreativities: {
         min: {

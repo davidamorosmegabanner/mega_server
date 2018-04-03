@@ -1,9 +1,8 @@
-import InstagramConfiguration, {default as instagram} from "../../config/plt/instagram";
+import InstagramConfiguration from "../../config/plt/instagram";
 import {AdType} from "../../models/adType/adType.model";
 import {InstagramAdType} from "../../models/adType/instagram/instagram.adType.model";
 import {InstagramAdTypeService} from "../../models/adType/instagram/instagram.adType.service";
 import {PlatformService} from "../../models/platform/platform.service";
-import {Platform} from "../../models/platform/platform.model";
 
 const instagramAdTypeService = new InstagramAdTypeService();
 const platformService = new PlatformService();
@@ -12,8 +11,6 @@ export default class InsertAdTypes {
     public async insert(): Promise<AdType[]> {
 
         // ******** INSTAGRAM ********
-        await instagramAdTypeService.drop();
-
         const instagramImage: InstagramAdType = InstagramConfiguration.InstagramImage;
         const instagramVideo: InstagramAdType = InstagramConfiguration.InstagramVideo;
         const instagramStory: InstagramAdType = InstagramConfiguration.InstagramStory;
@@ -34,5 +31,4 @@ export default class InsertAdTypes {
 
         return await instagramAdTypeService.insertBulk(instagramAdTypes);
     }
-
 }

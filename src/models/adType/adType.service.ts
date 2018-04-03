@@ -9,11 +9,11 @@ export class AdTypeService {
     }
 
     public async findById(id: string): Promise<AdType> {
-        return await this.mongoModel.findById(id);
+        return await this.mongoModel.findById(id).lean();
     }
 
     public async findByKey(key: string): Promise<AdType> {
-        return await this.mongoModel.findOne({key: (key)}).populate("platform");
+        return await this.mongoModel.findOne({key: (key)}).populate("platform").lean();
     }
 
     public async insertBulk(adTypes: AdType[]) {

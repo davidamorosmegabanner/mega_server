@@ -15,9 +15,8 @@ export class InstagramAdTypeService {
     }
 
     public async insertBulk(instagramAdTypes: InstagramAdType[]): Promise<any> {
-        const instagramAdTypesInserted: Array< Promise<Platform> > = instagramAdTypes.map(async (platform) => {
-            const platformMongo = new this.mongoModel(platform);
-            return await platformMongo.save();
+        const instagramAdTypesInserted: Array< Promise<Platform> > = instagramAdTypes.map(async (adType) => {
+            return await this.mongoModel.findOneAndUpdate({key: adType.key}, {$set: adType}, {upsert: true});
         });
         Promise.all(instagramAdTypesInserted).then((instagramAdTypesPromise) =>{
             return instagramAdTypesPromise;

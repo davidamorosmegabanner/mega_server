@@ -7,8 +7,6 @@ const platformService = new PlatformService();
 export default class InsertPlatforms {
 
     public async insert(): Promise<Platform[]> {
-        await platformService.drop();
-
         const facebook: Platform = PlatformsConfiguration.Facebook;
         const instagram: Platform = PlatformsConfiguration.Instagram;
         const youtube: Platform = PlatformsConfiguration.Youtube;
