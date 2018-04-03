@@ -31,7 +31,6 @@ export class Validator {
         } catch (err) {
             throw new Error(err);
         }
-
     }
 
     // Functions used to validate ads internally

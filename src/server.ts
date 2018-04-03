@@ -11,7 +11,7 @@ import CreativityRouter from "./controllers/creativity/creativity.router";
 import RoleRouter from "./controllers/role/role.router";
 import UserRouter from "./controllers/user/user.router";
 
-import InsertAll from "./services/inserts/main.insert";
+import InsertAll from "./services/insert/main.insert";
 
 export class Server {
     public static bootstrap(): Server {
@@ -35,7 +35,7 @@ export class Server {
         await this.routes();
         await this.inserts();
 
-        this.app.get("/", (response: express.Response) => {
+        this.app.get("/", (request, response: express.Response) => {
             response.json({
                 welcome: "Megabanner Server",
             });

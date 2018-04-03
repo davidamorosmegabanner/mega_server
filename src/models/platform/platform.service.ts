@@ -8,10 +8,13 @@ export class PlatformService {
         this.mongoModel = mongoModel || PlatformMongo;
     }
 
-    public async insertBulk(platforms: Platform[]) {
-        platforms.map(async (platform) => {
+    public async insertBulk(platforms: Platform[]): Promise<any> {
+        const platformsInserted: Array< Promise<Platform> > = platforms.map(async (platform) => {
             const platformMongo = new this.mongoModel(platform);
-            await platformMongo.save();
+            return await platformMongo.save();
+        });
+        Promise.all(platformsInserted).then((platformsPromise) =>{
+            return platformsPromise;
         });
     }
 

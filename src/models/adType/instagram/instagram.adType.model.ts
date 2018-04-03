@@ -2,12 +2,12 @@ import {Model, Schema} from "mongoose";
 import {AdType, AllowedRatio, AllowedSize, default as AdTypeMongo, Duration} from "../adType.model";
 
 export interface InstagramAdType extends AdType {
-    mimetypes: [string];
+    mimetypes: string[];
     allowedSize: AllowedSize;
     allowedRatio: AllowedRatio;
     duration?: Duration;
-    actions: [string];
-    objectives: [string];
+    actions: string[];
+    objectives: string[];
 }
 
 const InstagramAdTypeSchema = new Schema({
