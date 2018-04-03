@@ -10,14 +10,20 @@ export class RoleService {
     }
 
     public async listRoles(): Promise<Role[]> {
-        return await this.mongoModel.find({}, {_id: 0, name: 1, description: 1});
+        return await this.mongoModel
+            .find({}, {_id: 0, name: 1, description: 1})
+            .lean();
     }
 
     public async findByName(name: string) {
-        return await this.mongoModel.findOne({name});
+        return await this.mongoModel
+            .findOne({name: (name)})
+            .lean();
     }
 
     public async findById(id: string) {
-        return await this.mongoModel.findById(id);
+        return await this.mongoModel
+            .findById(id)
+            .lean();
     }
 }

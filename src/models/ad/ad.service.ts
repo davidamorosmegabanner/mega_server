@@ -26,7 +26,7 @@ export class AdService {
     public async list(owner: User): Promise<Ad[]> {
         const populateQuery = [
             {path: "adType", select: "name key -_id -__t"},
-            {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size duration"}
+            {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size duration"},
         ];
         return await this.mongoModel
             .find({owner: (owner), deleted: false}, {_id: 1, name: 1, adType: 1, creativities: 1})
@@ -37,7 +37,7 @@ export class AdService {
     public async get(user: User, id: string[]): Promise<Ad> {
         const populateQuery = [
             {path: "adType", select: "name key -_id -__t"},
-            {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size duration"}
+            {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size duration"},
         ];
         return await this.mongoModel
             .find({_id: id, owner: user, deleted: false}, {_id: 1, name: 1, adType: 1, creativities: 1})
@@ -49,5 +49,9 @@ export class AdService {
         if (id === undefined) { throw new Error("Param id is required"); }
 
         return await this.mongoModel.findOneAndUpdate({_id: id}, {$set: {deleted: true}});
+    }
+
+    public async find(ads: string[]): Promise<Ad[]> {
+        return await this.mongoModel.find({ id: { $in: (ads) }});
     }
 }

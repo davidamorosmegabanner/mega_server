@@ -28,11 +28,14 @@ export class CreativityService {
 
     public async findById(creativities: string[]): Promise<Creativity[]> {
         return await this.mongoModel
-            .find({_id: creativities, deleted: false}, {deleted: 0, created: 0, owner: 0, fileformat: 0, filetype: 0, __v: 0});
+            .find({_id: creativities, deleted: false}, {deleted: 0, created: 0, owner: 0, fileformat: 0, filetype: 0, __v: 0})
+            .lean();
     }
 
     public async get(user: User, id: string[]): Promise<Creativity> {
-        return await this.mongoModel.find({_id: id, owner: user, deleted: false}, {_id: 1, name: 1, source: 1, mimetype: 1, fileformat: 1, filetype: 1, size: 1, duration: 1});
+        return await this.mongoModel
+            .find({_id: id, owner: user, deleted: false}, {_id: 1, name: 1, source: 1, mimetype: 1, fileformat: 1, filetype: 1, size: 1, duration: 1})
+            .lean();
     }
 
     public async remove(id: string): Promise<Creativity> {
@@ -43,7 +46,8 @@ export class CreativityService {
 
     public async list(user: User): Promise<Creativity[]> {
         return await this.mongoModel
-            .find({owner: user, deleted: false}, {_id: 1, name: 1, source: 1, mimetype: 1, fileformat: 1, filetype: 1, size: 1, duration: 1});
+            .find({owner: user, deleted: false}, {_id: 1, name: 1, source: 1, mimetype: 1, fileformat: 1, filetype: 1, size: 1, duration: 1})
+            .lean();
     }
 
 

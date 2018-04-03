@@ -6,6 +6,7 @@ import {User} from "../user/user.model";
 export interface Campaign extends Document {
     _id: string;
     name: string;
+    description: string;
     owner: User;
     ads: Ad[];
     budget: number;
@@ -22,6 +23,9 @@ const CampaignSchema = new Schema({
     name: {
         type: String,
         required: true,
+    },
+    description: {
+        type: String,
     },
     owner: {
         type: Schema.Types.ObjectId,
