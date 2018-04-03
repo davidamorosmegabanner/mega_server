@@ -100,32 +100,18 @@ export let list: ExpressSignature = async (request, response, next) => {
         return response.status(401).send("Unauthorized");
     }
 
+    console.log(request);
+
     try {
         const user: User = await userService.findByToken(xAccessToken);
-        const creativities: Creativity[] = await creativityService.list(user);
+        let creativities: any;
+        if (request.query.id) {
+            creativities = await creativityService.get(user, request.query.id);
+        } else {
+            creativities = await creativityService.list(user);
+        }
         response.status(200).send(
             creativities,
-        );
-    } catch (err) {
-        console.error(err);
-        response.status(400).send(err.toString());
-    }
-};
-
-export let getInfo: ExpressSignature = async (request, response, next) => {
-    const xAccessToken = request.headers["x-access-token"].toString();
-    const allowedRoles = ["admin"];
-    const params = request.body;
-
-    if (!xAccessToken || await !authService.isAllowed(allowedRoles, xAccessToken)) {
-        return response.status(401).send("Unauthorized");
-    }
-
-    try {
-        const user: User = await userService.findByToken(xAccessToken);
-        const creativity: Creativity = await creativityService.get(user, params.id);
-        response.status(200).send(
-            creativity,
         );
     } catch (err) {
         console.error(err);

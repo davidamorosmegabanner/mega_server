@@ -1,6 +1,6 @@
 import * as express from "express";
 import {Route} from "../Route";
-import {create, getInfo, list, remove} from "./creativity.controller";
+import {create, list, remove} from "./creativity.controller";
 
 export default class UserRouter implements Route {
     public static create(): Route {
@@ -13,6 +13,5 @@ export default class UserRouter implements Route {
         app.route(this.URL + "/create").post(create);
         app.route(this.URL + "/remove").delete(remove);
         app.route(this.URL + "/list").get(list);
-        app.route(this.URL + "/getInfo").post(getInfo);
     }
 }
