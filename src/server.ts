@@ -12,6 +12,7 @@ import RoleRouter from "./controllers/role/role.router";
 import UserRouter from "./controllers/user/user.router";
 
 import InsertAll from "./services/insert/main.insert";
+import CampaignRouter from "./controllers/campaign/campaign.router";
 
 export class Server {
     public static bootstrap(): Server {
@@ -57,10 +58,11 @@ export class Server {
 
     public async routes() {
         try {
-            ([ UserRouter.create() ]).forEach((route) => { route.decorate(this.app); });
-            ([ CreativityRouter.create() ]).forEach((route) => { route.decorate(this.app); });
-            ([ RoleRouter.create() ]).forEach((route) => { route.decorate(this.app); });
             ([ AdRouter.create() ]).forEach((route) => { route.decorate(this.app); });
+            ([ CreativityRouter.create() ]).forEach((route) => { route.decorate(this.app); });
+            ([ CampaignRouter.create() ]).forEach((route) => { route.decorate(this.app); });
+            ([ RoleRouter.create() ]).forEach((route) => { route.decorate(this.app); });
+            ([ UserRouter.create() ]).forEach((route) => { route.decorate(this.app); });
             console.log("All routes were loaded successfully");
         } catch (err) {
             console.error("Could not load all routes!");
