@@ -52,7 +52,7 @@ export class AdService {
     }
 
     public async find(ads: string[]): Promise<Ad[]> {
-        const findAds = await this.mongoModel.find({ id: { $in: (ads) }});
+        const findAds = await this.mongoModel.find({ _id: { $in: (ads) }});
         // Compare length of ads input array with length of mongo ads array to know if all input ads are correct
         if (findAds.length !== ads.length) {
             throw new Error("One ore more ads ids do not match with the ones we have");

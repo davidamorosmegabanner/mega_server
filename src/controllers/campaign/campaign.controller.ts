@@ -36,6 +36,7 @@ export let create: ExpressSignature = async (request, response, next) => {
             name: (campaign.name),
             description: (campaign.description),
             ads: (params.ads),
+            budget: (campaign.budget),
             dailyBudget: (campaign.dailyBudget),
             startDate: (campaign.startDate),
             endDate: (campaign.endDate),
