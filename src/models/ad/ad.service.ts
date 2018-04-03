@@ -5,7 +5,7 @@ import {User} from "../user/user.model";
 import {Ad, default as AdMongo} from "./ad.model";
 
 export class AdService {
-    private mongoModel: Model<Ad>;
+    private readonly mongoModel: Model<Ad>;
 
     constructor(mongoModel?: Model<Ad>) {
         this.mongoModel = mongoModel || AdMongo;
@@ -21,5 +21,33 @@ export class AdService {
 
         const adMongo = new this.mongoModel(ad);
         return await adMongo.save();
+    }
+
+    public async list(owner: User): Promise<Ad[]> {
+        const populateQuery = [
+            {path: "adType", select: "name key -_id -__t"},
+            {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size duration"}
+        ];
+        return await this.mongoModel
+            .find({owner: (owner), deleted: false}, {_id: 1, name: 1, adType: 1, creativities: 1})
+            .populate(populateQuery)
+            .lean();
+    }
+
+    public async get(user: User, id: string[]): Promise<Ad> {
+        const populateQuery = [
+            {path: "adType", select: "name key -_id -__t"},
+            {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size duration"}
+        ];
+        return await this.mongoModel
+            .find({_id: id, owner: user, deleted: false}, {_id: 1, name: 1, adType: 1, creativities: 1})
+            .populate(populateQuery)
+            .lean();
+    }
+
+    public async remove(id: string): Promise<Creativity> {
+        if (id === undefined) { throw new Error("Param id is required"); }
+
+        return await this.mongoModel.findOneAndUpdate({_id: id}, {$set: {deleted: true}});
     }
 }

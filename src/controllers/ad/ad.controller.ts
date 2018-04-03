@@ -49,3 +49,48 @@ export let create: ExpressSignature = async (request, response, next) => {
         response.status(400).send(err.toString());
     }
 };
+
+export let list: ExpressSignature = async (request, response, next) => {
+    const xAccessToken = request.headers["x-access-token"].toString();
+    const allowedRoles = ["admin"];
+
+    if (!xAccessToken || await !authService.isAllowed(allowedRoles, xAccessToken)) {
+        return response.status(401).send("Unauthorized");
+    }
+
+    try {
+        const user: User = await userService.findByToken(xAccessToken);
+        let ads: any;
+        if (request.query.id) {
+            ads = await adService.get(user, request.query.id);
+        } else {
+            ads = await adService.list(user);
+        }
+        response.status(200).send(
+            ads,
+        );
+    } catch (err) {
+        console.error(err);
+        response.status(400).send(err.toString());
+    }
+};
+
+export let remove: ExpressSignature = async (request, response, next) => {
+    const params = request.body;
+    const xAccessToken = request.headers["x-access-token"].toString();
+    const allowedRoles = ["admin"];
+
+    if (!xAccessToken || await !authService.isAllowed(allowedRoles, xAccessToken)) {
+        return response.status(401).send("Unauthorized");
+    }
+
+    try {
+        await adService.remove(params.id);
+        response.status(200).send({
+            executed: true,
+        });
+    } catch (err) {
+        console.error(err);
+        response.status(400).send(err.toString());
+    }
+};

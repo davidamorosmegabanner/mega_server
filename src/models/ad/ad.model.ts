@@ -1,7 +1,6 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
 import {AdType} from "../adType/adType.model";
-import {Campaign} from "../campaign/campaign.model";
 import {Creativity} from "../creativity/creativity.model";
 import {User} from "../user/user.model";
 

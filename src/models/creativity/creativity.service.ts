@@ -3,7 +3,7 @@ import {User} from "../user/user.model";
 import {Creativity, default as CreativityMongo, Size} from "./creativity.model";
 
 export class CreativityService {
-    private mongoModel: Model<Creativity>;
+    private readonly mongoModel: Model<Creativity>;
 
     constructor(mongoModel?: Model<Creativity>) {
         this.mongoModel = mongoModel || CreativityMongo;
