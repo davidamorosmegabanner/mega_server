@@ -100,8 +100,6 @@ export let list: ExpressSignature = async (request, response, next) => {
         return response.status(401).send("Unauthorized");
     }
 
-    console.log(request);
-
     try {
         const user: User = await userService.findByToken(xAccessToken);
         let creativities: any;

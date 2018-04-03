@@ -51,11 +51,11 @@ export class AdService {
         return await this.mongoModel.findOneAndUpdate({_id: id}, {$set: {deleted: true}});
     }
 
-    public async find(ads: string[]): Promise<Ad[]> {
+    public async findAndCheck(ads: string[]): Promise<Ad[]> {
         const findAds = await this.mongoModel.find({ _id: { $in: (ads) }});
         // Compare length of ads input array with length of mongo ads array to know if all input ads are correct
         if (findAds.length !== ads.length) {
-            throw new Error("One ore more ads ids do not match with the ones we have");
+            throw new Error("One ore more ads ids do not match with the ones stored");
         }
         return findAds;
     }

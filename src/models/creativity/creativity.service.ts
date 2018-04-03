@@ -38,17 +38,15 @@ export class CreativityService {
             .lean();
     }
 
-    public async remove(id: string): Promise<Creativity> {
-        if (id === undefined) { throw new Error("Param id is required"); }
-
-        return await this.mongoModel.findOneAndUpdate({_id: id}, {$set: {deleted: true}});
-    }
-
     public async list(user: User): Promise<Creativity[]> {
         return await this.mongoModel
             .find({owner: user, deleted: false}, {_id: 1, name: 1, source: 1, mimetype: 1, fileformat: 1, filetype: 1, size: 1, duration: 1})
             .lean();
     }
 
+    public async remove(id: string): Promise<Creativity> {
+        if (id === undefined) { throw new Error("Param id is required"); }
 
+        return await this.mongoModel.findOneAndUpdate({_id: id}, {$set: {deleted: true}});
+    }
 }
