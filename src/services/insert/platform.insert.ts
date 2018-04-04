@@ -1,6 +1,6 @@
 import {Platform} from "../../models/platform/platform.model";
 import {PlatformService} from "../../models/platform/platform.service";
-import PlatformsConfiguration from "../../config/plt/platforms";
+import PlatformsConfiguration from "../../config/seeds/platforms";
 
 const platformService = new PlatformService();
 

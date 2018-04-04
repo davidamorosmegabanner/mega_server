@@ -1,4 +1,4 @@
-import InstagramConfiguration from "../../config/plt/instagram";
+import InstagramConfiguration from "../../config/seeds/instagram";
 import {AdType} from "../../models/adType/adType.model";
 import {InstagramAdType} from "../../models/adType/instagram/instagram.adType.model";
 import {InstagramAdTypeService} from "../../models/adType/instagram/instagram.adType.service";
@@ -16,7 +16,7 @@ export default class InsertAdTypes {
         const instagramStory: InstagramAdType = InstagramConfiguration.InstagramStory;
         const instagramCarousel: InstagramAdType = InstagramConfiguration.InstagramCarousel;
 
-        // Getting plt param in mongo
+        // Getting seeds param in mongo
         instagramImage.platform = await platformService.getPlatformByKey(instagramImage.platform.key);
         instagramVideo.platform = await platformService.getPlatformByKey(instagramVideo.platform.key);
         instagramStory.platform = await platformService.getPlatformByKey(instagramStory.platform.key);
