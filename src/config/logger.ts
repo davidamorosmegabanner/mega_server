@@ -13,12 +13,16 @@ export const logger: LoggerInstance = new Logger({
             maxFiles: 5,
             colorize: false,
         }),
-        new transports.Console({ level: "info" }),
+        new transports.Console({
+            handleExceptions: true,
+            json: false,
+            colorize: true,
+        }),
     ],
 } as LoggerOptions);
 
 export class Stream {
     public static write(message: string) {
-        logger.info(message);
+        logger.info(message.substring(0, message.lastIndexOf("\n")));
     }
 }
