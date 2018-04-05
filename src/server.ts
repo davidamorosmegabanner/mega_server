@@ -89,6 +89,6 @@ export class Server {
 
     private logger() {
         logger.info("Overriding 'Express' logger");
-        this.app.use(morgan("combined", { stream: Stream.write }));
+        this.app.use(morgan("combined", { stream: Stream }));
     }
 }
