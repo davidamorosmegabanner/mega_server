@@ -30,7 +30,9 @@ export let create: ExpressSignature = async (request, response, next) => {
         const endDate = new Date(params.endDate);
         const description = params.description;
 
-        const campaign: Campaign = await campaignService.create(name, description, owner, ads, dailyBudget, startDate, endDate);
+        const campaign: Campaign = await campaignService.create(
+            name, description, owner, ads, dailyBudget, startDate, endDate
+        );
 
         response.status(200).send({
             _id: (campaign._id),

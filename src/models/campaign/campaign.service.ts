@@ -1,8 +1,8 @@
 import {Model} from "mongoose";
 import {Ad} from "../ad/ad.model";
+import {Creativity} from "../creativity/creativity.model";
 import {User} from "../user/user.model";
 import {Campaign, default as CampaignMongo} from "./campaign.model";
-import {Creativity} from "../creativity/creativity.model";
 
 export class CampaignService {
     private readonly mongoModel: Model<Campaign>;
@@ -11,7 +11,15 @@ export class CampaignService {
         this.mongoModel = mongoModel || CampaignMongo;
     }
 
-    public async create(name: string, description: string, owner: User, ads: Ad[], dailyBudget: number, startDate: Date, endDate: Date) {
+    public async create(
+        name: string,
+        description: string,
+        owner: User,
+        ads: Ad[],
+        dailyBudget: number,
+        startDate: Date,
+        endDate: Date,
+    ) {
         const campaign = new this.mongoModel({
             name: (name),
             owner: (owner),
@@ -37,8 +45,24 @@ export class CampaignService {
             ],
         }];
         return await this.mongoModel
-            .find({owner: user, _id: (id), deleted: false},
-                {_id: 1, name: 1, description: 1, owner: 1, ads: 1, budget: 1, dailyBudget: 1, startDate: 1, endDate: 1, active: 1, created: 1, updated: 1})
+            .find({
+                owner: user,
+                _id: (id),
+                deleted: false,
+            }, {
+                _id: 1,
+                name: 1,
+                description: 1,
+                owner: 1,
+                ads: 1,
+                budget: 1,
+                dailyBudget: 1,
+                startDate: 1,
+                endDate: 1,
+                active: 1,
+                created: 1,
+                updated: 1,
+            })
             .populate(populateQuery)
             .lean();
     }
@@ -53,10 +77,23 @@ export class CampaignService {
             ],
         }];
         return await this.mongoModel
-            .find({owner: user, deleted: false},
-                {_id: 1, name: 1, description: 1, owner: 1, ads: 1,
-                budget: 1, dailyBudget: 1, startDate: 1, endDate: 1,
-                active: 1, created: 1, updated: 1})
+            .find({
+                owner: user,
+                deleted: false,
+            }, {
+                _id: 1,
+                name: 1,
+                description: 1,
+                owner: 1,
+                ads: 1,
+                budget: 1,
+                dailyBudget: 1,
+                startDate: 1,
+                endDate: 1,
+                active: 1,
+                created: 1,
+                updated: 1,
+            })
             .populate(populateQuery)
             .lean();
     }

@@ -84,7 +84,16 @@ export class UserService {
 
     public async getUserProfile(token: string): Promise<User> {
         return await this.mongoModel
-            .findOne({ token: (token), deleted: false }, { _id: 1, token: 1, email: 1, name: 1, phone: 1})
+            .findOne({
+                token: (token),
+                deleted: false,
+            }, {
+                _id: 1,
+                token: 1,
+                email: 1,
+                name: 1,
+                phone: 1,
+            })
             .populate("role", {name: 1, _id: 0})
             .lean();
     }

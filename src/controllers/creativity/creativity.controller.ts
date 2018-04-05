@@ -52,7 +52,9 @@ export let create: ExpressSignature = async (request, response, next) => {
         let duration: number;
         if (filetype === "video") { duration = await fileService.getDuration(fileSource, filetype); }
 
-        const creativity: Creativity = await creativityService.create(params.name, user, fileSource, thumbnail, mimetype, fileformat, filetype, size, duration);
+        const creativity: Creativity = await creativityService.create(
+            params.name, user, fileSource, thumbnail, mimetype, fileformat, filetype, size, duration,
+        );
 
         response.status(200).send({
             _id: creativity._id,
