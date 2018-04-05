@@ -1,9 +1,10 @@
+import {logger} from "../../config/logger";
 import InsertAdTypes from "./adType.insert";
 import InsertPlatforms from "./platform.insert";
 
 export default class InsertAll {
     public async insert(): Promise<void> {
-        console.log("Inserting collections...");
+        logger.info("Inserting collections...");
 
         try {
             const insertPlatforms = new InsertPlatforms();
@@ -12,10 +13,10 @@ export default class InsertAll {
             await insertPlatforms.insert();
             await insertAdTypes.insert();
 
-            console.log("Collections inserted");
+            logger.info("Collections inserted");
         } catch (err) {
-            console.error("Error inserting in database");
-            console.log(err);
+            logger.error("Error inserting in database");
+            logger.info(err);
         }
     }
 }

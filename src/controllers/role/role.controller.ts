@@ -1,3 +1,5 @@
+import {logger} from "../../config/logger";
+
 import {Role} from "../../models/role/role.model";
 import {RoleService} from "../../models/role/role.service";
 import {AuthService} from "../../services/auth.service";
@@ -21,7 +23,7 @@ export let list: ExpressSignature = async (request, response, next) => {
             roles,
         );
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };

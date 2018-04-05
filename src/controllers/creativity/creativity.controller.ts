@@ -1,3 +1,5 @@
+import {logger} from "../../config/logger";
+
 import * as path from "path";
 import {Creativity, Size} from "../../models/creativity/creativity.model";
 import {CreativityService} from "../../models/creativity/creativity.service";
@@ -69,7 +71,7 @@ export let create: ExpressSignature = async (request, response, next) => {
         });
 
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };
@@ -89,7 +91,7 @@ export let remove: ExpressSignature = async (request, response, next) => {
             executed: true,
         });
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };
@@ -114,7 +116,7 @@ export let list: ExpressSignature = async (request, response, next) => {
             creativities,
         );
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };

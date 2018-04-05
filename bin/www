@@ -13,8 +13,6 @@ serverInstance.app.set('port', port);
 const httpServer = http.createServer(serverInstance.app);
 httpServer.listen(port);
 
-console.log(`App is active`);
-
 function onError(error) {
     if (error.syscall !== "listen") {
         throw error;
@@ -44,7 +42,6 @@ function onListening() {
     var bind = typeof addr === "string"
         ? "pipe " + addr
         : "port " + addr.port;
-    console.log("Listening on " + bind);
 }
 
 httpServer.on("error", onError);

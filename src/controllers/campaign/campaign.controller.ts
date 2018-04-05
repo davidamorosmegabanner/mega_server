@@ -1,3 +1,5 @@
+import {logger} from "../../config/logger";
+
 import {AdService} from "../../models/ad/ad.service";
 import {Campaign} from "../../models/campaign/campaign.model";
 import {CampaignService} from "../../models/campaign/campaign.service";
@@ -44,7 +46,7 @@ export let create: ExpressSignature = async (request, response, next) => {
             endDate: (campaign.endDate),
         });
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };
@@ -64,7 +66,7 @@ export let remove: ExpressSignature = async (request, response, next) => {
             executed: true,
         });
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };
@@ -89,7 +91,7 @@ export let list: ExpressSignature = async (request, response, next) => {
             creativities,
         );
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };

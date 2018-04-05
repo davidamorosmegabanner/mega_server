@@ -1,3 +1,5 @@
+import {logger} from "../../config/logger";
+
 import {Ad} from "../../models/ad/ad.model";
 import {AdService} from "../../models/ad/ad.service";
 import {AdType} from "../../models/adType/adType.model";
@@ -45,7 +47,7 @@ export let create: ExpressSignature = async (request, response, next) => {
         });
 
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };
@@ -70,7 +72,7 @@ export let list: ExpressSignature = async (request, response, next) => {
             ads,
         );
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };
@@ -90,7 +92,7 @@ export let remove: ExpressSignature = async (request, response, next) => {
             executed: true,
         });
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };

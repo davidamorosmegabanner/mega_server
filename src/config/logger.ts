@@ -1,11 +1,12 @@
-import {default as winston, Logger, LoggerInstance, LoggerOptions, transports} from "winston";
+import {Logger, LoggerInstance, LoggerOptions, transports} from "winston";
+import "winston-daily-rotate-file";
 
 export const logger: LoggerInstance = new Logger({
     exitOnError: false,
     transports: [
-        new transports.File({
-            level: "info",
-            filename: "./log/all-logs.log",
+        new transports.DailyRotateFile({
+            filename: "log/log-%DATE%.log",
+            datePattern: "YYYY-MM-DD-HH",
             handleExceptions: true,
             json: true,
             maxsize: 5242880, //5MB
@@ -16,7 +17,7 @@ export const logger: LoggerInstance = new Logger({
     ],
 } as LoggerOptions);
 
-export class stream {
+export class Stream {
     public static write(message: string) {
         logger.info(message);
     }

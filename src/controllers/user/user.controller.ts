@@ -1,3 +1,5 @@
+import {logger} from "../../config/logger";
+
 import {Role} from "../../models/role/role.model";
 import {RoleService} from "../../models/role/role.service";
 import {Password} from "../../models/user/password";
@@ -38,7 +40,7 @@ export let login: ExpressSignature = async (request, response, next) => {
             phone: user.phone,
         });
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };
@@ -68,7 +70,7 @@ export let register: ExpressSignature = async (request, response, next) => {
             role: role.name,
         });
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };
@@ -96,7 +98,7 @@ export let edit: ExpressSignature = async (request, response, next) => {
             phone: user.phone,
         });
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };
@@ -119,7 +121,7 @@ export let remove: ExpressSignature = async (request, response, next) => {
             executed: true,
         });
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };
@@ -148,7 +150,7 @@ export let list: ExpressSignature = async (request, response, next) => {
             user,
         });
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };
@@ -165,7 +167,7 @@ export let getInfo: ExpressSignature = async (request, response, next) => {
         const user: User = await userService.getUserProfile(xAccessToken);
         response.status(200).send(user);
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         response.status(400).send(err.toString());
     }
 };
