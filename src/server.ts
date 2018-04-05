@@ -37,6 +37,7 @@ export class Server {
         await this.config();
         await this.routes();
         await this.inserts();
+
         logger.info(`App is active in port ${config.port}`);
 
         this.app.get("/", (request, response: express.Response) => {

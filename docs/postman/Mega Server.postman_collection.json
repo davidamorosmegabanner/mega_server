@@ -1,0 +1,513 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Mega Server",
+		"_postman_id": "158bf59c-70a4-6aa3-d658-c69956443355",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ad",
+			"description": "",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/ad/create",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{superToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Prova Ad\",\n  \"owner\": \"5aac1e276ff15a0bc3860ed8\",\n  \"adType\": \"IG_IMAGE\",\n  \"creativities\": [\"5aaedfe5a82f881f7c680f80\", \"5ab10efade2ed0064ddea326\"]\n}"
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"url": {
+							"raw": "{{protocol}}{{url}}:{{port}}/ad/list?id=5ab2732d1a5aa11a970ff6a1",
+							"host": [
+								"{{protocol}}{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"ad",
+								"list"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5ab2732d1a5aa11a970ff6a1",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByb3ZhQHByb3ZhLmNvbSIsInBhc3MiOiJwYXNzd29yZCIsImlhdCI6MTUyMTIyOTM1MX0.vo4KuVQjVyXAVEwBqIbuq8AKD0mI0fj7yX8GqPnWOZ0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Prova Ad\",\n  \"owner\": \"5aac1e276ff15a0bc3860ed8\",\n  \"adType\": \"IG_IMAGE\",\n  \"creativities\": [\"5aaedfe5a82f881f7c680f80\", \"5ab10efade2ed0064ddea326\"]\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "remove",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/ad/remove",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByb3ZhQHByb3ZhLmNvbSIsInBhc3MiOiJwYXNzd29yZCIsImlhdCI6MTUyMTIyOTM1MX0.vo4KuVQjVyXAVEwBqIbuq8AKD0mI0fj7yX8GqPnWOZ0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"5ab2c96c32391a273f222e37\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "campaign",
+			"description": "",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/campaign/create",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByb3ZhQHByb3ZhLmNvbSIsInBhc3MiOiJwYXNzd29yZCIsImlhdCI6MTUyMTIyOTM1MX0.vo4KuVQjVyXAVEwBqIbuq8AKD0mI0fj7yX8GqPnWOZ0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Prova Campaign\",\n  \"description\": \"Prova de campanya\",\n  \"ads\": [\"5ab2732d1a5aa11a970ff6a1\"],\n  \"dailyBudget\": 100,\n  \"startDate\": \"2018-04-03T18:43:25.826Z\",\n  \"endDate\": \"2018-05-03T18:43:25.826Z\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "remove",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/campaign/remove",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByb3ZhQHByb3ZhLmNvbSIsInBhc3MiOiJwYXNzd29yZCIsImlhdCI6MTUyMTIyOTM1MX0.vo4KuVQjVyXAVEwBqIbuq8AKD0mI0fj7yX8GqPnWOZ0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"5ac3cbdfb7f5542d592698d3\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/campaign/list",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByb3ZhQHByb3ZhLmNvbSIsInBhc3MiOiJwYXNzd29yZCIsImlhdCI6MTUyMTIyOTM1MX0.vo4KuVQjVyXAVEwBqIbuq8AKD0mI0fj7yX8GqPnWOZ0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"5ac3cbdfb7f5542d592698d3\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "creativity",
+			"description": "",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/creativity/create",
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQHRlc3QuY29tIiwicGFzcyI6InBhc3N3b3JkcGFzc3dvcmQiLCJpYXQiOjE1MjEyMjM4MjZ9.u0oShh-HpaP2C7jyCcHwsuBHklSkqqO52L15iHxKzDo",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"description": "",
+									"type": "file",
+									"src": "Captura de pantalla 2018-03-18 a les 3.01.33.png"
+								},
+								{
+									"key": "name",
+									"value": "Creativity name",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"url": {
+							"raw": "{{protocol}}{{url}}:{{port}}/creativity/list?id=5aaedfe3a82f881f7c680f7e",
+							"host": [
+								"{{protocol}}{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"creativity",
+								"list"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5aaedfe3a82f881f7c680f7e",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQHRlc3QuY29tIiwicGFzcyI6InBhc3N3b3JkcGFzc3dvcmQiLCJpYXQiOjE1MjEyMjM4MjZ9.u0oShh-HpaP2C7jyCcHwsuBHklSkqqO52L15iHxKzDo",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"value": "",
+									"type": "file"
+								},
+								{
+									"key": "name",
+									"value": "Creativity name",
+									"type": "text"
+								}
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "remove",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/creativity/remove",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQHRlc3QuY29tIiwicGFzcyI6InBhc3N3b3JkcGFzc3dvcmQiLCJpYXQiOjE1MjEyMjM4MjZ9.u0oShh-HpaP2C7jyCcHwsuBHklSkqqO52L15iHxKzDo"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"5aaebfa2d85e731d4ccfa6ff\"\n}"
+						},
+						"description": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "role",
+			"description": "",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/role/list",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{superToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"role\": \"admin\"\n}"
+						},
+						"description": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"description": "",
+			"item": [
+				{
+					"name": "edit",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/user/edit",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{superToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"XXXXXX\",\n  \"email\": \"provanding@gmail.com\"\n}"
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "getInfo",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/user/getInfo",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{superToken}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"XXXXXX\"\n}"
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/user/list",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{superToken}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"role\": \"admin\"\n}"
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/user/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{superToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"prova@gmail.com\",\n  \"password\": \"password\"\n}"
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/user/register",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{superToken}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"prova@gmail.com\",\n  \"name\": \"User Test XY\",\n  \"password\": \"password\",\n  \"role\": \"admin\",\n  \"phone\": \"666111222\"\n}"
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "remove",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/user/remove",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{superToken}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"XXXXXXX\"\n}"
+						},
+						"description": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "welcome",
+			"request": {
+				"url": "{{protocol}}{{url}}:{{port}}/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"prova@gmail.com\",\n  \"name\": \"User Test\",\n  \"password\": \"password\",\n  \"role\": \"admin\",\n  \"phone\": \"666111222\"\n}"
+				},
+				"description": null
+			},
+			"response": []
+		}
+	]
+}
