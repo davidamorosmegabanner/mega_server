@@ -45,10 +45,16 @@ export class Validator {
             }
 
             // Validate sizes
-            if (creativity.size.height < adType.allowedSize.min.height || creativity.size.width < adType.allowedSize.min.width) {
+            if (
+                creativity.size.height < adType.allowedSize.min.height ||
+                creativity.size.width < adType.allowedSize.min.width
+            ) {
                 throw new Error(this.errorSize("small", adType.allowedSize));
             }
-            if (creativity.size.height > adType.allowedSize.max.height || creativity.size.width > adType.allowedSize.max.width) {
+            if (
+                creativity.size.height > adType.allowedSize.max.height ||
+                creativity.size.width > adType.allowedSize.max.width
+            ) {
                 throw new Error(this.errorSize("big", adType.allowedSize));
             }
 

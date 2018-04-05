@@ -37,4 +37,4 @@ export default {
         key: "TW",
         description: "Twitter social network",
     },
-}
+};

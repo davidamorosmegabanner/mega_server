@@ -1,6 +1,6 @@
+import PlatformsConfiguration from "../../config/seeds/platforms";
 import {Platform} from "../../models/platform/platform.model";
 import {PlatformService} from "../../models/platform/platform.service";
-import PlatformsConfiguration from "../../config/seeds/platforms";
 
 const platformService = new PlatformService();
 
@@ -12,7 +12,6 @@ export default class InsertPlatforms {
         const youtube: Platform = PlatformsConfiguration.Youtube;
         const linkedin: Platform = PlatformsConfiguration.LinkedIn;
         const twitter: Platform = PlatformsConfiguration.Twitter;
-
 
         const platforms: Platform[] = [
             facebook,

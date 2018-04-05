@@ -4,15 +4,18 @@ import * as bodyParser from "body-parser";
 import * as express from "express";
 import * as fileUpload from "express-fileupload";
 import * as mongoose from "mongoose";
+import * as morgan from "morgan";
 
 import config from "./config/config";
 import AdRouter from "./controllers/ad/ad.route";
+import CampaignRouter from "./controllers/campaign/campaign.router";
 import CreativityRouter from "./controllers/creativity/creativity.router";
 import RoleRouter from "./controllers/role/role.router";
 import UserRouter from "./controllers/user/user.router";
 
 import InsertAll from "./services/insert/main.insert";
-import CampaignRouter from "./controllers/campaign/campaign.router";
+
+import {logger, stream} from "./config/logger";
 
 export class Server {
     public static bootstrap(): Server {
@@ -30,6 +33,9 @@ export class Server {
         console.log("***************************************");
         console.log("******** MEGA SERVER INITIATED ********");
         console.log("***************************************");
+
+        logger.debug("Overriding 'Express' logger");
+        this.app.use(morgan("combined", { stream: stream }));
 
         this.files();
         await this.config();

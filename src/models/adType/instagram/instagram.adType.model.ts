@@ -77,5 +77,6 @@ const InstagramAdTypeSchema = new Schema({
     }],
 });
 
-const InstagramAdTypeMongo: Model<InstagramAdType> = AdTypeMongo.discriminator("InstagramAdType", InstagramAdTypeSchema);
+const InstagramAdTypeMongo: Model<InstagramAdType> =
+    AdTypeMongo.discriminator("InstagramAdType", InstagramAdTypeSchema);
 export default InstagramAdTypeMongo;

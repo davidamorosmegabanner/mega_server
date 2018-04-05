@@ -1,11 +1,10 @@
+import {AdService} from "../../models/ad/ad.service";
+import {Campaign} from "../../models/campaign/campaign.model";
+import {CampaignService} from "../../models/campaign/campaign.service";
+import {User} from "../../models/user/user.model";
 import {UserService} from "../../models/user/user.service";
 import {AuthService} from "../../services/auth.service";
 import {ExpressSignature} from "../Route";
-import {AdService} from "../../models/ad/ad.service";
-import {CampaignService} from "../../models/campaign/campaign.service";
-import {start} from "repl";
-import {Campaign} from "../../models/campaign/campaign.model";
-import {User} from "../../models/user/user.model";
 
 const adService = new AdService();
 const authService = new AuthService();
@@ -31,7 +30,7 @@ export let create: ExpressSignature = async (request, response, next) => {
         const description = params.description;
 
         const campaign: Campaign = await campaignService.create(
-            name, description, owner, ads, dailyBudget, startDate, endDate
+            name, description, owner, ads, dailyBudget, startDate, endDate,
         );
 
         response.status(200).send({
