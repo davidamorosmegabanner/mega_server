@@ -20,12 +20,26 @@ export class FacebookMiddleware {
                 redirect_uri: (redirectUri),
                 code: (code),
             });
+
+            // TODO extend expiration date with a task!
+            // // Extend access_token expiration
+            // accessToken = await FB.api("oauth/access_token", {
+            //     client_id: (clientId),
+            //     client_secret: (clientSecret),
+            //     grant_type: "fb_exchange_token",
+            //     fb_exchange_token: (accessToken.access_token),
+            // });
+
             return accessToken;
 
         } catch (err) {
             logger.error(err);
             throw new Error(err);
         }
+    }
+
+    public async getFacebookInfo(accessToken: string): Promise<any> {
+        return await FB.api("me", {fields: "id, name, email", access_token: (accessToken)});
     }
 
     public async makeSimpleRequest(): Promise<string> {
@@ -39,9 +53,6 @@ export class FacebookMiddleware {
             };
 
             const response = await request.get(options);
-
-            console.log(response);
-
             return (response);
 
         } catch (err) {
