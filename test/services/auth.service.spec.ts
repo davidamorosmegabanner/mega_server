@@ -17,7 +17,8 @@ describe("Authentication service test", () => {
         try {
             const authentication = await authService.isAllowed(
                 ["admin"],
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hcmN0b3JyZWxsZXNAZ21haWwuY29tIiwicGFzcyI6InBhc3N3b3JkIiwiaWF0IjoxNTIxMTM0NDg5fQ.E_bhFhfwEFbri3S__WvXCHedSbeM9H8YSSSZ4zmeVLE");
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hcmN0b3JyZWxsZXNAZ21haWwuY29tIiwicGFzcyI6InBhc3N3b3JkIiwiaWF0IjoxNTIxMTM0NDg5fQ.E_bhFhfwEFbri3S__WvXCHedSbeM9H8YSSSZ4zmeVLE"
+            );
 
             expect(authentication).to.be.true;
         } catch (err) {

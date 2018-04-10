@@ -44,6 +44,19 @@ export class UserService {
             .findOneAndUpdate({_id: id}, user);
     }
 
+    public async assignAccessToken(user: User, type: string, access_token: string): Promise<User> {
+        switch (type) {
+            case "fbToken": {
+                return await this.mongoModel
+                    .findOneAndUpdate((user), {fbToken: (access_token)})
+                    .lean();
+            }
+            default: {
+                throw new Error("Unknown type!");
+            }
+        }
+    }
+
     public async findByToken(token: string): Promise<User> {
         return await this.mongoModel
             .findOne({token: (token), deleted: false})
@@ -77,7 +90,7 @@ export class UserService {
         if (role && role !== undefined) {find.role = role; }
 
         return await this.mongoModel
-            .find(find, {id: 1, name: 1, email: 1})
+            .find(find, {_id: 1, name: 1, email: 1})
             .populate("role", {name: 1, _id: 0})
             .lean();
     }

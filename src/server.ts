@@ -13,6 +13,8 @@ import CreativityRouter from "./controllers/creativity/creativity.router";
 import RoleRouter from "./controllers/role/role.router";
 import UserRouter from "./controllers/user/user.router";
 
+import FacebookRouter from "./controllers/facebook/facebook.router";
+
 import InsertAll from "./services/insert/main.insert";
 
 import {logger, Stream} from "./config/logger";
@@ -67,6 +69,8 @@ export class Server {
             ([ CampaignRouter.create() ]).forEach((route) => { route.decorate(this.app); });
             ([ RoleRouter.create() ]).forEach((route) => { route.decorate(this.app); });
             ([ UserRouter.create() ]).forEach((route) => { route.decorate(this.app); });
+
+            ([ FacebookRouter.create() ]).forEach((route) => { route.decorate(this.app); });
             logger.info("All routes were loaded successfully");
         } catch (err) {
             logger.error("Could not load all routes!");

@@ -171,3 +171,40 @@ export let getInfo: ExpressSignature = async (request, response, next) => {
         response.status(400).send(err.toString());
     }
 };
+
+export let token: ExpressSignature = async (request, response, next) => {
+    const params = request.body;
+    const xAccessToken = request.headers["x-access-token"].toString();
+    const allowedRoles = ["admin"];
+
+    if (!xAccessToken || await !authService.isAllowed(allowedRoles, xAccessToken)) {
+        return response.status(401).send("Unauthorized");
+    }
+
+    if (!params.access_token) {
+        return response.status(404).send("Please provide an access_token");
+    }
+
+    let type: string;
+    switch (params.type) {
+        case "facebook": {type = "fbToken"; break; }
+        default: {return response.status(404).send("Unknown type provided"); }
+    }
+
+    try {
+
+        let user: User = await userService.findByToken(xAccessToken);
+        user = await userService.assignAccessToken(user, type, params.access_token);
+
+        response.status(200).send({
+            email: user.email,
+            _id: user._id,
+            name: user.name,
+            phone: user.phone,
+        });
+
+    } catch (err) {
+        logger.error(err);
+        response.status(400).send(err.toString());
+    }
+};

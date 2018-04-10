@@ -486,6 +486,62 @@
 						"description": null
 					},
 					"response": []
+				},
+				{
+					"name": "token",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/user/token",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByb3ZhQHByb3ZhLmNvbSIsInBhc3MiOiJwYXNzd29yZCIsImlhdCI6MTUyMTIzMTU2Nn0.z2BWUkpZntkPgzjwSGVjgL4jL4LovdTFYCV5x60RXfU",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"facebook\",\n  \"access_token\": \"EAACcy0AZBxcgBAKMuP2X7jWTkemlqrHqUPO56aIGBhW2y6h9Tr9xqOAbOpg0kbGNrDhsePw6zJ0i7Nn8tyfL5WwWYJA4Uf7xX0iwBWZAiELWbXnDkrpDE00h1cmsDmPstcG33lNktWDvofd2uZBy96tu0RaHZAYZD\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "facebook",
+			"description": "",
+			"item": [
+				{
+					"name": "authCode",
+					"request": {
+						"url": "{{protocol}}{{url}}:{{port}}/facebook/authCode=XXXXXXXXX",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByb3ZhQHByb3ZhLmNvbSIsInBhc3MiOiJwYXNzd29yZCIsImlhdCI6MTUyMTIzMTU2Nn0.z2BWUkpZntkPgzjwSGVjgL4jL4LovdTFYCV5x60RXfU",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"facebook\",\n  \"access_token\": \"EAACcy0AZBxcgBAKMuP2X7jWTkemlqrHqUPO56aIGBhW2y6h9Tr9xqOAbOpg0kbGNrDhsePw6zJ0i7Nn8tyfL5WwWYJA4Uf7xX0iwBWZAiELWbXnDkrpDE00h1cmsDmPstcG33lNktWDvofd2uZBy96tu0RaHZAYZD\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},

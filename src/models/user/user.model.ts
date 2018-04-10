@@ -3,15 +3,17 @@ import * as mongoose from "mongoose";
 import {Role} from "../role/role.model";
 
 export interface User extends Document {
-  _id: string;
-  token: string;
-  name: string;
-  email: string;
-  password: string;
-  phone: string;
-  role: Role;
-  active: boolean;
-  deleted: boolean;
+    _id: string;
+    token: string;
+    name: string;
+    email: string;
+    password: string;
+    phone: string;
+    role: Role;
+    active: boolean;
+    deleted: boolean;
+    // Social parameters
+    fbToken?: string;
 }
 
 const UserSchema = new Schema({
@@ -47,6 +49,9 @@ const UserSchema = new Schema({
         type: Boolean,
         required: true,
         default: false,
+    },
+    fbToken: {
+        type: String,
     },
 });
 
