@@ -14,7 +14,8 @@ export default {
     facebookAPI: {
         clientId: "172396770149832",
         clientSecret: "b2cd9fae79287d0a4c55ab0a5298a45f",
-        apiVersion: "v2.13",
+        apiVersion: "v2.12",
         redirectUri: `http://localhost:3000/facebook/authCode/`,
+        facebookURL: `https://graph.facebook.com`,
     },
 };

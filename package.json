@@ -24,6 +24,7 @@
     "node": "~8.6"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
     "express-fileupload": "^0.4.0",
@@ -35,8 +36,6 @@
     "lodash": "^4.17.5",
     "mongoose": "^5.0.12",
     "morgan": "^1.9.0",
-    "request": "^2.85.0",
-    "request-promise": "^4.2.2",
     "typescript": "^2.6.2",
     "uuid": "^3.2.1",
     "video-thumb": "0.0.3",
