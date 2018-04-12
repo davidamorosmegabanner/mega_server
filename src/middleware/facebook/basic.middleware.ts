@@ -8,7 +8,6 @@ export class FacebookBasicMiddleware {
 
     private clientId: string = config.facebookAPI.clientId;
     private clientSecret: string = config.facebookAPI.clientSecret;
-    private apiVersion: string = config.facebookAPI.apiVersion;
     private redirectUri: string = config.facebookAPI.redirectUri;
     private facebookURL: string = config.facebookAPI.facebookURL;
 
@@ -48,9 +47,26 @@ export class FacebookBasicMiddleware {
         try {
 
             const url =
-                `${this.facebookURL}//me` +
+                `${this.facebookURL}/me` +
                 `?fields=id,name,email` +
                 `&access_token=${accessToken}`;
+
+            return (await axios(url)).data;
+
+        } catch (err) {
+            logger.error(err);
+            throw new Error(err);
+        }
+    }
+
+    public async getPermissions(userId: string, accessToken: string): Promise<any> {
+        try {
+
+            const url =
+                `${this.facebookURL}/` +
+                `${userId}/` +
+                `permissions/` +
+                `?access_token=${accessToken}`;
 
             return (await axios(url)).data;
 

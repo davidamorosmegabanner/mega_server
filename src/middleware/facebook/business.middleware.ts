@@ -1,15 +1,11 @@
 import axios from "axios";
-import FB, {FacebookApiException} from "fb";
 
 import config from "../../config/config";
 import {logger} from "../../config/logger";
 
 export class FacebookBusinessMiddleware {
 
-    private clientId: string = config.facebookAPI.clientId;
-    private clientSecret: string = config.facebookAPI.clientSecret;
     private apiVersion: string = config.facebookAPI.apiVersion;
-    private redirectUri: string = config.facebookAPI.redirectUri;
     private facebookURL: string = config.facebookAPI.facebookURL;
 
     /*
@@ -37,37 +33,12 @@ export class FacebookBusinessMiddleware {
             const url = `${this.facebookURL}/me/businesses` +
                 `?access_token=${accessToken}`;
 
-            return (await axios(url)).data;
-
+            const response = await axios(url);
+            return response.data.data;
         } catch (err) {
             logger.error(err);
             throw new Error(err);
         }
-    }
-
-    public async createBusiness(
-        name: string, vertical: string, primaryPage: string, accessToken: string,
-    ): Promise<any> {
-
-        const url = `${this.facebookURL}/${this.apiVersion}/me/businesses`;
-        const data = {
-            name: (name),
-            vertical: (vertical),
-            primary_page: (primaryPage),
-            access_token: (accessToken),
-        };
-
-        axios.post(url, data)
-            .then((response: any) => {
-                console.log(response.data);
-                return(response.data);
-            })
-            .catch((error: any) => {
-                console.error(error.response.data);
-                throw new Error(error.response.data);
-            });
-
-
     }
 
     public async updateBusinessInfo(businessId: string, accessToken: string,
@@ -78,22 +49,46 @@ export class FacebookBusinessMiddleware {
         const businessVertical = (vertical);
         const businessPrimaryPage = (primaryPage);
 
-        const url = `${this.facebookURL}/${this.apiVersion}/me/businesses/`;
+        const url = `${this.facebookURL}/${this.apiVersion}/${businessId}/`;
         const form = {
             name: (businessName),
             vertical: (businessVertical),
-            primary_page: (businessPrimaryPage),
+            // primary_page: (businessPrimaryPage),
             access_token: (accessToken),
         };
         await axios.post(url, form)
             .then((response: any) => {
-                console.log(response.data);
+                logger.info(response.data.id);
                 return(response.data);
             })
             .catch((error: any) => {
-                console.error(error.response.data);
+                logger.error(error.response.data);
                 throw new Error(error.response.data);
             });
 
+    }
+
+    // NOT WORKING!!!!!
+    public async createBusiness(
+        userId: string, name: string, vertical: string, primaryPage: string, accessToken: string,
+    ): Promise<any> {
+
+        const url = `${this.facebookURL}/${this.apiVersion}/${userId}/businesses`;
+        const data = {
+            name: (name),
+            vertical: (vertical),
+            primary_page: (primaryPage),
+            access_token: (accessToken),
+        };
+
+        axios.post(url, data)
+            .then((response: any) => {
+                logger.info(response.data);
+                return(response.data);
+            })
+            .catch((error: any) => {
+                logger.error(error.response.data);
+                throw new Error(error.response.data);
+            });
     }
 }

@@ -1,7 +1,6 @@
 import {assert, expect} from "chai";
 import * as mongoose from "mongoose";
 import config from "../../../src/config/config";
-import {logger} from "../../../src/config/logger";
 import {FacebookBasicMiddleware} from "../../../src/middleware/facebook/basic.middleware";
 import {default as UserMongo, User} from "./../../../src/models/user/user.model";
 
@@ -27,7 +26,7 @@ describe("Simple Fuelbanner request test", () => {
     it("Should return Facebook user info", async () => {
         try {
             const mongoUser = UserMongo;
-            const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});
+            const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "email@test.com"});
             if (!user) {assert.ifError( "Error finding user with fbtoken"); }
 
             const userInfo = await facebookBasicMiddleware.getFacebookInfo(user.fbToken);
@@ -35,6 +34,24 @@ describe("Simple Fuelbanner request test", () => {
             console.log(userInfo);
 
             expect(userInfo).to.satisfy((info) => typeof info === "object");
+        } catch (err) {
+            assert.ifError(err, "error making request");
+        }
+    });
+
+    it("Should list user permissions", async () => {
+        try {
+            const mongoUser = UserMongo;
+            const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "email@test.com"});
+            if (!user) {assert.ifError( "Error finding user with fbtoken"); }
+
+            const userInfo = await facebookBasicMiddleware.getFacebookInfo(user.fbToken);
+            const userPermissions = await facebookBasicMiddleware.getPermissions(userInfo.id, user.fbToken);
+
+            console.log(userInfo);
+            console.log(userPermissions);
+
+            expect(userPermissions).to.satisfy((info) => typeof info === "object");
         } catch (err) {
             assert.ifError(err, "error making request");
         }
