@@ -1,8 +1,8 @@
 import {logger} from "../../config/logger";
-import {FacebookMiddleware} from "../../middleware/facebook/facebook.middleware";
+import {FacebookBasicMiddleware} from "../../middleware/facebook/facebookBasicMiddleware";
 import {ExpressSignature} from "../Route";
 
-const facebookMiddleware = new FacebookMiddleware();
+const facebookMiddleware = new FacebookBasicMiddleware();
 
 // This is the callback request user will visit when accepting Facebook connection:
 // http://<API_URL>/facebook/authCode/?code=<CODE_TO_GET>

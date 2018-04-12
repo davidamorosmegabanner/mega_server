@@ -2,10 +2,10 @@ import {assert, expect} from "chai";
 import * as mongoose from "mongoose";
 import config from "../../../src/config/config";
 import {logger} from "../../../src/config/logger";
-import {FacebookMiddleware} from "../../../src/middleware/facebook/facebook.middleware";
+import {FacebookBusinessMiddleware} from "../../../src/middleware/facebook/business.middleware";
 import {default as UserMongo, User} from "./../../../src/models/user/user.model";
 
-const facebookMiddleware = new FacebookMiddleware();
+const facebookBusinessMiddleware = new FacebookBusinessMiddleware();
 
 describe("Simple Fuelbanner request test", () => {
 
@@ -14,39 +14,13 @@ describe("Simple Fuelbanner request test", () => {
         done();
     });
 
-    it("Should make a simple request", async () => {
-        try {
-            const request = await facebookMiddleware.makeSimpleRequest();
-            console.log(request);
-            expect(request).to.satisfy((req) => typeof req === "object");
-        } catch (err) {
-            assert.ifError(err, "error making request");
-        }
-    });
-
-    it("Should return Facebook user info", async () => {
-        try {
-            const mongoUser = UserMongo;
-            const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});
-            if (!user) {assert.ifError( "Error finding user with fbtoken"); }
-
-            const userInfo = await facebookMiddleware.getFacebookInfo(user.fbToken);
-
-            console.log(userInfo);
-
-            expect(userInfo).to.satisfy((info) => typeof info === "object");
-        } catch (err) {
-            assert.ifError(err, "error making request");
-        }
-    });
-
     it("Should return Business info given a business id", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});
             if (!user) {assert.ifError( "Error finding user with fbtoken"); }
 
-            const businessInfo = await facebookMiddleware.getBusinessInfo("235920547146912", user.fbToken);
+            const businessInfo = await facebookBusinessMiddleware.getBusinessInfo("235920547146912", user.fbToken);
 
             console.log("businessInfo");
             console.log(businessInfo);
@@ -63,7 +37,7 @@ describe("Simple Fuelbanner request test", () => {
             const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});
             if (!user) {assert.ifError( "Error finding user with fbtoken"); }
 
-            const businesses = await facebookMiddleware.getBusinesses(user.fbToken);
+            const businesses = await facebookBusinessMiddleware.getBusinesses(user.fbToken);
 
             console.log("businesses");
             console.log(businesses);
@@ -81,11 +55,11 @@ describe("Simple Fuelbanner request test", () => {
             if (!user) {assert.ifError( "Error finding user with fbtoken"); }
             logger.info(user.fbToken);
 
-            const businesses = await facebookMiddleware.updateBusinessInfo(
+            const businesses = await facebookBusinessMiddleware.updateBusinessInfo(
                 "235920547146912", user.fbToken, "Megabanner 2.0", "ADVERTISING", "1844629475818586",
             );
 
-            //const businessInfo = await facebookMiddleware.getBusinessInfo("235920547146912", user.fbToken);
+            //const businessInfo = await facebookBusinessMiddleware.getBusinessInfo("235920547146912", user.fbToken);
 
             logger.info("businessInfo");
             logger.info(businesses);
@@ -104,7 +78,7 @@ describe("Simple Fuelbanner request test", () => {
 
             console.log(user.fbToken);
 
-            const businessCreated = await facebookMiddleware.createBusiness(
+            const businessCreated = await facebookBusinessMiddleware.createBusiness(
                 "Megaprova", "ADVERTISING", "1844629475818586", user.fbToken,
             );
 
