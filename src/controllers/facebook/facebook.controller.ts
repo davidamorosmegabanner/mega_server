@@ -1,5 +1,5 @@
 import {logger} from "../../config/logger";
-import {FacebookBasicMiddleware} from "../../middleware/facebook/facebookBasicMiddleware";
+import {FacebookBasicMiddleware} from "../../middleware/facebook/basic.middleware";
 import {ExpressSignature} from "../Route";
 
 const facebookMiddleware = new FacebookBasicMiddleware();

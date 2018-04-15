@@ -46,13 +46,26 @@ export class UserService {
 
     public async assignAccessToken(user: User, type: string, access_token: string): Promise<User> {
         switch (type) {
-            case "fbToken": {
+            case "facebook": {
                 return await this.mongoModel
-                    .findOneAndUpdate((user), {fbToken: (access_token)})
+                    .findByIdAndUpdate((user._id), {fbToken: (access_token)})
                     .lean();
             }
             default: {
-                throw new Error("Unknown type!");
+                throw new Error("Error assigning access token!");
+            }
+        }
+    }
+
+    public async assignAdAccount(user: User, type: string, adAccountId: string): Promise<User> {
+        switch (type) {
+            case "facebook": {
+                return await this.mongoModel
+                    .findByIdAndUpdate((user._id), {fbAdAccount: (adAccountId)})
+                    .lean();
+            }
+            default: {
+                throw new Error("Error assigning access token!");
             }
         }
     }

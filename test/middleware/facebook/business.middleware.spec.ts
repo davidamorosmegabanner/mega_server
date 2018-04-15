@@ -60,7 +60,7 @@ describe("Simple Fuelbanner request test", () => {
             console.log(business);
 
             const businesses = await facebookBusinessMiddleware.updateBusinessInfo(
-                (business), user.fbToken, "Megabanner 2.0", "ADVERTISING", "1844629475818586",
+                (business), user.fbToken, "Megabannerr", "ADVERTISING", "1844629475818586",
             );
 
             const businessInfo = await facebookBusinessMiddleware.getBusinessInfo((business), user.fbToken);

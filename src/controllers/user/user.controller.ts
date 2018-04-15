@@ -1,5 +1,7 @@
 import {logger} from "../../config/logger";
 
+import {FacebookAdMiddleware} from "../../middleware/facebook/ad.middleware";
+import {FacebookBasicMiddleware} from "../../middleware/facebook/basic.middleware";
 import {Role} from "../../models/role/role.model";
 import {RoleService} from "../../models/role/role.service";
 import {Password} from "../../models/user/password";
@@ -11,6 +13,8 @@ import {ExpressSignature} from "../Route";
 const userService = new UserService();
 const roleService = new RoleService();
 const authService = new AuthService();
+const facebookBasicMiddleware = new FacebookBasicMiddleware();
+const facebookAdMiddleware = new FacebookAdMiddleware();
 
 export let login: ExpressSignature = async (request, response, next) => {
 
@@ -185,16 +189,17 @@ export let token: ExpressSignature = async (request, response, next) => {
         return response.status(404).send("Please provide an access_token");
     }
 
-    let type: string;
-    switch (params.type) {
-        case "facebook": {type = "fbToken"; break; }
-        default: {return response.status(404).send("Unknown type provided"); }
-    }
-
     try {
 
         let user: User = await userService.findByToken(xAccessToken);
-        user = await userService.assignAccessToken(user, type, params.access_token);
+        user = await userService.assignAccessToken(user, params.type, params.access_token);
+        const fbAccount = await facebookBasicMiddleware.getFacebookInfo(params.access_token);
+        const fbAdAccount = await facebookAdMiddleware.getAdAccount(fbAccount.id, params.access_token);
+        user = await userService.assignAdAccount(user, params.type, fbAdAccount.account_id);
+
+        console.log(fbAccount);
+        console.log(fbAdAccount);
+        console.log(user);
 
         response.status(200).send({
             email: user.email,

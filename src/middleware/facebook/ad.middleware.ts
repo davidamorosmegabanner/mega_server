@@ -4,28 +4,28 @@ import {logger} from "../../config/logger";
 
 export class FacebookAdMiddleware {
 
-    private clientId: string = config.facebookAPI.clientId;
-    private clientSecret: string = config.facebookAPI.clientSecret;
-    private redirectUri: string = config.facebookAPI.redirectUri;
-    private apiVersion: string = config.facebookAPI.apiVersion;
-    private facebookURL: string = config.facebookAPI.facebookURL;
+    public clientId: string = config.facebookAPI.clientId;
+    public clientSecret: string = config.facebookAPI.clientSecret;
+    public redirectUri: string = config.facebookAPI.redirectUri;
+    public apiVersion: string = config.facebookAPI.apiVersion;
+    public facebookURL: string = config.facebookAPI.facebookURL;
 
     /*
         Ad account
      */
 
-    public async getAdAccounts(userId: string, accessToken: string): Promise<any> {
+    public async getAdAccount(userId: string, accessToken: string): Promise<any> {
         const url =
             `${this.facebookURL}/${this.apiVersion}/${userId}/adaccounts` +
             `?access_token=${accessToken}`;
 
-        return (await axios(url)).data.data;
+        return (await axios(url)).data.data[0];
     }
 
-    // TODO test
+    // TODO when app is not in development mode
     public async createAdAccount(
         name: string, currency: string, timezoneId: string, endAdvertiser: string,
-        mediaAgency: string, accessToken: string, businessId: string,
+        mediaAgency: string, businessId: string, accessToken: string,
     ): Promise<any> {
         const url = `${this.facebookURL}/${this.apiVersion}/${businessId}/adaccount`;
         const form = {
@@ -52,10 +52,32 @@ export class FacebookAdMiddleware {
         Campaign
      */
 
-    public async createCampaign(name: string, objective: string, accessToken: string, status?: string) {
-        if (!status) {const status = "PAUSED"; }
+    public async createCampaignSimple(
+        name: string, objective: string, adAccountId: string, accessToken: string, status?: string,
+    ): Promise<object> {
+        const p: object = new Promise<string>((resolve, reject) => {
 
-        return null;
+            let outStatus = "PAUSED";
+            if (status && status.length) {outStatus = (status); }
+
+            const url = `${this.facebookURL}/${this.apiVersion}/act_${adAccountId}/campaigns`;
+            const form = {
+                name: (name),
+                objective: (objective),
+                status: (outStatus),
+                access_token: (accessToken),
+            };
+            axios.post(url, form)
+                .then((response: any) => {
+                    logger.info(response.data);
+                    resolve(response.data);
+                })
+                .catch((error: any) => {
+                    logger.error(error.response.data);
+                    reject(error.response.data);
+                });
+
+        });
+        return p;
     }
-
 }

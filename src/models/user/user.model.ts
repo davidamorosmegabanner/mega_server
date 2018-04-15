@@ -14,6 +14,7 @@ export interface User extends Document {
     deleted: boolean;
     // Social parameters
     fbToken?: string;
+    fbAdAccount?: string;
 }
 
 const UserSchema = new Schema({
@@ -51,6 +52,9 @@ const UserSchema = new Schema({
         default: false,
     },
     fbToken: {
+        type: String,
+    },
+    fbAdAccount: {
         type: String,
     },
 });
