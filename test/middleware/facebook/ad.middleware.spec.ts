@@ -1,5 +1,7 @@
 import {assert, expect} from "chai";
 import * as mongoose from "mongoose";
+import * as path from "path";
+
 import config from "../../../src/config/config";
 import {FacebookAdMiddleware} from "../../../src/middleware/facebook/ad.middleware";
 import {FacebookBasicMiddleware} from "../../../src/middleware/facebook/basic.middleware";
@@ -27,7 +29,7 @@ describe("Ad middleware test", () => {
             const adAccounts = await facebookAdMiddleware.getAdAccount(facebookUser.id, user.fbToken);
             console.log(adAccounts);
 
-            expect(adAccounts).to.satisfy((info) => typeof info === "object");
+            expect(adAccounts).to.satisfy((info) => info.id.length);
         } catch (err) {
             assert.ifError(err, "error making request");
         }
@@ -64,13 +66,67 @@ describe("Ad middleware test", () => {
         }
     });
 
+    it("Should upload an image", async () => {
+        try {
+            const mongoUser = UserMongo;
+            const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});
+            if (!user) {assert.ifError( "Error finding user with fbtoken"); }
+
+            const filePath = path.join(process.cwd(), "test", "media", "img.jpg");
+            const image = await facebookAdMiddleware.uploadImage(filePath, user.fbAdAccount, user.fbToken);
+            console.log(image);
+
+            expect(image).to.satisfy(() => typeof image === "object");
+        } catch (err) {
+            assert.ifError(err, "error making request");
+        }
+
+    });
+
+    it("Should create an Ad", async () => {
+        try {
+            const mongoUser = UserMongo;
+            const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});
+            if (!user) {assert.ifError( "Error finding user with fbtoken"); }
+
+            const campaign = (await facebookAdMiddleware.listCampaigns(user.fbAdAccount, user.fbToken));
+
+            const filePath = path.join(process.cwd(), "test", "media", "img.jpg");
+            const image = await facebookAdMiddleware.uploadImage(filePath, user.fbAdAccount, user.fbToken);
+
+            const ad = await facebookAdMiddleware.createAd(
+                "prova ad", campaign.data[0].id, "prova creative", "prova creative body", "http://google.com",
+                image.hash, user.fbAdAccount, user.fbToken,
+            )
+
+            expect(ad).to.satisfy(() => typeof ad === "object");
+        } catch (err) {
+            assert.ifError(err, "error making request");
+        }
+    }).timeout(5000)
+
+    it("Should list user campaigns", async () => {
+        try {
+            const mongoUser = UserMongo;
+            const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});
+            if (!user) {assert.ifError( "Error finding user with fbtoken"); }
+
+            const campaigns = await facebookAdMiddleware.listCampaigns(user.fbAdAccount, user.fbToken);
+            console.log(campaigns);
+
+            expect(campaigns).to.satisfy(() => typeof campaigns === "object");
+        } catch (err) {
+            assert.ifError(err, "error making request");
+        }
+    });
+
     it("Should create a simple campaign", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});
             if (!user) {assert.ifError( "Error finding user with fbtoken"); }
 
-            const newCampaign = await facebookAdMiddleware.createCampaignSimple(
+            const newCampaign = await facebookAdMiddleware.createCampaign(
                 "Megabanner test campaign",
                 "LINK_CLICKS",
                 user.fbAdAccount,
@@ -79,13 +135,11 @@ describe("Ad middleware test", () => {
 
             console.log(newCampaign);
 
-            expect(newCampaign).to.satisfy((campaign) => {
-                return (typeof campaign === "object") && (campaign !== null);
-            });
+            expect(newCampaign).to.satisfy((campaign) => campaign.id.length);
         } catch (err) {
             assert.ifError(err, "error making request");
         }
-    })
+    });
 
     after((done) => {
         mongoose.connection.close();

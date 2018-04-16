@@ -8,6 +8,7 @@ import * as thumbler from "video-thumb";
 import config from "../config/config";
 import {Size} from "../models/creativity/creativity.model";
 import {User} from "../models/user/user.model";
+import axios from "axios";
 
 /**
  *
@@ -102,6 +103,21 @@ export class FileService {
 
     public makeFileName(fileformat: string): string {
         return uuidv4() + "." + fileformat;
+    }
+
+    public async encodeBase64(file: string): Promise<string> {
+        // Source: https://stackoverflow.com/questions/8110294/nodejs-base64-image-encoding-decoding-not-quite-working
+        return new Promise<any> ((resolve, reject) => {
+            fs.readFile(file, (err, originalData) => {
+                if (err) {reject(err); }
+                const base64Image = originalData.toString('base64');
+                resolve(base64Image);
+            });
+        });
+        // // read binary data
+        // const bitmap = fs.readFileSync(file);
+        // // convert binary data to base64 encoded string
+        // return fs.readFileSync(file, { encoding: 'base64' })
     }
 
     private makeVideoThumbnail(fileSource: string, fileDestination: string): Promise<void> {
