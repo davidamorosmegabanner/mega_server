@@ -4,11 +4,15 @@ import * as path from "path";
 
 import config from "../../../src/config/config";
 import {FacebookAdMiddleware} from "../../../src/middleware/facebook/ad.middleware";
+import {FacebookAdCreativeMiddleware} from "../../../src/middleware/facebook/adCreative.middleware";
 import {FacebookBasicMiddleware} from "../../../src/middleware/facebook/basic.middleware";
+import {FacebookCampaignMiddleware} from "../../../src/middleware/facebook/campaign.middleware";
 import {default as UserMongo, User} from "./../../../src/models/user/user.model";
 
 const facebookAdMiddleware = new FacebookAdMiddleware();
 const facebookBasicMiddleware = new FacebookBasicMiddleware();
+const facebookCampaignMiddleware = new FacebookCampaignMiddleware();
+const facebookAdCreativeMiddleware = new FacebookAdCreativeMiddleware();
 
 describe("Ad middleware test", () => {
 
@@ -66,76 +70,23 @@ describe("Ad middleware test", () => {
         }
     });
 
-    it("Should upload an image", async () => {
-        try {
-            const mongoUser = UserMongo;
-            const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});
-            if (!user) {assert.ifError( "Error finding user with fbtoken"); }
-
-            const filePath = path.join(process.cwd(), "test", "media", "img.jpg");
-            const image = await facebookAdMiddleware.uploadImage(filePath, user.fbAdAccount, user.fbToken);
-            console.log(image);
-
-            expect(image).to.satisfy(() => typeof image === "object");
-        } catch (err) {
-            assert.ifError(err, "error making request");
-        }
-
-    });
-
     it("Should create an Ad", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});
             if (!user) {assert.ifError( "Error finding user with fbtoken"); }
 
-            const campaign = (await facebookAdMiddleware.listCampaigns(user.fbAdAccount, user.fbToken));
+            const campaign = (await facebookCampaignMiddleware.listCampaigns(user.fbAdAccount, user.fbToken));
 
             const filePath = path.join(process.cwd(), "test", "media", "img.jpg");
-            const image = await facebookAdMiddleware.uploadImage(filePath, user.fbAdAccount, user.fbToken);
+            const image = await facebookAdCreativeMiddleware.uploadImage(filePath, user.fbAdAccount, user.fbToken);
 
             const ad = await facebookAdMiddleware.createAd(
                 "prova ad", campaign.data[0].id, "prova creative", "prova creative body", "http://google.com",
                 image.hash, user.fbAdAccount, user.fbToken,
-            )
-
-            expect(ad).to.satisfy(() => typeof ad === "object");
-        } catch (err) {
-            assert.ifError(err, "error making request");
-        }
-    }).timeout(5000)
-
-    it("Should list user campaigns", async () => {
-        try {
-            const mongoUser = UserMongo;
-            const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});
-            if (!user) {assert.ifError( "Error finding user with fbtoken"); }
-
-            const campaigns = await facebookAdMiddleware.listCampaigns(user.fbAdAccount, user.fbToken);
-            console.log(campaigns);
-
-            expect(campaigns).to.satisfy(() => typeof campaigns === "object");
-        } catch (err) {
-            assert.ifError(err, "error making request");
-        }
-    });
-
-    it("Should create a simple campaign", async () => {
-        try {
-            const mongoUser = UserMongo;
-            const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});
-            if (!user) {assert.ifError( "Error finding user with fbtoken"); }
-
-            const newCampaign = await facebookAdMiddleware.createCampaign(
-                "Megabanner test campaign",
-                "LINK_CLICKS",
-                user.fbAdAccount,
-                user.fbToken,
             );
 
-            console.log(newCampaign);
-
-            expect(newCampaign).to.satisfy((campaign) => campaign.id.length);
+            expect(ad).to.satisfy(() => typeof ad === "object");
         } catch (err) {
             assert.ifError(err, "error making request");
         }

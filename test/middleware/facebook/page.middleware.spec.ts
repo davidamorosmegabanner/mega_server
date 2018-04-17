@@ -16,7 +16,7 @@ describe("Page middleware test", () => {
     it("Should return pages owned by user", async () => {
         try {
             const mongoUser = UserMongo;
-            const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "email@test.com"});
+            const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});
             if (!user) {assert.ifError( "Error finding user with fbtoken"); }
 
             const pages = await facebookPageMiddleware.getOwnedPages(user.fbToken);
