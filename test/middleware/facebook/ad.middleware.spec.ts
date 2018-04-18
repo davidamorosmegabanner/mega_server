@@ -5,12 +5,12 @@ import * as path from "path";
 import config from "../../../src/config/config";
 import {FacebookAdMiddleware} from "../../../src/middleware/facebook/ad.middleware";
 import {FacebookAdCreativeMiddleware} from "../../../src/middleware/facebook/adCreative.middleware";
-import {FacebookBasicMiddleware} from "../../../src/middleware/facebook/basic.middleware";
+import {FacebookAuthMiddleware} from "../../../src/middleware/facebook/auth.middleware";
 import {FacebookCampaignMiddleware} from "../../../src/middleware/facebook/campaign.middleware";
 import {default as UserMongo, User} from "./../../../src/models/user/user.model";
 
 const facebookAdMiddleware = new FacebookAdMiddleware();
-const facebookBasicMiddleware = new FacebookBasicMiddleware();
+const facebookBasicMiddleware = new FacebookAuthMiddleware();
 const facebookCampaignMiddleware = new FacebookCampaignMiddleware();
 const facebookAdCreativeMiddleware = new FacebookAdCreativeMiddleware();
 

@@ -18,4 +18,9 @@ export default {
         redirectUri: `http://localhost:3000/facebook/authCode/`,
         facebookURL: `https://graph.facebook.com`,
     },
+    twitterAPI: {
+        apiKey: "3FutDyhJTsjHVaWTb6ol2edPR",
+        apiSecret: "MUYlTExojsAtK49iuNT3cIN5oap1905dvLh69J7Bhq3kNtVGBa",
+        redirectUri: `http://localhost:3000/twitter/authCode/`,
+    },
 };

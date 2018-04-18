@@ -4,7 +4,7 @@ import FB, {FacebookApiException} from "fb";
 import config from "../../config/config";
 import {logger} from "../../config/logger";
 
-export class FacebookBasicMiddleware {
+export class FacebookAuthMiddleware {
 
     private clientId: string = config.facebookAPI.clientId;
     private clientSecret: string = config.facebookAPI.clientSecret;

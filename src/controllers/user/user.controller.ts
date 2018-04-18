@@ -1,7 +1,7 @@
 import {logger} from "../../config/logger";
 
 import {FacebookAdMiddleware} from "../../middleware/facebook/ad.middleware";
-import {FacebookBasicMiddleware} from "../../middleware/facebook/basic.middleware";
+import {FacebookAuthMiddleware} from "../../middleware/facebook/auth.middleware";
 import {Role} from "../../models/role/role.model";
 import {RoleService} from "../../models/role/role.service";
 import {Password} from "../../models/user/password";
@@ -13,7 +13,7 @@ import {ExpressSignature} from "../Route";
 const userService = new UserService();
 const roleService = new RoleService();
 const authService = new AuthService();
-const facebookBasicMiddleware = new FacebookBasicMiddleware();
+const facebookBasicMiddleware = new FacebookAuthMiddleware();
 const facebookAdMiddleware = new FacebookAdMiddleware();
 
 export let login: ExpressSignature = async (request, response, next) => {

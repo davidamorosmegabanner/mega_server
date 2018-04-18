@@ -1,12 +1,12 @@
 import {assert, expect} from "chai";
 import * as mongoose from "mongoose";
 import config from "../../../src/config/config";
-import {FacebookBasicMiddleware} from "../../../src/middleware/facebook/basic.middleware";
+import {FacebookAuthMiddleware} from "../../../src/middleware/facebook/auth.middleware";
 import {FacebookBusinessMiddleware} from "../../../src/middleware/facebook/business.middleware";
 import {default as UserMongo, User} from "./../../../src/models/user/user.model";
 
 const facebookBusinessMiddleware = new FacebookBusinessMiddleware();
-const facebookBasicMiddleware = new FacebookBasicMiddleware();
+const facebookBasicMiddleware = new FacebookAuthMiddleware();
 
 describe("Simple Fuelbanner request test", () => {
 

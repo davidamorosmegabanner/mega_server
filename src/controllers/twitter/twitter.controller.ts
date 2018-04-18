@@ -1,17 +1,17 @@
 import {logger} from "../../config/logger";
-import {FacebookAuthMiddleware} from "../../middleware/facebook/auth.middleware";
+import {TwitterAuthMiddleware} from "../../middleware/twitter/auth.middleware";
 import {ExpressSignature} from "../Route";
 
-const facebookMiddleware = new FacebookAuthMiddleware();
+const twitterMiddleware = new TwitterAuthMiddleware();
 
 // This is the callback request user will visit when accepting Facebook connection:
-// http://<API_URL>/facebook/authCode/?code=<CODE_TO_GET>
+// http://<API_URL>/twitter/authCode/?code=<CODE_TO_GET>
 // Public call, we only retrieve accessToken given a code
 export let authCode: ExpressSignature = async (request, response, next) => {
     try {
 
         const code = request.query.code;
-        const accessToken = await facebookMiddleware.getAccessToken(code);
+        const accessToken = await twitterMiddleware.getRequestToken();
 
         response.status(200).send({access_token: accessToken.access_token});
 
