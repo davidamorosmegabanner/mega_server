@@ -14,7 +14,7 @@ describe("Twitter Auth Middleware test", () => {
     //     done();
     // });
 
-    it("Should return oauth_token", async () => {
+    it("Should return requestToken & requestTokenSecret", async () => {
         try {
 
             const test = await twitterAuthMiddleware.getRequestToken();

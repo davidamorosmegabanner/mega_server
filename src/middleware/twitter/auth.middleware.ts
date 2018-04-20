@@ -23,7 +23,7 @@ export class TwitterAuthMiddleware {
             });
             twitter.getRequestToken((error, requestToken, requestTokenSecret) => {
                 if (error) {
-                    resolve(error);
+                    reject(error);
                 } else {
                     resolve({
                         requestToken: (requestToken),
@@ -43,13 +43,13 @@ export class TwitterAuthMiddleware {
                 consumerSecret: this.apiSecret,
                 callback: this.redirectUri,
             });
-            twitter.getAccessToken(requestToken, requestTokenSecret, oauth_verifier, (error, requestToken, requestTokenSecret) => {
+            twitter.getAccessToken(requestToken, requestTokenSecret, oauth_verifier, (error, accessToken, accessTokenSecret) => {
                 if (error) {
-                    resolve(error);
+                    reject(error);
                 } else {
                     resolve({
-                        requestToken: (requestToken),
-                        requestTokenSecret: (requestTokenSecret),
+                        accessToken: (accessToken),
+                        accessTokenSecret: (accessTokenSecret),
                     });
                 }
             });

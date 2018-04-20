@@ -15,13 +15,13 @@ const userService = new UserService();
 
 export let create: ExpressSignature = async (request, response, next) => {
     const params = request.body;
-    const xAccessToken = request.headers["x-access-token"].toString();
     const allowedRoles = ["admin"];
 
-    if (!xAccessToken || await !authService.isAllowed(allowedRoles, xAccessToken)) {
-        return response.status(401).send("Unauthorized");
+    if (!await authService.isAllowed(allowedRoles, request)) {
+        response.status(401).send("Unauthorized");
     }
 
+    const xAccessToken = request.headers["x-access-token"].toString();
     try {
         const name = params.name.toString();
         const owner = await userService.findByToken(xAccessToken);
@@ -53,11 +53,10 @@ export let create: ExpressSignature = async (request, response, next) => {
 
 export let remove: ExpressSignature = async (request, response, next) => {
     const params = request.body;
-    const xAccessToken = request.headers["x-access-token"].toString();
     const allowedRoles = ["admin"];
 
-    if (!xAccessToken || await !authService.isAllowed(allowedRoles, xAccessToken)) {
-        return response.status(401).send("Unauthorized");
+    if (!await authService.isAllowed(allowedRoles, request)) {
+        response.status(401).send("Unauthorized");
     }
 
     try {
@@ -72,13 +71,13 @@ export let remove: ExpressSignature = async (request, response, next) => {
 };
 
 export let list: ExpressSignature = async (request, response, next) => {
-    const xAccessToken = request.headers["x-access-token"].toString();
     const allowedRoles = ["admin"];
 
-    if (!xAccessToken || await !authService.isAllowed(allowedRoles, xAccessToken)) {
-        return response.status(401).send("Unauthorized");
+    if (!await authService.isAllowed(allowedRoles, request)) {
+        response.status(401).send("Unauthorized");
     }
 
+    const xAccessToken = request.headers["x-access-token"].toString();
     try {
         const user: User = await userService.findByToken(xAccessToken);
         let creativities: any;

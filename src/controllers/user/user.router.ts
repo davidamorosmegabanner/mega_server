@@ -1,6 +1,6 @@
 import * as express from "express";
 import {Route} from "../Route";
-import {edit, token, getInfo, list, login, register, remove} from "./user.controller";
+import {edit, getInfo, id, list, login, register, remove} from "./user.controller";
 
 export default class UserRouter implements Route {
     public static create(): Route {
@@ -16,6 +16,6 @@ export default class UserRouter implements Route {
         app.route(this.URL + "/remove").delete(remove);
         app.route(this.URL + "/list").post(list);
         app.route(this.URL + "/getInfo").get(getInfo);
-        app.route(this.URL + "/token").post(token);
+        app.route(this.URL + "/id").get(id);
     }
 }

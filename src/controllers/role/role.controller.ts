@@ -10,11 +10,10 @@ const roleService = new RoleService();
 
 export let list: ExpressSignature = async (request, response, next) => {
 
-    const xAccessToken = request.headers["x-access-token"].toString();
     const allowedRoles = ["admin"];
 
-    if (!xAccessToken || await !authService.isAllowed(allowedRoles, xAccessToken)) {
-        return response.status(401).send("Unauthorized");
+    if (!await authService.isAllowed(allowedRoles, request)) {
+        response.status(401).send("Unauthorized");
     }
 
     try {

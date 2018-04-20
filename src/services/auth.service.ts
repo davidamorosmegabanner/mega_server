@@ -1,11 +1,9 @@
 import {sign, verify} from "jsonwebtoken";
 import {Model} from "mongoose";
 import config from "../config/config";
-import {RoleService} from "../models/role/role.service";
 import {UserService} from "../models/user/user.service";
 
 const userService = new UserService();
-const roleService = new RoleService();
 
 /**
  *
@@ -17,18 +15,24 @@ const roleService = new RoleService();
 
 export class AuthService {
 
-    public async isAllowed(roles: string[], token: string): Promise<boolean> {
+    public async isAllowed(roles: string[], request): Promise<boolean> {
 
-        if (config.superToken && config.superToken.isActive && config.superToken.value === token) {
-            return true;
+        if (request.headers["x-access-token"] === undefined) {
+            return false;
         }
 
-        const user = await userService.findByToken(token);
+        if (config.superToken && config.superToken.isActive) {
+            if (config.superToken.value === request.headers["x-access-token"]) {
+                return true;
+            }
+        }
+
+        const user = await userService.findByToken(request.headers["x-access-token"]);
         if (user) {
             return (roles.indexOf(user.role.name) !== -1);
+
         } else {
             return false;
         }
     }
-
 }

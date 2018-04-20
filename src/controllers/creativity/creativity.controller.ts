@@ -18,25 +18,25 @@ export let create: ExpressSignature = async (request, response, next) => {
     // TODO upload files to another static server
 
     const params = request.body;
-    const xAccessToken = request.headers["x-access-token"].toString();
     const allowedRoles = ["admin"];
 
-    if (!xAccessToken || await !authService.isAllowed(allowedRoles, xAccessToken)) {
-        return response.status(401).send("Unauthorized");
+    if (!await authService.isAllowed(allowedRoles, request)) {
+        response.status(401).send("Unauthorized");
     }
 
     if (!request.files) {
-        return response.status(404).send("No files were uploaded!");
+        response.status(404).send("No files were uploaded!");
     }
 
     if (!request.files.file) {
-        return response.status(404).send("Please upload a file with param 'file'");
+        response.status(404).send("Please upload a file with param 'file'");
     }
 
     if (!request.body.name) {
-        return response.status(404).send("Please give a name as param 'name' in body");
+        response.status(404).send("Please give a name as param 'name' in body");
     }
 
+    const xAccessToken = request.headers["x-access-token"].toString();
     try {
         const file: any = request.files.file;
 
@@ -78,11 +78,10 @@ export let create: ExpressSignature = async (request, response, next) => {
 
 export let remove: ExpressSignature = async (request, response, next) => {
     const params = request.body;
-    const xAccessToken = request.headers["x-access-token"].toString();
     const allowedRoles = ["admin"];
 
-    if (!xAccessToken || await !authService.isAllowed(allowedRoles, xAccessToken)) {
-        return response.status(401).send("Unauthorized");
+    if (!await authService.isAllowed(allowedRoles, request)) {
+        response.status(401).send("Unauthorized");
     }
 
     try {
@@ -97,13 +96,13 @@ export let remove: ExpressSignature = async (request, response, next) => {
 };
 
 export let list: ExpressSignature = async (request, response, next) => {
-    const xAccessToken = request.headers["x-access-token"].toString();
     const allowedRoles = ["admin"];
 
-    if (!xAccessToken || await !authService.isAllowed(allowedRoles, xAccessToken)) {
-        return response.status(401).send("Unauthorized");
+    if (!await authService.isAllowed(allowedRoles, request)) {
+        response.status(401).send("Unauthorized");
     }
 
+    const xAccessToken = request.headers["x-access-token"].toString();
     try {
         const user: User = await userService.findByToken(xAccessToken);
         let creativities: any;

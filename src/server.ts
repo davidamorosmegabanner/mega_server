@@ -1,8 +1,10 @@
 "use strict";
 
 import * as bodyParser from "body-parser";
+import * as connectMongo from "connect-mongo";
 import * as express from "express";
 import * as fileUpload from "express-fileupload";
+import * as session from "express-session";
 import * as mongoose from "mongoose";
 import * as morgan from "morgan";
 
@@ -55,6 +57,19 @@ export class Server {
             logger.info("Connected to MongoDB");
             this.app.use(bodyParser.urlencoded({extended: true}));
             this.app.use(bodyParser.json({limit: "50mb"}));
+
+            const MongoStore = connectMongo(session);
+            const sessionStore = new MongoStore({mongooseConnection: mongoose.connection});
+            this.app.use(session({
+                secret: config.seed,
+                store: sessionStore,
+                resave: false,
+                saveUninitialized: true,
+                cookie: {
+                    secure: false,
+                    maxAge: 3600000, // 3600 sec, 1 hour
+                },
+            }));
         } catch (err) {
             logger.error("Could not connect to MongoDB!");
             logger.info(err);

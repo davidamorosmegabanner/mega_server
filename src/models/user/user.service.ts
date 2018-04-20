@@ -44,32 +44,6 @@ export class UserService {
             .findOneAndUpdate({_id: id}, user);
     }
 
-    public async assignAccessToken(user: User, type: string, access_token: string): Promise<User> {
-        switch (type) {
-            case "facebook": {
-                return await this.mongoModel
-                    .findByIdAndUpdate((user._id), {fbToken: (access_token)})
-                    .lean();
-            }
-            default: {
-                throw new Error("Error assigning access token!");
-            }
-        }
-    }
-
-    public async assignAdAccount(user: User, type: string, adAccountId: string): Promise<User> {
-        switch (type) {
-            case "facebook": {
-                return await this.mongoModel
-                    .findByIdAndUpdate((user._id), {fbAdAccount: (adAccountId)})
-                    .lean();
-            }
-            default: {
-                throw new Error("Error assigning access token!");
-            }
-        }
-    }
-
     public async findByToken(token: string): Promise<User> {
         return await this.mongoModel
             .findOne({token: (token), deleted: false})
@@ -79,7 +53,7 @@ export class UserService {
 
     public async findById(id: string): Promise<User> {
         return await this.mongoModel
-            .findOne({id: (id), deleted: false})
+            .findOne({_id: (id), deleted: false})
             .lean();
     }
 
@@ -123,4 +97,21 @@ export class UserService {
             .populate("role", {name: 1, _id: 0})
             .lean();
     }
+
+    // Facebook + Instagram
+
+    public async assignAccessToken(user: User, accessToken: string): Promise<User> {
+        return await this.mongoModel
+            .findByIdAndUpdate((user._id), {fbToken: (accessToken)})
+            .lean();
+    }
+
+    public async assignAdAccount(user: User, adAccountId: string): Promise<User> {
+        return await this.mongoModel
+            .findByIdAndUpdate((user._id), {fbAdAccount: (adAccountId)})
+            .lean();
+    }
+
+    // Twitter
+    public async
 }

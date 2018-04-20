@@ -1,6 +1,8 @@
 export default {
     db: "mongodb://localhost:27017/mega",
     port: 3000,
+    seed: "VulVgkTh2pynRD4rEkxM",
+    redirectURL: "http://megabanner.net",
     superToken: {
         isActive: true,
         value: "8dab98ca9e27007f83e088a5bea17e7d",
