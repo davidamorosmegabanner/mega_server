@@ -31,17 +31,17 @@ export let authCode: ExpressSignature = async (request, response, next) => {
 
         // Check to assure we have user localized
         if (!user || !user._id) {
-            response.status(400).send("Unable to find userId in session!");
+            throw new Error("Unable to find userId in session!");
         }
 
-        user = await userService.assignAccessToken(user, accessToken);
+        user = await userService.assignFacebookAccessToken(user, accessToken);
         const fbAccount = await facebookAuthMiddleware.getFacebookInfo(accessToken);
         const fbAdAccount = await facebookAdMiddleware.getAdAccount(fbAccount.id, accessToken);
-        user = await userService.assignAdAccount(user, fbAdAccount.account_id);
+        user = await userService.assignFacebookAdAccount(user, fbAdAccount.account_id);
 
         // More checking to verify everything has worked
         if (!user || !user._id) {
-            response.status(400).send("Unable to find userId in session!");
+            throw new Error("Unable to find userId in session!");
         }
 
         response.redirect(config.redirectURL);
@@ -68,10 +68,10 @@ export let authCode: ExpressSignature = async (request, response, next) => {
 //     try {
 //
 //         let user: User = await userService.findByToken(xAccessToken);
-//         user = await userService.assignAccessToken(user, params.access_token);
+//         user = await userService.assignFacebookAccessToken(user, params.access_token);
 //         const fbAccount = await facebookAuthMiddleware.getFacebookInfo(params.access_token);
 //         const fbAdAccount = await facebookAdMiddleware.getAdAccount(fbAccount.id, params.access_token);
-//         user = await userService.assignAdAccount(user, fbAdAccount.account_id);
+//         user = await userService.assignFacebookAdAccount(user, fbAdAccount.account_id);
 //
 //         console.log(fbAccount);
 //         console.log(fbAdAccount);

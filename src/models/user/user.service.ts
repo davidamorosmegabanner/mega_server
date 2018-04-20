@@ -100,18 +100,27 @@ export class UserService {
 
     // Facebook + Instagram
 
-    public async assignAccessToken(user: User, accessToken: string): Promise<User> {
+    public async assignFacebookAccessToken(user: User, accessToken: string): Promise<User> {
         return await this.mongoModel
             .findByIdAndUpdate((user._id), {fbToken: (accessToken)})
             .lean();
     }
 
-    public async assignAdAccount(user: User, adAccountId: string): Promise<User> {
+    public async assignFacebookAdAccount(user: User, adAccountId: string): Promise<User> {
         return await this.mongoModel
             .findByIdAndUpdate((user._id), {fbAdAccount: (adAccountId)})
             .lean();
     }
 
     // Twitter
-    public async
+    public async assignTwitterAccessToken(user: User, accessToken: string): Promise<User> {
+        return await this.mongoModel
+            .findByIdAndUpdate((user._id), {twToken: (accessToken)})
+            .lean();
+    }
+    public async assignTwitterAccessTokenSecret(user: User, accessTokenSecret: string): Promise<User> {
+        return await this.mongoModel
+            .findByIdAndUpdate((user._id), {twTokenSecret: (accessTokenSecret)})
+            .lean();
+    }
 }

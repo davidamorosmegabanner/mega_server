@@ -43,16 +43,19 @@ export class TwitterAuthMiddleware {
                 consumerSecret: this.apiSecret,
                 callback: this.redirectUri,
             });
-            twitter.getAccessToken(requestToken, requestTokenSecret, oauth_verifier, (error, accessToken, accessTokenSecret) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve({
-                        accessToken: (accessToken),
-                        accessTokenSecret: (accessTokenSecret),
-                    });
-                }
-            });
+            twitter.getAccessToken(
+                requestToken, requestTokenSecret, oauth_verifier,
+                (error, accessToken, accessTokenSecret) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve({
+                            accessToken: (accessToken),
+                            accessTokenSecret: (accessTokenSecret),
+                        });
+                    }
+                },
+            );
         });
         return p;
     }

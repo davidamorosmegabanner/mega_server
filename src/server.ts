@@ -20,6 +20,7 @@ import FacebookRouter from "./controllers/facebook/facebook.router";
 import InsertAll from "./services/insert/main.insert";
 
 import {logger, Stream} from "./config/logger";
+import TwitterRouter from "./controllers/twitter/twitter.router";
 
 export class Server {
     public static bootstrap(): Server {
@@ -38,6 +39,7 @@ export class Server {
 
         this.logger();
         this.files();
+        await this.session();
         await this.config();
         await this.routes();
         await this.inserts();
@@ -57,19 +59,6 @@ export class Server {
             logger.info("Connected to MongoDB");
             this.app.use(bodyParser.urlencoded({extended: true}));
             this.app.use(bodyParser.json({limit: "50mb"}));
-
-            const MongoStore = connectMongo(session);
-            const sessionStore = new MongoStore({mongooseConnection: mongoose.connection});
-            this.app.use(session({
-                secret: config.seed,
-                store: sessionStore,
-                resave: false,
-                saveUninitialized: true,
-                cookie: {
-                    secure: false,
-                    maxAge: 3600000, // 3600 sec, 1 hour
-                },
-            }));
         } catch (err) {
             logger.error("Could not connect to MongoDB!");
             logger.info(err);
@@ -86,10 +75,30 @@ export class Server {
             ([ UserRouter.create() ]).forEach((route) => { route.decorate(this.app); });
 
             ([ FacebookRouter.create() ]).forEach((route) => { route.decorate(this.app); });
+            ([ TwitterRouter.create() ]).forEach((route) => { route.decorate(this.app); });
             logger.info("All routes were loaded successfully");
         } catch (err) {
             logger.error("Could not load all routes!");
             logger.info(err);
+        }
+    }
+
+    private async session() {
+        try {
+            const MongoStore = connectMongo(session);
+            const sessionStore = new MongoStore({mongooseConnection: mongoose.connection});
+            this.app.use(session({
+                secret: config.session.seed,
+                store: sessionStore,
+                resave: config.session.resave,
+                saveUninitialized: config.session.saveUninitialized,
+                cookie: config.session.cookie,
+            }));
+            logger.info("Session started successfully");
+        } catch (err) {
+            logger.error("Could not load session config!");
+            logger.info(err);
+            throw new Error(err);
         }
     }
 

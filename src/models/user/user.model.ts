@@ -15,6 +15,8 @@ export interface User extends Document {
     // Social parameters
     fbToken?: string;
     fbAdAccount?: string;
+    twToken?: string;
+    twTokenSecret?: string;
 }
 
 const UserSchema = new Schema({
@@ -51,10 +53,18 @@ const UserSchema = new Schema({
         required: true,
         default: false,
     },
+    // Facebook
     fbToken: {
         type: String,
     },
     fbAdAccount: {
+        type: String,
+    },
+    // Twitter
+    twToken: {
+        type: String,
+    },
+    twTokenSecret: {
         type: String,
     },
 });

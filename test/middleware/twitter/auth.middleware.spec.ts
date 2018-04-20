@@ -26,11 +26,11 @@ describe("Twitter Auth Middleware test", () => {
         }
     });
 
-    it("Should return get User Credentials", async () => {
+    it("Should return User Credentials", async () => {
         try {
 
             const userAccessToken = await twitterAuthMiddleware.getAccessToken(
-                "1qR65QAAAAAA5Y5bAAABYtkcAhA", "gaFx4l0HyeMtpFgSdInJ2eOLL4n2jeHj", "DoD2y1QiX1lYxIr9qPqBUQkmo66g2QgO",
+                "Jmj8hQAAAAAA5Y5bAAABYuOxL6I", "79kw38CJ4TA5KFjH7fNfLPhlKPzF6rzl", "DoD2y1QiX1lYxIr9qPqBUQkmo66g2QgO",
             );
 
             console.log(userAccessToken);
