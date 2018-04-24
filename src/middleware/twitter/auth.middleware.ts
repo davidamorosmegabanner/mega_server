@@ -1,5 +1,5 @@
 import * as twitterAPI from "node-twitter-api";
-import {OAuth2} from "oauth";
+import * as oauth from "oauth";
 import config from "../../config/config";
 
 export class TwitterAuthMiddleware {
@@ -60,4 +60,26 @@ export class TwitterAuthMiddleware {
         return p;
     }
 
+    public async getAccount(accessToken, accessTokenSecret): Promise<any> {
+        const consumer = new oauth.OAuth(
+            "https://twitter.com/oauth/request_token", "https://twitter.com/oauth/access_token",
+            this.apiKey, this.apiSecret, "1.0A", this.redirectUri, "HMAC-SHA1");
+
+        const p: Object = new Promise<any>((resolve, reject) => {
+            consumer.get(
+                "https://api.twitter.com/1.1/account/verify_credentials.json",
+                accessToken,
+                accessTokenSecret,
+                (error, data, response) => {
+                    if (error) {
+                        reject(error);
+                        // res.send("Error getting twitter screen name : " + util.inspect(error), 500);
+                    } else {
+                        resolve(JSON.parse(data));
+                    }
+                },
+            );
+        });
+        return p;
+    }
 }

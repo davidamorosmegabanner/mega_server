@@ -17,6 +17,7 @@ export interface User extends Document {
     fbAdAccount?: string;
     twToken?: string;
     twTokenSecret?: string;
+    twAdAccount?: string;
 }
 
 const UserSchema = new Schema({
@@ -65,6 +66,9 @@ const UserSchema = new Schema({
         type: String,
     },
     twTokenSecret: {
+        type: String,
+    },
+    twAdAccount: {
         type: String,
     },
 });

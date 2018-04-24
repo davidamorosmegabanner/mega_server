@@ -1,6 +1,5 @@
 import {assert, expect} from "chai";
 import * as mongoose from "mongoose";
-import * as path from "path";
 
 import config from "../../../src/config/config";
 import {TwitterAuthMiddleware} from "../../../src/middleware/twitter/auth.middleware";
@@ -9,10 +8,10 @@ const twitterAuthMiddleware = new TwitterAuthMiddleware();
 
 describe("Twitter Auth Middleware test", () => {
 
-    // before((done) => {
-    //     mongoose.connect(config.db);
-    //     done();
-    // });
+    before((done) => {
+        mongoose.connect(config.db);
+        done();
+    });
 
     it("Should return requestToken & requestTokenSecret", async () => {
         try {
@@ -41,8 +40,8 @@ describe("Twitter Auth Middleware test", () => {
         }
     });
 
-    // after((done) => {
-    //     mongoose.connection.close();
-    //     done();
-    // });
+    after((done) => {
+        mongoose.connection.close();
+        done();
+    });
 });

@@ -123,4 +123,9 @@ export class UserService {
             .findByIdAndUpdate((user._id), {twTokenSecret: (accessTokenSecret)})
             .lean();
     }
+    public async assignTwitterAdAccount(user: User, adAccountId: string): Promise<User> {
+        return await this.mongoModel
+            .findByIdAndUpdate((user._id), {twAdAccount: (adAccountId)})
+            .lean();
+    }
 }
