@@ -29,8 +29,8 @@ export default {
         facebookURL: `https://graph.facebook.com`,
     },
     twitterAPI: {
-        apiKey: "3FutDyhJTsjHVaWTb6ol2edPR",
-        apiSecret: "MUYlTExojsAtK49iuNT3cIN5oap1905dvLh69J7Bhq3kNtVGBa",
+        apiKey: "r7L0QOwT6fbLbIiyy4hqcPOy5",
+        apiSecret: "zDy5Xm1qLYTbiuK231TksHzhdbIoPWRagTVHVcXi5fvoP8c3EL",
         redirectUri: `http://localhost:3000/twitter/authTokens`,
         twitterURL: "https://twitter.com/oauth/authenticate?oauth_token=",
     },

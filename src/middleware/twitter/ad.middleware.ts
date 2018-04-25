@@ -34,7 +34,7 @@ export class TwitterAdMiddleware {
         return p;
     }
 
-    // TODO test after image & video upload
+    // TODO implement with twit & test after image & video upload
     public async createWebsiteCard(
         accessToken, accessTokenSecret,
         accoundId,
@@ -52,9 +52,9 @@ export class TwitterAdMiddleware {
                 `https://ads-api.twitter.com/3/accounts/` +
                 `${accoundId}/cards/website` +
                 `?name=${name}` +
-                `?website_title=${websiteTitle}` +
-                `?website_url=${websiteUrl}` +
-                `?image_media_id=${imageMediaId}`,
+                `&website_title=${websiteTitle}` +
+                `&website_url=${websiteUrl}` +
+                `&image_media_id=${imageMediaId}`,
                 accessToken,
                 accessTokenSecret,
                 (error, data, response) => {

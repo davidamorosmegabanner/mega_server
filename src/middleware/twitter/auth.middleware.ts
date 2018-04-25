@@ -2,6 +2,10 @@ import * as twitterAPI from "node-twitter-api";
 import * as oauth from "oauth";
 import config from "../../config/config";
 
+// IMPORTANT!
+// node-twiter-api only used with triple factor auth
+// For other uses twitter library is used
+
 export class TwitterAuthMiddleware {
 
     private apiKey: string = config.twitterAPI.apiKey;
@@ -22,14 +26,11 @@ export class TwitterAuthMiddleware {
                 callback: this.redirectUri,
             });
             twitter.getRequestToken((error, requestToken, requestTokenSecret) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve({
-                        requestToken: (requestToken),
-                        requestTokenSecret: (requestTokenSecret),
-                    });
-                }
+                if (error) { reject(error); }
+                resolve({
+                    requestToken: (requestToken),
+                    requestTokenSecret: (requestTokenSecret),
+                });
             });
         });
         return p;
@@ -46,14 +47,11 @@ export class TwitterAuthMiddleware {
             twitter.getAccessToken(
                 requestToken, requestTokenSecret, oauth_verifier,
                 (error, accessToken, accessTokenSecret) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve({
-                            accessToken: (accessToken),
-                            accessTokenSecret: (accessTokenSecret),
-                        });
-                    }
+                    if (error) { reject(error); }
+                    resolve({
+                        accessToken: (accessToken),
+                        accessTokenSecret: (accessTokenSecret),
+                    });
                 },
             );
         });
@@ -61,22 +59,18 @@ export class TwitterAuthMiddleware {
     }
 
     public async getAccount(accessToken, accessTokenSecret): Promise<any> {
-        const consumer = new oauth.OAuth(
+        const t = new oauth.OAuth(
             "https://twitter.com/oauth/request_token", "https://twitter.com/oauth/access_token",
             this.apiKey, this.apiSecret, "1.0A", this.redirectUri, "HMAC-SHA1");
 
         const p: Object = new Promise<any>((resolve, reject) => {
-            consumer.get(
+            t.get(
                 "https://api.twitter.com/1.1/account/verify_credentials.json",
                 accessToken,
                 accessTokenSecret,
                 (error, data, response) => {
-                    if (error) {
-                        reject(error);
-                        // res.send("Error getting twitter screen name : " + util.inspect(error), 500);
-                    } else {
-                        resolve(JSON.parse(data));
-                    }
+                    if (error) { reject(error); }
+                    resolve(JSON.parse(data));
                 },
             );
         });
