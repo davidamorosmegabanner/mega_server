@@ -32,6 +32,6 @@ export default {
         apiKey: "r7L0QOwT6fbLbIiyy4hqcPOy5",
         apiSecret: "zDy5Xm1qLYTbiuK231TksHzhdbIoPWRagTVHVcXi5fvoP8c3EL",
         redirectUri: `http://localhost:3000/twitter/authTokens`,
-        twitterURL: "https://twitter.com/oauth/authenticate?oauth_token=",
+        redirectURL: "https://twitter.com/oauth/authenticate?oauth_token=",
     },
 };

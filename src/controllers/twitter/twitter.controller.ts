@@ -26,7 +26,7 @@ export let oauthToken: ExpressSignature = async (request, response, next) => {
         request.session.requestToken = requestTokens.requestToken;
         request.session.requestTokenSecret = requestTokens.requestTokenSecret;
 
-        response.redirect(`${config.twitterAPI.twitterURL}${requestTokens.requestToken}`);
+        response.redirect(`${config.twitterAPI.redirectURL}${requestTokens.requestToken}`);
 
     } catch (err) {
         logger.error(err);
