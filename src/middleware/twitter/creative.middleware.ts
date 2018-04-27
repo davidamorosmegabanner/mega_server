@@ -1,12 +1,16 @@
 import {OAuth} from "oauth";
 import * as twit from "twit";
 import config from "../../config/config";
+import {RequestTwitterService} from "../../services/request.twitter.service";
+
+const requestTwitterService = new RequestTwitterService();
 
 export class TwitterCreativeMiddleware {
 
     private apiKey: string = config.twitterAPI.apiKey;
     private apiSecret: string = config.twitterAPI.apiSecret;
-    private redirectUri: string = config.twitterAPI.redirectUri;
+
+    private env = (process.env.NODE_ENV || "development");
 
     /*
         Media middleware
@@ -35,28 +39,16 @@ export class TwitterCreativeMiddleware {
         else if (fileMimetype.indexOf("image") !== -1) { mediaCategory = "TWEET_IMAGE"; }
         else { mediaCategory = "TWEET_VIDEO"; }
 
-        const t: OAuth = new OAuth(
-            "https://twitter.com/oauth/request_token", "https://twitter.com/oauth/access_token",
-            this.apiKey, this.apiSecret, "1.0A", this.redirectUri, "HMAC-SHA1");
+        const url = `https://ads-api.twitter.com/3/accounts/${accountId}/media_library`;
+        const params = {
+            account_id: accountId,
+            media_id: mediaId,
+            media_category: mediaCategory,
+        };
 
-        const p = new Promise<String>((resolve, reject) => {
-            t.post(
-                `https://ads-api.twitter.com/3/accounts/${accountId}/media_library`,
-                accessToken,
-                accessTokenSecret,
-                {
-                    account_id: accountId,
-                    media_id: mediaId,
-                    media_category: mediaCategory,
-                },
-                (error, data, response) => {
-                    if (error) { reject(error); }
-                    const mediaKey = JSON.parse(data).data.media_key;
-                    resolve(mediaKey);
-                },
-            );
-        });
-        return p;
+        const data = await requestTwitterService.post(accessToken, accessTokenSecret, url, params);
+
+        return data.data.media_key;
     }
 
     /*
@@ -71,27 +63,17 @@ export class TwitterCreativeMiddleware {
         websiteUrl,
         imageMediaKey,
     ): Promise<any> {
-        const t: OAuth = new OAuth(
-            "https://twitter.com/oauth/request_token", "https://twitter.com/oauth/access_token",
-            this.apiKey, this.apiSecret, "1.0A", this.redirectUri, "HMAC-SHA1");
-        const p: Object = new Promise<any>((resolve, reject) => {
-            t.post(
-                `https://ads-api.twitter.com/3/accounts/${accountId}/cards/website`,
-                accessToken,
-                accessTokenSecret,
-                {
-                    name: (name),
-                    website_title: (websiteTitle),
-                    website_url: (websiteUrl),
-                    image_media_key: (imageMediaKey),
-                },
-                (error, data, response) => {
-                    if (error) { reject(error); }
-                    resolve(JSON.parse(data));
-                },
-            );
-        });
-        return p;
+        const url = `https://ads-api.twitter.com/3/accounts/${accountId}/cards/website`;
+        const params = {
+            name: (name),
+            website_title: (websiteTitle),
+            website_url: (websiteUrl),
+            image_media_key: (imageMediaKey),
+        };
+
+        const data = await requestTwitterService.post(accessToken, accessTokenSecret, url, params);
+
+        return data;
     }
 
     public async createWebsiteVideoCard(
@@ -102,27 +84,17 @@ export class TwitterCreativeMiddleware {
         websiteUrl,
         imageMediaKey,
     ): Promise<any> {
-        const t: OAuth = new OAuth(
-            "https://twitter.com/oauth/request_token", "https://twitter.com/oauth/access_token",
-            this.apiKey, this.apiSecret, "1.0A", this.redirectUri, "HMAC-SHA1");
-        const p: Object = new Promise<any>((resolve, reject) => {
-            t.post(
-                `https://ads-api.twitter.com/3/accounts/${accountId}/cards/video_website`,
-                accessToken,
-                accessTokenSecret,
-                {
-                    name: (name),
-                    title: (websiteTitle),
-                    website_url: (websiteUrl),
-                    video_id: (imageMediaKey),
-                },
-                (error, data, response) => {
-                    if (error) { reject(error); }
-                    resolve(JSON.parse(data));
-                },
-            );
-        });
-        return p;
+        const url = `https://ads-api.twitter.com/3/accounts/${accountId}/cards/video_website`;
+        const params = {
+            name: (name),
+            title: (websiteTitle),
+            website_url: (websiteUrl),
+            video_id: (imageMediaKey),
+        };
+
+        const data = await requestTwitterService.post(accessToken, accessTokenSecret, url, params);
+
+        return data;
     }
 
     // TODO create app cards

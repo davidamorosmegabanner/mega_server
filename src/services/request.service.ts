@@ -1,8 +1,9 @@
 import axios from "axios";
-import {logger} from "../config/logger";
+import {OAuth} from "oauth";
 
 export class RequestService {
 
+    // General GET request
     public async get(url): Promise<any> {
         const p: object = new Promise<any>((resolve, reject) => {
 
@@ -18,6 +19,7 @@ export class RequestService {
         return p;
     }
 
+    // General POST request
     public async post(url, form): Promise<any> {
         const p: object = new Promise<any>((resolve, reject) => {
 

@@ -1,6 +1,9 @@
 import * as twitterAPI from "node-twitter-api";
 import * as oauth from "oauth";
 import config from "../../config/config";
+import {RequestTwitterService} from "../../services/request.twitter.service";
+
+const twitterRequestService = new RequestTwitterService();
 
 // IMPORTANT!
 // node-twiter-api only used with triple factor auth
@@ -59,21 +62,7 @@ export class TwitterAuthMiddleware {
     }
 
     public async getAccount(accessToken, accessTokenSecret): Promise<any> {
-        const t = new oauth.OAuth(
-            "https://twitter.com/oauth/request_token", "https://twitter.com/oauth/access_token",
-            this.apiKey, this.apiSecret, "1.0A", this.redirectUri, "HMAC-SHA1");
-
-        const p: Object = new Promise<any>((resolve, reject) => {
-            t.get(
-                "https://api.twitter.com/1.1/account/verify_credentials.json",
-                accessToken,
-                accessTokenSecret,
-                (error, data, response) => {
-                    if (error) { reject(error); }
-                    resolve(JSON.parse(data));
-                },
-            );
-        });
-        return p;
+        const url = "https://api.twitter.com/1.1/account/verify_credentials.json";
+        return await twitterRequestService.get(accessToken, accessTokenSecret, url);
     }
 }
