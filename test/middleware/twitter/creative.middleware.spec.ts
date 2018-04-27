@@ -1,4 +1,5 @@
 import {assert, expect} from "chai";
+import * as moment from "moment";
 import * as mongoose from "mongoose";
 import * as path from "path";
 
@@ -54,6 +55,25 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
+    it("Should create a scheduled advertising tweet with only text", async () => {
+        try {
+            const mongoUser = UserMongo;
+            const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
+            if (!user) {assert.ifError( "Error finding user with twToken"); }
+
+            const adAccount = await twitterAdMiddleware.makeSandboxAccount(user.twToken, user.twTokenSecret);
+            const tweet = await twitterCreativeMiddleware.createScheduledTweet(
+                user.twToken, user.twTokenSecret, adAccount.data[0].id, moment().add(5, "m").toDate(),
+                "Test tweet - " + Math.round((Math.random() * 1000000)).toString(),
+            );
+
+            console.log(tweet);
+            expect(tweet).to.satisfy(() => typeof tweet === "object");
+        } catch (err) {
+            assert.ifError(err, "error making request");
+        }
+    });
+
     it("Should create an advertising tweet with a text and an image", async () => {
         try {
             const mongoUser = UserMongo;
@@ -66,11 +86,17 @@ describe("Twitter Ad Middleware test", () => {
             const image = await twitterCreativeMiddleware.uploadMedia(
                 user.twToken, user.twTokenSecret, filePath,
             );
+            const image2 = await twitterCreativeMiddleware.uploadMedia(
+                user.twToken, user.twTokenSecret, filePath,
+            );
+            const image3 = await twitterCreativeMiddleware.uploadMedia(
+                user.twToken, user.twTokenSecret, filePath,
+            );
 
             const tweet = await twitterCreativeMiddleware.createTweet(
                 user.twToken, user.twTokenSecret, adAccount.data[0].id,
                 "Test tweet - " + Math.round((Math.random() * 1000000)).toString(),
-                undefined, [image.media_id_string],
+                undefined, [image, image2, image3],
             );
 
             console.log(tweet);
@@ -198,6 +224,67 @@ describe("Twitter Ad Middleware test", () => {
             console.log(websiteVideoCard);
             expect(websiteVideoCard).to.satisfy(() => typeof websiteVideoCard == "object");
 
+        } catch (err) {
+            assert.ifError(err, "error making request");
+        }
+    });
+
+    it("Should upload an image, get mediaKey and create an app card", async () => {
+        try {
+            const mongoUser = UserMongo;
+            const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
+            if (!user) {assert.ifError( "Error finding user with twToken"); }
+
+            const filePath = path.join(process.cwd(), "test", "media", "1-1.jpg");
+            const image = await twitterCreativeMiddleware.uploadMedia(
+                user.twToken, user.twTokenSecret, filePath,
+            );
+            const adAccount = await twitterAdMiddleware.makeSandboxAccount(user.twToken, user.twTokenSecret);
+            const mediaKey = await twitterCreativeMiddleware.getMediaKey(
+                user.twToken, user.twTokenSecret, user.twAdAccount, image, "image/jpg",
+            );
+            const websiteImageCard = await twitterCreativeMiddleware.createAppImageCard(
+                user.twToken, user.twTokenSecret, adAccount.data[0].id,
+                "Website test", mediaKey, "ES",
+                null, null,
+                "com.facebook.katana", null,
+                null, null,
+                "INSTALL",
+            );
+
+            console.log(websiteImageCard)
+            expect(websiteImageCard).to.satisfy(() => typeof websiteImageCard === "object");
+        } catch (err) {
+            assert.ifError(err, "error making request");
+        }
+    });
+
+    it("Should upload a video, get mediaKey and create an app card", async () => {
+        try {
+            const mongoUser = UserMongo;
+            const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
+            if (!user) {assert.ifError( "Error finding user with twToken"); }
+
+            const filePath = path.join(process.cwd(), "test", "media", "16-9.mp4");
+            const video = await twitterCreativeMiddleware.uploadMedia(
+                user.twToken, user.twTokenSecret, filePath,
+            );
+            const adAccount = await twitterAdMiddleware.makeSandboxAccount(user.twToken, user.twTokenSecret);
+            const mediaKey = await twitterCreativeMiddleware.getMediaKey(
+                user.twToken, user.twTokenSecret, user.twAdAccount, video, "video/mp4",
+            );
+            const websiteVideoCard = await twitterCreativeMiddleware.createAppVideoCard(
+                user.twToken, user.twTokenSecret, adAccount.data[0].id,
+                "Website test", mediaKey, "ES",
+                null, null,
+                "com.facebook.katana", null,
+                null, null,
+                "INSTALL",
+            );
+
+            console.log(websiteVideoCard);
+
+            expect(websiteVideoCard).to.satisfy(() => typeof websiteVideoCard === "object");
         } catch (err) {
             assert.ifError(err, "error making request");
         }
