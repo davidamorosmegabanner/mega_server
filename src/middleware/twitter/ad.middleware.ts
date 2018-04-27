@@ -20,7 +20,7 @@ export class TwitterAdMiddleware {
     }
 
     // Gets a sandbox account, if not creates an account in sandbox mode
-    public async createSandboxAccount(accessToken, accessTokenSecret): Promise<any> {
+    public async makeSandboxAccount(accessToken, accessTokenSecret): Promise<any> {
         if (this.env === "production") { throw new Error("Cannot create a funding instrument in production"); }
 
         const url = "https://ads-api-sandbox.twitter.com/3/accounts";

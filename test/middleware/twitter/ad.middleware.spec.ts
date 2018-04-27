@@ -38,7 +38,7 @@ describe("Twitter Ad Middleware test", () => {
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
             if (!user) {assert.ifError( "Error finding user with fbtoken"); }
 
-            const sandboxAccount = await twitterAdMiddleware.createSandboxAccount(
+            const sandboxAccount = await twitterAdMiddleware.makeSandboxAccount(
                 user.twToken, user.twTokenSecret,
             );
 

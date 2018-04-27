@@ -12,6 +12,44 @@ export class TwitterCreativeMiddleware {
 
     private env = (process.env.NODE_ENV || "development");
 
+    private sandbox = (this.env !== "production") ? "-sandbox" : "";
+
+    /*
+        Tweet middleware
+     */
+
+    public async getTweets(accessToken, accessTokenSecret, accountId): Promise<any> {
+        const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/scoped_timeline`;
+
+        return await requestTwitterService.get(accessToken, accessTokenSecret, url);
+    }
+
+    // TODO add video compatibility
+    // https://developer.twitter.com/en/docs/ads/creatives/api-reference/tweets
+    public async createTweet(accessToken, accessTokenSecret, accountId,
+                       text?: string, cardUri?: string, mediaIds?: string[], nullcast?: string): Promise<any> {
+        // Check all params are ok
+        if (text) {if (text.length > 240) { throw new Error("Max text length of 240 chars exceeded"); }}
+        if (!text && !mediaIds) { throw new Error("Please specify a text or a media"); }
+
+        // Create a string separated comma of mediaIds
+        const mediaIdsForm = mediaIds.join(",");
+        console.log(mediaIdsForm)
+
+        const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/tweet`;
+        const params: any = {};
+        if (text) { params.text = text; }
+        if (cardUri) { params.card_uri = cardUri; }
+        if (mediaIdsForm.length) { params.media_ids = mediaIdsForm; }
+        if (nullcast) { params.nullcast = nullcast; }
+
+        console.log(params);
+
+        const data = await requestTwitterService.post(accessToken, accessTokenSecret, url, params);
+        console.log(data);
+        return(data);
+    }
+
     /*
         Media middleware
      */
