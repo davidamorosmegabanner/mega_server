@@ -33,7 +33,6 @@ export class RequestTwitterService {
         const r: OAuth = new OAuth(
             "https://twitter.com/oauth/request_token", "https://twitter.com/oauth/access_token",
             this.apiKey, this.apiSecret, "1.0A", this.redirectUri, "HMAC-SHA1");
-
         const p = new Promise<string>((resolve, reject) => {
             r.post(
                 url,

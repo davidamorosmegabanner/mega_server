@@ -88,6 +88,7 @@ export class TwitterCampaignMiddleware {
             objective: (objective),
             placements: (placements),
             product_type: productType,
+            automatically_select_bid: "true",
         };
         if (advertiserDomain) { params.advertiser_domain = advertiserDomain; }
         if (lineItemStatus) { params.entity_status = lineItemStatus; } else { params.entity_status = "PAUSED"; }
@@ -95,7 +96,7 @@ export class TwitterCampaignMiddleware {
         if (optimization) { params.optimization = optimization; }
 
         // Go
-        await twitterRequestService.post(accessToken, accessTokenSecret, url, params);
+        return await twitterRequestService.post(accessToken, accessTokenSecret, url, params);
     }
 
     /*
@@ -103,11 +104,11 @@ export class TwitterCampaignMiddleware {
      */
 
     public async createPromotedTweets(accessToken, accessTokenSecret, accountId,
-                                     lineItemId: string, tweetId: string[]): Promise<any> {
-        const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/campaigns`;
+                                     lineItemId: string, tweetsId: string[]): Promise<any> {
+        const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/promoted_tweets`;
         const params = {
             line_item_id: lineItemId,
-            tweet_ids: tweetId.join("'"),
+            tweet_ids: tweetsId.join("'"),
         };
         return await twitterRequestService.post(accessToken, accessTokenSecret, url, params);
     }
@@ -116,14 +117,25 @@ export class TwitterCampaignMiddleware {
         Campaign middleware
      */
 
+    public async getCampaigns(accessToken, accessTokenSecret, accountId): Promise<any> {
+        const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/campaigns`;
+        return await twitterRequestService.get(accessToken, accessTokenSecret, url);
+    }
+
+    public async getCampaignWithId(accessToken, accessTokenSecret, accountId, campaignId): Promise<any> {
+        const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/campaigns/${campaignId}`;
+        return await twitterRequestService.get(accessToken, accessTokenSecret, url);
+    }
+
     public async createCampaign(accessToken, accessTokenSecret, accountId,
                                 dailyBudget: number, fundingInstrumentId: string,
-                                name: string, start: Date, end: Date,
+                                name: string, startDate: Date, endDate: Date,
                                 campaignStatus?: string, standardDelivery?: boolean, totalBudget?: number,
                                 ): Promise<any> {
         // Check some params are ok
-        if (campaignStatus !== "ACTIVE" && campaignStatus !== "DRAFT" && campaignStatus !== "PAUSED") {
-            throw new Error("Accepted values form campaign status are ACTIVE, DRAFT, PAUSED");
+        if (campaignStatus
+            && campaignStatus !== "ACTIVE" && campaignStatus !== "DRAFT" && campaignStatus !== "PAUSED") {
+            throw new Error("Accepted values for campaign status are ACTIVE, DRAFT, PAUSED");
         }
 
         // Create request params
@@ -132,16 +144,15 @@ export class TwitterCampaignMiddleware {
             daily_budget_amount_local_micro: dailyBudget * 1000 * 1000,
             funding_instrument_id: fundingInstrumentId,
             name: (name),
-            start_time: start,
-            end_time: end,
+            start_time: moment(startDate).format("YYYY-MM-DDTHH:mm:ss[Z]"),
+            end_time: moment(endDate).format("YYYY-MM-DDTHH:mm:ss[Z]"),
         };
-
-        // Join optional params
-        if (campaignStatus) { params.entity_status = campaignStatus; } else {params.entity_status = "PAUSED"; }
+        // + optional params
+        if (campaignStatus) { params.entity_status = campaignStatus; } else { params.entity_status = "PAUSED"; }
         if (typeof standardDelivery === "boolean") { params.standard_delivery = standardDelivery; }
         if (totalBudget) { params.total_budget_amount_local_micro = totalBudget * 1000 * 1000; }
 
         // Go
-        await twitterRequestService.post(accessToken, accessTokenSecret, url, params);
+        return await twitterRequestService.post(accessToken, accessTokenSecret, url, params);
     }
 }

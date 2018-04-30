@@ -45,7 +45,7 @@ export class TwitterCreativeMiddleware {
         const params: any = {};
         if (text) { params.text = text; }
         if (cardUri) { params.card_uri = cardUri; }
-        if (mediaIds.length) { params.media_ids = mediaIdsForm; }
+        if (mediaIds) { params.media_ids = mediaIdsForm; }
         if (nullcast) { params.nullcast = nullcast; }
 
         // Go
