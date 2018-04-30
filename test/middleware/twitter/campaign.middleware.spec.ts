@@ -21,7 +21,7 @@ describe("Twitter Ad Middleware test", () => {
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
             if (!user) {assert.ifError( "Error finding user with twToken"); }
 
-            const fundingInstrument = await twitterCampaignMiddleware.createFundingInstrument(
+            const fundingInstrument = await twitterCampaignMiddleware.makeFundingInstrument(
                 user.twToken, user.twTokenSecret, "gq1drn",
             );
 
@@ -32,6 +32,26 @@ describe("Twitter Ad Middleware test", () => {
             assert.ifError(err, "error making request");
         }
     });
+
+    it("Should get all funding instruments", async () => {
+        try {
+            const mongoUser = UserMongo;
+            const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
+            if (!user) {assert.ifError( "Error finding user with twToken"); }
+
+            const fundingInstrument = await twitterCampaignMiddleware.getFundingInstrument(
+                user.twToken, user.twTokenSecret, "gq1drn",
+            );
+
+            console.log(fundingInstrument);
+            expect(fundingInstrument).to.satisfy(() => typeof fundingInstrument == "object");
+
+        } catch (err) {
+            assert.ifError(err, "error making request");
+        }
+    });
+
+
 
     after((done) => {
         mongoose.connection.close();
