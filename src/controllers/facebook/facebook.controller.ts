@@ -31,7 +31,7 @@ export let authCode: ExpressSignature = async (request, response, next) => {
 
         // Check to assure we have user localized
         if (!user || !user._id) {
-            throw new Error("Unable to find userId in session!");
+            response.status(400).send("Unable to find userId in session!");
         }
 
         user = await userService.assignFacebookAccessToken(user, accessToken);
@@ -41,7 +41,7 @@ export let authCode: ExpressSignature = async (request, response, next) => {
 
         // More checking to verify everything has worked
         if (!user || !user._id) {
-            throw new Error("Unable to find userId in session!");
+            response.status(400).send("Unable to find userId in session!");
         }
 
         response.redirect(config.redirectURL);
@@ -51,41 +51,3 @@ export let authCode: ExpressSignature = async (request, response, next) => {
         response.status(400).send(err.toString());
     }
 };
-
-// export let token: ExpressSignature = async (request, response, next) => {
-//     const params = request.body;
-//     const xAccessToken = request.headers["x-access-token"].toString();
-//     const allowedRoles = ["admin"];
-//
-//     if (!await authService.isAllowed(allowedRoles, request)) {
-//         response.status(401).send("Unauthorized");
-//     }
-//
-//     if (!params.access_token) {
-//         response.status(404).send("Please provide an access_token");
-//     }
-//
-//     try {
-//
-//         let user: User = await userService.findByToken(xAccessToken);
-//         user = await userService.assignFacebookAccessToken(user, params.access_token);
-//         const fbAccount = await facebookAuthMiddleware.getFacebookInfo(params.access_token);
-//         const fbAdAccount = await facebookAdMiddleware.getAdAccount(fbAccount.id, params.access_token);
-//         user = await userService.assignFacebookAdAccount(user, fbAdAccount.account_id);
-//
-//         console.log(fbAccount);
-//         console.log(fbAdAccount);
-//         console.log(user);
-//
-//         response.status(200).send({
-//             email: user.email,
-//             _id: user._id,
-//             name: user.name,
-//             phone: user.phone,
-//         });
-//
-//     } catch (err) {
-//         logger.error(err);
-//         response.status(400).send(err.toString());
-//     }
-// };

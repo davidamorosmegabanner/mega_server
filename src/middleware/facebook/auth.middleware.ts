@@ -19,23 +19,12 @@ export class FacebookAuthMiddleware {
 
         try {
 
-            const accessToken = await FB.api("oauth/access_token", {
+            return await FB.api("oauth/access_token", {
                 client_id: (this.clientId),
                 client_secret: (this.clientSecret),
                 redirect_uri: (this.redirectUri),
                 code: (code),
             });
-
-            // TODO extend expiration date with a task!
-            // // Extend access_token expiration
-            // accessToken = await FB.api("oauth/access_token", {
-            //     client_id: (clientId),
-            //     client_secret: (clientSecret),
-            //     grant_type: "fb_exchange_token",
-            //     fb_exchange_token: (accessToken.access_token),
-            // });
-
-            return accessToken;
 
         } catch (err) {
             logger.error(err);

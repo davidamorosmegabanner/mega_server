@@ -29,7 +29,7 @@ export class FacebookAdCreativeMiddleware {
         Creative
      */
 
-    public async createLink (
+    public async createLink(
         name: string,
         campaignId: string,
         actionType: string,
@@ -47,15 +47,15 @@ export class FacebookAdCreativeMiddleware {
             access_token: (accessToken),
             name: (name),
             object_story_spec: {
-                "link_data": {
-                    "call_to_action": {
-                        "type": (actionType),
-                        "value": (actionValue),
+                link_data: {
+                    call_to_action: {
+                        type: (actionType),
+                        value: (actionValue),
                     },
-                    "link": (link),
-                    "message": (message),
+                    link: (link),
+                    message: (message),
                 },
-                "page_id": (pageId),
+                page_id: (pageId),
             },
         };
 

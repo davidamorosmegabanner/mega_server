@@ -22,7 +22,7 @@ export class TwitterAuthMiddleware {
     // To make URL request for user
     // https://twitter.com/oauth/authenticate?oauth_token=[requestToken]
     public async getRequestToken(): Promise<any> {
-        const p: object = new Promise<any>((resolve, reject) => {
+        return new Promise<any>((resolve, reject) => {
             const twitter = new twitterAPI({
                 consumerKey: this.apiKey,
                 consumerSecret: this.apiSecret,
@@ -36,12 +36,11 @@ export class TwitterAuthMiddleware {
                 });
             });
         });
-        return p;
     }
 
     // Coming from url authorization of the user
     public async getAccessToken(requestToken, requestTokenSecret, oauth_verifier): Promise<any> {
-        const p: object = new Promise<any>((resolve, reject) => {
+        return new Promise<any>((resolve, reject) => {
             const twitter = new twitterAPI({
                 consumerKey: this.apiKey,
                 consumerSecret: this.apiSecret,
@@ -58,7 +57,6 @@ export class TwitterAuthMiddleware {
                 },
             );
         });
-        return p;
     }
 
     public async getAccount(accessToken, accessTokenSecret): Promise<any> {

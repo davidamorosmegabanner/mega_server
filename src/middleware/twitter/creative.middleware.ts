@@ -100,9 +100,7 @@ export class TwitterCreativeMiddleware {
             image_media_key: (imageMediaKey),
         };
 
-        const data = await requestTwitterService.post(accessToken, accessTokenSecret, url, params);
-
-        return data;
+        return await requestTwitterService.post(accessToken, accessTokenSecret, url, params);
     }
 
     public async createWebsiteVideoCard(
@@ -121,9 +119,7 @@ export class TwitterCreativeMiddleware {
             video_id: (imageMediaKey),
         };
 
-        const data = await requestTwitterService.post(accessToken, accessTokenSecret, url, params);
-
-        return data;
+        return await requestTwitterService.post(accessToken, accessTokenSecret, url, params);
     }
 
     public async createAppImageCard(
@@ -205,8 +201,6 @@ export class TwitterCreativeMiddleware {
         if (iPadDeepLink) { params.ipad_deep_link = iPadDeepLink; }
         if (appCTA) { params.app_cta = appCTA; }
 
-        console.log(params)
-
         return await requestTwitterService.post(accessToken, accessTokenSecret, url, params);
     }
 
@@ -221,13 +215,12 @@ export class TwitterCreativeMiddleware {
             access_token: accessToken,
             access_token_secret: accessTokenSecret,
         });
-        const p = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             t.postMediaChunked({file_path: filePath}, (error, data, response) => {
                 if (error) { reject(error); }
                 resolve(data.media_id_string);
             });
         });
-        return p;
     }
 
     public async getMediaKey(accessToken, accessTokenSecret, accountId, mediaId, fileMimetype) {

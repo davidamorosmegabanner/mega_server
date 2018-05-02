@@ -2,7 +2,7 @@ import {Model} from "mongoose";
 import {AdType, default as AdTypeMongo} from "./adType.model";
 
 export class AdTypeService {
-    private mongoModel: Model<AdType>;
+    private readonly mongoModel: Model<AdType>;
 
     constructor(mongoModel?: Model<AdType>) {
         this.mongoModel = mongoModel || AdTypeMongo;

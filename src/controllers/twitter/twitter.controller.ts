@@ -19,7 +19,7 @@ export let oauthToken: ExpressSignature = async (request, response, next) => {
 
         const userId = request.session.userId;
         if (!userId) {
-            throw new Error("Unable to find userId in session!");
+            response.status(400).send("Unable to find userId in session!");
         }
 
         const requestTokens = await twitterAuthMiddleware.getRequestToken();
@@ -43,7 +43,7 @@ export let authTokens: ExpressSignature = async (request, response, next) => {
 
         const userId = request.session.userId;
         if (!userId) {
-            throw new Error("Unable to find userId in session!");
+            response.status(400).send("Unable to find userId in session!");
         }
 
         const user: User = await userService.findById(request.session.userId);
@@ -57,7 +57,7 @@ export let authTokens: ExpressSignature = async (request, response, next) => {
             accessTokens.accessToken, accessTokens.accessTokenSecret
         );
         if (!adAccount || !adAccount.id) {
-            throw new Error("Cannot find an Ad Account associated with user");
+            response.status(400).send("Cannot find an Ad Account associated with user");
         }
 
         await userService.assignTwitterAccessToken(user, accessTokens.accessToken);
@@ -67,7 +67,6 @@ export let authTokens: ExpressSignature = async (request, response, next) => {
         response.redirect(config.redirectURL);
 
     } catch (err) {
-        console.log(err);
         logger.error(err);
         response.status(400).send(err.toString());
     }

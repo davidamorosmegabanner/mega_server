@@ -5,7 +5,7 @@ import {Token} from "./token";
 import {default as UserMongo, User} from "./user.model";
 
 export class UserService {
-    private mongoModel: Model<User>;
+    private readonly mongoModel: Model<User>;
 
     constructor(mongoModel?: Model<User>) {
         this.mongoModel = mongoModel || UserMongo;

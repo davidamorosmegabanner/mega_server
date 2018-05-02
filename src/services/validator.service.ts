@@ -14,23 +14,19 @@ export class Validator {
     // Public validator called when Ad is created
     public async validateCreativities(adType: AdType, creativities: Creativity[]): Promise<boolean> {
         let validation: boolean = true;
-        try {
-            // Implementing different validation depending on type of adType
-            switch (adType.platform.key) {
-                case "IG": {
-                    const instagramAdTypeService = new InstagramAdTypeService();
-                    const instagramAdType: InstagramAdType = await instagramAdTypeService.findByAdType(adType);
-                    validation = await this.validateInstagramCreativities(instagramAdType, creativities);
-                    break;
-                }
-                default: {
-                    throw new Error("There's been a problem validating creativities. Please contact the admin.");
-                }
+        // Implementing different validation depending on type of adType
+        switch (adType.platform.key) {
+            case "IG": {
+                const instagramAdTypeService = new InstagramAdTypeService();
+                const instagramAdType: InstagramAdType = await instagramAdTypeService.findByAdType(adType);
+                validation = await this.validateInstagramCreativities(instagramAdType, creativities);
+                break;
             }
-            return validation;
-        } catch (err) {
-            throw new Error(err);
+            default: {
+                throw new Error("There's been a problem validating creativities. Please contact the admin.");
+            }
         }
+        return validation;
     }
 
     // Functions used to validate ads internally

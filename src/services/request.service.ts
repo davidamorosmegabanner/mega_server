@@ -5,7 +5,7 @@ export class RequestService {
 
     // General GET request
     public async get(url): Promise<any> {
-        const p: object = new Promise<any>((resolve, reject) => {
+        return new Promise<any>((resolve, reject) => {
 
             axios.get(url)
                 .then((response: any) => {
@@ -16,12 +16,11 @@ export class RequestService {
                 });
 
         });
-        return p;
     }
 
     // General POST request
     public async post(url, form): Promise<any> {
-        const p: object = new Promise<any>((resolve, reject) => {
+        return new Promise<any>((resolve, reject) => {
 
             axios.post(url, form)
                 .then((response: any) => {
@@ -32,6 +31,5 @@ export class RequestService {
                 });
 
         });
-        return p;
     }
 }
