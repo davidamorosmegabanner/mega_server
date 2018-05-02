@@ -1,12 +1,13 @@
 import {Model, Schema} from "mongoose";
-import {AdType, AllowedRatio, AllowedSize, default as AdTypeMongo, Duration} from "../adType.model";
+import {AdType, AllowedSize, default as AdTypeMongo, Duration, NumCreativities} from "../adType.model";
 
 export interface TwitterAdType extends AdType {
-    mimetypes: string[];
-    allowedSize: AllowedSize;
+    mimetypes?: string[];
+    allowedSize?: AllowedSize;
     duration?: Duration;
     frames?: number;
-    actions: string[];
+    objectives: string[];
+    placements: string[];
 }
 
 const TwitterAdTypeSchema = new Schema({
@@ -47,7 +48,11 @@ const TwitterAdTypeSchema = new Schema({
     frames: {
         type: Number,
     },
-    actions: [{
+    objectives: [{
+        type: String,
+        required: true,
+    }],
+    placements: [{
         type: String,
         required: true,
     }],

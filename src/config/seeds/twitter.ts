@@ -10,13 +10,30 @@ To replace the existing database configuration with this one, use the flag INSER
 
 export default {
 
+    TwitterTweet: {
+        name: "Tweet",
+        key: "TW_TWEET",
+        description: "Simple tweet that appears in the feed",
+        platform: PlatformsConfiguration.Twitter,
+        mimetypes: [],
+        objectives: ["APP_ENGAGEMENTS", "APP_INSTALLS", "AWARENESS", "FOLLOWERS",
+            "TWEET_ENGAGEMENTS", "VIDEO_VIEWS", "VIDEO_VIEWS_PREROLL", "WEBSITE_CLICKS"],
+        placements: ["ALL_ON_TWITTER", "PUBLISHER_NETWORK", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
+        numCreativities: {
+            min: 0,
+            max: 0,
+        },
+    },
+
     TwitterImages: {
-        name: "Twitter images",
-        key: "TW_IMAGE",
+        name: "Tweet with image",
+        key: "TW_TWEET_IMAGE",
         description: "Images that appear on a tweet in the feed",
         platform: PlatformsConfiguration.Twitter,
         mimetypes: ["image/jpg", "image/png", "image/gif", "image/webp"],
-        actions: ["WEBSITE", "APP_DOWNLOAD"],
+        objectives: ["APP_ENGAGEMENTS", "APP_INSTALLS", "AWARENESS", "FOLLOWERS",
+            "TWEET_ENGAGEMENTS", "VIDEO_VIEWS", "VIDEO_VIEWS_PREROLL", "WEBSITE_CLICKS"],
+        placements: ["ALL_ON_TWITTER", "PUBLISHER_NETWORK", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
         numCreativities: {
             min: 1,
             max: 4,
