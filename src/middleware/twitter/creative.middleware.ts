@@ -243,7 +243,6 @@ export class TwitterCreativeMiddleware {
         };
 
         const data = await requestTwitterService.post(accessToken, accessTokenSecret, url, params);
-
         return data.data.media_key;
     }
 }

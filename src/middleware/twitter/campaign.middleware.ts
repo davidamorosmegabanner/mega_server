@@ -13,7 +13,7 @@ export class TwitterCampaignMiddleware {
     private sandbox = (this.env !== "production") ? "-sandbox" : "";
 
     /*
-        Funding instrument middleware
+        Funding instrument
      */
 
     public async makeFundingInstrument(accessToken, accessTokenSecret, accountId) {
@@ -42,7 +42,7 @@ export class TwitterCampaignMiddleware {
     }
 
     /*
-        Line item middleware
+        Line item
      */
 
     public async createLineItem(
@@ -100,7 +100,7 @@ export class TwitterCampaignMiddleware {
     }
 
     /*
-        Promoted tweet middleware
+        Promoted tweet
      */
 
     public async createPromotedTweets(accessToken, accessTokenSecret, accountId,
@@ -112,9 +112,22 @@ export class TwitterCampaignMiddleware {
         };
         return await twitterRequestService.post(accessToken, accessTokenSecret, url, params);
     }
+    /*
+        Promoted account
+     */
+
+    public async createPromotedAccount(accessToken, accessTokenSecret, accountId,
+                                      lineItemId: string, userId: string[]): Promise<any> {
+        const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/promoted_accounts`;
+        const params = {
+            line_item_id: lineItemId,
+            user_id: userId,
+        };
+        return await twitterRequestService.post(accessToken, accessTokenSecret, url, params);
+    }
 
     /*
-        Campaign middleware
+        Campaign
      */
 
     public async getCampaigns(accessToken, accessTokenSecret, accountId): Promise<any> {

@@ -3,6 +3,7 @@ import * as mongoose from "mongoose";
 
 import config from "../../../src/config/config";
 import {TwitterAuthMiddleware} from "../../../src/middleware/twitter/auth.middleware";
+import {default as UserMongo, User} from "../../../src/models/user/user.model";
 
 const twitterAuthMiddleware = new TwitterAuthMiddleware();
 
@@ -34,6 +35,24 @@ describe("Twitter Auth Middleware test", () => {
 
             console.log(userAccessToken);
             expect(userAccessToken).to.satisfy(() => typeof (userAccessToken) === "object");
+
+        } catch (err) {
+            assert.ifError(err, "error making request");
+        }
+    });
+
+    it("Should return account info", async () => {
+        try {
+            const mongoUser = UserMongo;
+            const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
+            if (!user) {assert.ifError( "Error finding user with twToken"); }
+
+            const twitterUser = await twitterAuthMiddleware.getAccount(
+                user.twToken, user.twTokenSecret,
+            );
+
+            console.log(twitterUser);
+            expect(twitterUser).to.satisfy(() => typeof (twitterUser) === "object");
 
         } catch (err) {
             assert.ifError(err, "error making request");

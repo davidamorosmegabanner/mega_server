@@ -1,14 +1,15 @@
 import {assert, expect} from "chai";
 import * as mongoose from "mongoose";
 
-import {setServers} from "dns";
 import config from "../../../src/config/config";
+import {TwitterAuthMiddleware} from "../../../src/middleware/twitter/auth.middleware";
 import {TwitterCampaignMiddleware} from "../../../src/middleware/twitter/campaign.middleware";
 import {TwitterCreativeMiddleware} from "../../../src/middleware/twitter/creative.middleware";
 import {default as UserMongo, User} from "../../../src/models/user/user.model";
 
 const twitterCampaignMiddleware = new TwitterCampaignMiddleware();
 const twitterCreativeMiddleware = new TwitterCreativeMiddleware();
+const twitterAuthMiddleware = new TwitterAuthMiddleware();
 
 describe("Twitter Ad Middleware test", () => {
 
@@ -101,8 +102,8 @@ describe("Twitter Ad Middleware test", () => {
             console.log(lineItem);
 
             const promotedTweet = (await twitterCampaignMiddleware.createPromotedTweets(
-                user.twToken, user.twTokenSecret, "gq1drn", lineItem.data.id, [tweetId]
-            ))
+                user.twToken, user.twTokenSecret, "gq1drn", lineItem.data.id, [tweetId],
+            ));
             console.log(promotedTweet);
 
             const campaignStatus = (await twitterCampaignMiddleware.getCampaignWithId(
@@ -112,6 +113,48 @@ describe("Twitter Ad Middleware test", () => {
             console.log(campaignStatus);
             expect(campaignStatus).to.satisfy(() => typeof campaignStatus == "object");
 
+        } catch (err) {
+            assert.ifError(err, "error making request");
+        }
+    });
+
+    it ("Should create a campaign, create a line item and create a promoted account with current one", async () => {
+        try {
+            const mongoUser = UserMongo;
+            const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
+            if (!user) {assert.ifError( "Error finding user with twToken"); }
+
+            const fundingInstrumentId = (await twitterCampaignMiddleware.getFundingInstrument(
+                user.twToken, user.twTokenSecret, "gq1drn",
+            )).data[0].id;
+
+            const startDate = new Date();
+            const endDate = new Date(); endDate.setDate(startDate.getDate() + 1);
+            const campaignId = (await twitterCampaignMiddleware.createCampaign(
+                user.twToken, user.twTokenSecret, "gq1drn",
+                1, fundingInstrumentId, "Campaign test",
+                startDate, endDate,
+            )).data.id;
+
+            const lineItem = (await twitterCampaignMiddleware.createLineItem(
+                user.twToken, user.twTokenSecret, "gq1drn",
+                campaignId, "FOLLOWERS", "ALL_ON_TWITTER", "PROMOTED_ACCOUNT",
+            ));
+            console.log(lineItem);
+
+            const twitterAccountId = (await twitterAuthMiddleware.getAccount(user.twToken, user.twTokenSecret)).id_str;
+
+            const promotedAccountId = (await twitterCampaignMiddleware.createPromotedAccount(
+                user.twToken, user.twTokenSecret, "gq1drn", lineItem.data.id, twitterAccountId,
+            ));
+            console.log(promotedAccountId);
+
+            const campaignStatus = (await twitterCampaignMiddleware.getCampaignWithId(
+                user.twToken, user.twTokenSecret, "gq1drn", campaignId,
+            ));
+            console.log(campaignStatus);
+
+            expect(campaignStatus).to.satisfy(() => typeof campaignStatus == "object");
         } catch (err) {
             assert.ifError(err, "error making request");
         }
