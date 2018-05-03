@@ -11,6 +11,5 @@ export default class FacebookRouter implements Route {
 
     public decorate(app: express.Application) {
         app.route(this.URL + "/authCode/").get(authCode);
-        app.route(this.URL + "/authCode/").get(authCode);
     }
 }
