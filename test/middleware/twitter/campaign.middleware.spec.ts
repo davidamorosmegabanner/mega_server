@@ -29,7 +29,7 @@ describe("Twitter Ad Middleware test", () => {
             );
 
             console.log(fundingInstrument);
-            expect(fundingInstrument).to.satisfy(() => typeof fundingInstrument == "object");
+            expect(fundingInstrument).to.satisfy(() => typeof fundingInstrument === "object");
 
         } catch (err) {
             assert.ifError(err, "error making request");
@@ -47,7 +47,7 @@ describe("Twitter Ad Middleware test", () => {
             );
 
             console.log(fundingInstrument);
-            expect(fundingInstrument).to.satisfy(() => typeof fundingInstrument == "object");
+            expect(fundingInstrument).to.satisfy(() => typeof fundingInstrument === "object");
 
         } catch (err) {
             assert.ifError(err, "error making request");
@@ -65,12 +65,29 @@ describe("Twitter Ad Middleware test", () => {
             ));
 
             console.log(campaign);
-            expect(campaign).to.satisfy(() => typeof campaign == "object");
+            expect(campaign).to.satisfy(() => typeof campaign === "object");
 
         } catch (err) {
             assert.ifError(err, "error making request");
         }
     });
+
+    it ("Should get all line items", async () => {
+        try {
+            const mongoUser = UserMongo;
+            const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
+            if (!user) {assert.ifError( "Error finding user with twToken"); }
+
+            const lineItems = await twitterCampaignMiddleware.getLineItems(
+                user.twToken, user.twTokenSecret, "gq1drn"
+            );
+
+            console.log(lineItems);
+            expect(lineItems).to.satisfy(() => typeof lineItems === "object");
+        } catch (err) {
+            assert.ifError(err, "error making request");
+        }
+    })
 
     it ("Should create a tweet, create a promoted tweet, create a campaign and create a line item", async () => {
         try {
@@ -111,7 +128,7 @@ describe("Twitter Ad Middleware test", () => {
             ));
 
             console.log(campaignStatus);
-            expect(campaignStatus).to.satisfy(() => typeof campaignStatus == "object");
+            expect(campaignStatus).to.satisfy(() => typeof campaignStatus === "object");
 
         } catch (err) {
             assert.ifError(err, "error making request");
@@ -154,7 +171,7 @@ describe("Twitter Ad Middleware test", () => {
             ));
             console.log(campaignStatus);
 
-            expect(campaignStatus).to.satisfy(() => typeof campaignStatus == "object");
+            expect(campaignStatus).to.satisfy(() => typeof campaignStatus === "object");
         } catch (err) {
             assert.ifError(err, "error making request");
         }

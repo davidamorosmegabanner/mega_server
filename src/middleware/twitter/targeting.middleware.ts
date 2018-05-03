@@ -46,7 +46,7 @@ export class TwitterTargetingMiddleware {
     public async getLocations(accessToken, accessTokenSecret,
                               countryCode?: string, locationType?: string, q?: string): Promise<any> {
         // Check if location type is ok
-        if (locationType && locationType !== "COUNTRIES" && locationType !== " REGIONS"
+        if (locationType && locationType !== "COUNTRIES" && locationType !== "REGIONS"
             && locationType !== "METROS" && locationType !== "CITIES" && locationType !== "POSTAL_CODES") {
             throw new Error("Location Type can only be COUNTRIES, REGIONS, METROS, CITIES, POSTAL_CODES");
         }
@@ -95,41 +95,75 @@ export class TwitterTargetingMiddleware {
         return await requestTwitterService.get(accToken, accTokenSecret, url);
     }
 
+    public async getTargeting(accessToken, accessTokenSecret, accountId, lineItemId): Promise<any> {
+        const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/targeting_criteria`
+                    + `?line_item_id=${lineItemId}`;
+        return requestTwitterService.get(accessToken, accessTokenSecret, url);
+    }
+
+    public async deleteTargeting(accessToken, accessTokenSecret, accountId, targetCriteriaId): Promise<any> {
+        const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/targeting_criteria/`
+            + `${targetCriteriaId}`;
+        return await requestTwitterService.delete(accessToken, accessTokenSecret, url);
+    }
+
     // Implemented in individual functions
-    public async doTargeting(accToken, accTokenSecret, accountId,
-                             lineItemId, targetingType, targetingValue): Promise<any> {
-        switch (targetingType) {
-            case "AGE": {
-                return await this.targetAge(accToken, accTokenSecret, accountId, lineItemId, targetingValue);
+    public async doTargeting(accesstoken, accesstokenSecret, accountId, lineItemId,
+                             targeting: Array<{targetingType: string, targetingValue: string}>): Promise<any> {
+        const returnData = targeting.map(async (tg) => {
+            switch (tg.targetingType) {
+                case "AGE": {
+                    return (await this.targetAge(
+                        accesstoken, accesstokenSecret, accountId, lineItemId, tg.targetingValue)
+                    ).data;
+                }
+                case "DEVICE": {
+                    return (await this.targetDevice(
+                        accesstoken, accesstokenSecret, accountId, lineItemId, tg.targetingValue)
+                    ).data;
+                }
+                case "GENDER": {
+                    return (await this.targetGender(
+                            accesstoken, accesstokenSecret, accountId, lineItemId, tg.targetingValue)
+                    ).data;
+                }
+                case "INTEREST": {
+                    return (await this.targetInterest(
+                            accesstoken, accesstokenSecret, accountId, lineItemId, tg.targetingValue)
+                    ).data;
+                }
+                case "LANGUAGE": {
+                    return (await this.targetLanguage(
+                            accesstoken, accesstokenSecret, accountId, lineItemId, tg.targetingValue)
+                    ).data;
+                }
+                case "LOCATION": {
+                    return (await this.targetLocation(
+                            accesstoken, accesstokenSecret, accountId, lineItemId, tg.targetingValue)
+                    ).data;
+                }
+                case "NETWORK_OPERATOR": {
+                    return (await this.targetOperator(
+                            accesstoken, accesstokenSecret, accountId, lineItemId, tg.targetingValue)
+                    ).data;
+                }
+                case "PLATFORM": {
+                    return (await this.targetPlatform(
+                            accesstoken, accesstokenSecret, accountId, lineItemId, tg.targetingValue)
+                    ).data;
+                }
+                case "WIFI_ONLY": {
+                    return (await this.targetWifiOnly(
+                            accesstoken, accesstokenSecret, accountId, lineItemId, tg.targetingValue)
+                    ).data;
+                }
+                default: {
+                    throw new Error("Unknown or unsupported targeting option");
+                }
             }
-            case "DEVICE": {
-                return await this.targetDevice(accToken, accTokenSecret, accountId, lineItemId, targetingValue);
-            }
-            case "GENDER": {
-                return await this.targetGender(accToken, accTokenSecret, accountId, lineItemId, targetingValue);
-            }
-            case "INTEREST": {
-                return await this.targetInterest(accToken, accTokenSecret, accountId, lineItemId, targetingValue);
-            }
-            case "LANGUAGE": {
-                return await this.targetLanguage(accToken, accTokenSecret, accountId, lineItemId, targetingValue);
-            }
-            case "LOCATION": {
-                return await this.targetLocation(accToken, accTokenSecret, accountId, lineItemId, targetingValue);
-            }
-            case "NETWORK_OPERATOR": {
-                return await this.targetOperator(accToken, accTokenSecret, accountId, lineItemId, targetingValue);
-            }
-            case "PLATFORM": {
-                return await this.targetPlatform(accToken, accTokenSecret, accountId, lineItemId, targetingValue);
-            }
-            case "WIFI_ONLY": {
-                return await this.targetWifiOnly(accToken, accTokenSecret, accountId, lineItemId, targetingValue);
-            }
-            default: {
-                throw new Error("Unknown or unsupported targeting option");
-            }
-        }
+        });
+        return Promise.all(returnData).then((data) => data);
+
     }
 
     // Individual functions for targeting
@@ -158,7 +192,7 @@ export class TwitterTargetingMiddleware {
             "AGE_OVER_35",
             "AGE_OVER_50",
         ];
-        if (acceptedValues.indexOf(targetingValue) === -1) {
+        if (acceptedValues.indexOf(targetingValue) !== -1) {
             const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/targeting_criteria`;
             const params = {
                 line_item_id: lineItemId,
@@ -182,7 +216,7 @@ export class TwitterTargetingMiddleware {
     private async targetGender(accessToken, accessTokenSecret, accountId, lineItemId, targetingValue): Promise<any> {
         // Check targeting value is ok
         const acceptedValues = ["1","2"];
-        if (acceptedValues.indexOf(targetingValue) === -1) {
+        if (acceptedValues.indexOf(targetingValue) !== -1) {
             const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/targeting_criteria`;
             const params = {
                 line_item_id: lineItemId,
@@ -242,7 +276,7 @@ export class TwitterTargetingMiddleware {
     private async targetWifiOnly(accessToken, accessTokenSecret, accountId, lineItemId, targetingValue): Promise<any> {
         // Check targeting value is ok
         const acceptedValues = ["TRUE", "FALSE"];
-        if (acceptedValues.indexOf(targetingValue) === -1) {
+        if (acceptedValues.indexOf(targetingValue) !== -1) {
             const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/targeting_criteria`;
             const params = {
                 line_item_id: lineItemId,

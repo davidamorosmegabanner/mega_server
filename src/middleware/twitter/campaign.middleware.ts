@@ -45,6 +45,11 @@ export class TwitterCampaignMiddleware {
         Line item
      */
 
+    public async getLineItems(accessToken, accessTokenSecret, accountId): Promise<any> {
+        const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/line_items`;
+        return await twitterRequestService.get(accessToken, accessTokenSecret, url);
+    }
+
     public async createLineItem(
         accessToken, accessTokenSecret, accountId,
         campaignId, objective, placements, productType,
