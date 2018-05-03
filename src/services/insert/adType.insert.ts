@@ -1,5 +1,5 @@
-import InstagramConfiguration from "../../config/seeds/instagramAdType.seed";
-import TwitterConfiguration from "../../config/seeds/twitterAdType.seed";
+import InstagramConfiguration from "../../config/seeds/instagram";
+import TwitterConfiguration from "../../config/seeds/twitter";
 import {AdType} from "../../models/adType/adType.model";
 import {InstagramAdType} from "../../models/adType/instagramAdType.model";
 import {InstagramAdTypeService} from "../../models/adType/instagramAdType.service";
