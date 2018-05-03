@@ -1,4 +1,4 @@
-import PlatformsConfiguration from "./platforms";
+import PlatformsConfiguration from "./platforms.seed";
 
 /*
 

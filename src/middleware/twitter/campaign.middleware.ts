@@ -2,7 +2,7 @@ import * as moment from "moment";
 import {OAuth} from "oauth";
 
 import {RequestTwitterService} from "../../services/request.twitter.service";
-import twitter from "../../config/seeds/twitter";
+import twitter from "../../config/seeds/twitterAdType.seed";
 
 const twitterRequestService = new RequestTwitterService();
 

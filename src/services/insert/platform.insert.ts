@@ -1,4 +1,4 @@
-import PlatformsConfiguration from "../../config/seeds/platforms";
+import PlatformsConfiguration from "../../config/seeds/platforms.seed";
 import {Platform} from "../../models/platform/platform.model";
 import {PlatformService} from "../../models/platform/platform.service";
 
