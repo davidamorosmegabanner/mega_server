@@ -12,8 +12,7 @@ export class TwitterCreativeMiddleware {
     private apiSecret: string = config.twitterAPI.apiSecret;
 
     private env = (process.env.NODE_ENV || "development");
-
-    private sandbox = (this.env !== "production") ? "-sandbox" : "";
+    private sandbox = (this.env !== "production" && this.env !== "test") ? "-sandbox" : "";
 
     /*
         Tweet middleware

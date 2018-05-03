@@ -6,8 +6,7 @@ const requestTwitterService = new RequestTwitterService();
 
 export class TwitterAnalyticsMiddleware {
     private env = (process.env.NODE_ENV || "development");
-
-    private sandbox = (this.env !== "production") ? "-sandbox" : "";
+    private sandbox = (this.env !== "production" && this.env !== "test") ? "-sandbox" : "";
 
     public async getStats(accessToken, accessTokenSecret, accountId,
                           entity, entityIds: string[], startTime: Date, endTime: Date): Promise<any> {

@@ -4,13 +4,8 @@ import {RequestTwitterService} from "../../services/request.twitter.service";
 const requestTwitterService = new RequestTwitterService();
 
 export class TwitterTargetingMiddleware {
-
-    private apiKey: string = config.twitterAPI.apiKey;
-    private apiSecret: string = config.twitterAPI.apiSecret;
-
     private env = (process.env.NODE_ENV || "development");
-
-    private sandbox = (this.env !== "production") ? "-sandbox" : "";
+    private sandbox = (this.env !== "production" && this.env !== "test") ? "-sandbox" : "";
 
     public async getAppStoreCaregories(accessToken, accessTokenSecret, q?: string, store?: string) {
         let url = `https://ads-api.twitter.com/3/targeting_criteria/app_store_categories`;

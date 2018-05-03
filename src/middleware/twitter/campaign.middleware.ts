@@ -7,10 +7,8 @@ import twitter from "../../config/seeds/twitter";
 const twitterRequestService = new RequestTwitterService();
 
 export class TwitterCampaignMiddleware {
-
     private env = (process.env.NODE_ENV || "development");
-
-    private sandbox = (this.env !== "production") ? "-sandbox" : "";
+    private sandbox = (this.env !== "production" && this.env !== "test") ? "-sandbox" : "";
 
     /*
         Funding instrument

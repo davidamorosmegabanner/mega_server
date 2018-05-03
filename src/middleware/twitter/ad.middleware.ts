@@ -4,7 +4,6 @@ import {RequestTwitterService} from "../../services/request.twitter.service";
 const requestTwitterService = new RequestTwitterService();
 
 export class TwitterAdMiddleware {
-
     private env = (process.env.NODE_ENV || "development");
 
     /*
