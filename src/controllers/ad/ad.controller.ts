@@ -4,6 +4,8 @@ import {Ad} from "../../models/ad/ad.model";
 import {AdService} from "../../models/ad/ad.service";
 import {AdType} from "../../models/adType/adType.model";
 import {AdTypeService} from "../../models/adType/adType.service";
+import {Campaign} from "../../models/campaign/campaign.model";
+import {CampaignService} from "../../models/campaign/campaign.service";
 import {Creativity} from "../../models/creativity/creativity.model";
 import {CreativityService} from "../../models/creativity/creativity.service";
 import {User} from "../../models/user/user.model";
@@ -17,6 +19,7 @@ const userService = new UserService();
 const adTypeService = new AdTypeService();
 const adService = new AdService();
 const creativityService = new CreativityService();
+const campaignService = new CampaignService();
 const validator = new Validator();
 
 export let create: ExpressSignature = async (request, response, next) => {
@@ -32,10 +35,11 @@ export let create: ExpressSignature = async (request, response, next) => {
         const owner: User = await userService.findById(params.owner);
         const adType: AdType = await adTypeService.findByKey(params.adType);
         const creativities: Creativity[] = await creativityService.findById(params.creativities);
+        const campaign: Campaign = await campaignService.findById(owner, params.campaign);
 
         await validator.validateCreativities(adType, creativities);
 
-        const ad: Ad = await adService.create(name, owner, adType, creativities);
+        const ad: Ad = await adService.create(name, owner, adType, creativities, campaign);
 
         response.status(200).send({
             ad: ad._id,
@@ -43,6 +47,7 @@ export let create: ExpressSignature = async (request, response, next) => {
             owner: ad.owner._id,
             adType: ad.adType.key,
             creativities: [ad.creativities],
+            campaign: ad.campaign,
         });
 
     } catch (err) {

@@ -15,7 +15,6 @@ export class CampaignService {
         name: string,
         description: string,
         owner: User,
-        ads: Ad[],
         dailyBudget: number,
         startDate: Date,
         endDate: Date,
@@ -23,7 +22,6 @@ export class CampaignService {
         const campaign = new this.mongoModel({
             name: (name),
             owner: (owner),
-            ads: (ads),
             budget: 0,
             dailyBudget: (dailyBudget),
             startDate: (startDate),
@@ -35,15 +33,28 @@ export class CampaignService {
         return await campaign.save();
     }
 
-    public async get(user: User, id: string[]): Promise<Creativity> {
-        const populateQuery = [{
-            path: "ads",
-            select: "_id name",
-            populate: [
-                {path: "adType", select: "name key -_id -__t"},
-                {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size duration"},
-            ],
-        }];
+    public async findById(user:User, id: string): Promise<Campaign> {
+        return await this.mongoModel
+            .find({
+                owner: user,
+                _id: id,
+            }, {
+                _id: 1,
+                name: 1,
+                description: 1,
+                owner: 1,
+                budget: 1,
+                dailyBudget: 1,
+                startDate: 1,
+                endDate: 1,
+                active: 1,
+                created: 1,
+                updated: 1,
+            })
+            .lean();
+    }
+
+    public async get(user: User, id: string[]): Promise<Campaign> {
         return await this.mongoModel
             .find({
                 owner: user,
@@ -54,7 +65,6 @@ export class CampaignService {
                 name: 1,
                 description: 1,
                 owner: 1,
-                ads: 1,
                 budget: 1,
                 dailyBudget: 1,
                 startDate: 1,
@@ -63,19 +73,10 @@ export class CampaignService {
                 created: 1,
                 updated: 1,
             })
-            .populate(populateQuery)
             .lean();
     }
 
-    public async list(user: User): Promise<Creativity[]> {
-        const populateQuery = [{
-            path: "ads",
-            select: "_id name",
-            populate: [
-                {path: "adType", select: "name key -_id -__t"},
-                {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size duration"},
-            ],
-        }];
+    public async list(user: User): Promise<Campaign[]> {
         return await this.mongoModel
             .find({
                 owner: user,
@@ -94,7 +95,6 @@ export class CampaignService {
                 created: 1,
                 updated: 1,
             })
-            .populate(populateQuery)
             .lean();
     }
 

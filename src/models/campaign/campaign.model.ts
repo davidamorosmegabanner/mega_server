@@ -1,6 +1,5 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
-import {Ad} from "../ad/ad.model";
 import {User} from "../user/user.model";
 
 export interface Campaign extends Document {
@@ -8,7 +7,6 @@ export interface Campaign extends Document {
     name: string;
     description: string;
     owner: User;
-    ads: Ad[];
     budget: number;
     dailyBudget: number;
     startDate: Date;
@@ -32,10 +30,6 @@ const CampaignSchema = new Schema({
         required: true,
         ref: "User",
     },
-    ads: [{
-        type: Schema.Types.ObjectId,
-        ref: "Ad",
-    }],
     budget: {
         type: Number,
         required: true,

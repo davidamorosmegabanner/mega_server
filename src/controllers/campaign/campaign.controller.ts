@@ -25,21 +25,19 @@ export let create: ExpressSignature = async (request, response, next) => {
     try {
         const name = params.name.toString();
         const owner = await userService.findByToken(xAccessToken);
-        const ads = await adService.findAndCheck(params.ads);
         const dailyBudget = Number(params.dailyBudget);
         const startDate = new Date(params.startDate);
         const endDate = new Date(params.endDate);
         const description = params.description;
 
         const campaign: Campaign = await campaignService.create(
-            name, description, owner, ads, dailyBudget, startDate, endDate,
+            name, description, owner, dailyBudget, startDate, endDate,
         );
 
         response.status(200).send({
             _id: (campaign._id),
             name: (campaign.name),
             description: (campaign.description),
-            ads: (params.ads),
             budget: (campaign.budget),
             dailyBudget: (campaign.dailyBudget),
             startDate: (campaign.startDate),
