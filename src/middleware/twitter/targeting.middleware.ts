@@ -1,4 +1,3 @@
-import config from "../../config/config";
 import {RequestTwitterService} from "../../services/request.twitter.service";
 
 const requestTwitterService = new RequestTwitterService();
@@ -209,7 +208,7 @@ export class TwitterTargetingMiddleware {
     }
     private async targetGender(accessToken, accessTokenSecret, accountId, lineItemId, targetingValue): Promise<any> {
         // Check targeting value is ok
-        const acceptedValues = ["1","2"];
+        const acceptedValues = ["1", "2"];
         if (acceptedValues.indexOf(targetingValue) !== -1) {
             const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/targeting_criteria`;
             const params = {
