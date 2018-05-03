@@ -1,5 +1,4 @@
 import config from "../../config/config";
-import twitter from "../../config/seeds/twitter";
 import {RequestTwitterService} from "../../services/request.twitter.service";
 
 const requestTwitterService = new RequestTwitterService();
