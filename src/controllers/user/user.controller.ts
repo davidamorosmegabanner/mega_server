@@ -1,6 +1,5 @@
 import {logger} from "../../config/logger";
 
-import axios from "axios";
 import {Role} from "../../models/role/role.model";
 import {RoleService} from "../../models/role/role.service";
 import {Password} from "../../models/user/password";

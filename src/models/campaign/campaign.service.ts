@@ -1,5 +1,4 @@
 import {Model} from "mongoose";
-import {Ad} from "../ad/ad.model";
 import {Creativity} from "../creativity/creativity.model";
 import {User} from "../user/user.model";
 import {Campaign, default as CampaignMongo} from "./campaign.model";

@@ -1,14 +1,12 @@
-import {logger} from "../../config/logger";
-import {FacebookAuthMiddleware} from "../../middleware/facebook/auth.middleware";
-import {ExpressSignature} from "../Route";
-import {User} from "../../models/user/user.model";
-import {AuthService} from "../../services/auth.service";
-import {UserService} from "../../models/user/user.service";
-import {FacebookAdMiddleware} from "../../middleware/facebook/ad.middleware";
 import config from "../../config/config";
+import {logger} from "../../config/logger";
+import {FacebookAdMiddleware} from "../../middleware/facebook/ad.middleware";
+import {FacebookAuthMiddleware} from "../../middleware/facebook/auth.middleware";
+import {User} from "../../models/user/user.model";
+import {UserService} from "../../models/user/user.service";
+import {ExpressSignature} from "../Route";
 
 const facebookAuthMiddleware = new FacebookAuthMiddleware();
-const authService = new AuthService();
 const userService = new UserService();
 const facebookAdMiddleware = new FacebookAdMiddleware();
 

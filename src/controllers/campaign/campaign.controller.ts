@@ -1,6 +1,5 @@
 import {logger} from "../../config/logger";
 
-import {AdService} from "../../models/ad/ad.service";
 import {Campaign} from "../../models/campaign/campaign.model";
 import {CampaignService} from "../../models/campaign/campaign.service";
 import {User} from "../../models/user/user.model";
@@ -8,7 +7,6 @@ import {UserService} from "../../models/user/user.service";
 import {AuthService} from "../../services/auth.service";
 import {ExpressSignature} from "../Route";
 
-const adService = new AdService();
 const authService = new AuthService();
 const campaignService = new CampaignService();
 const userService = new UserService();
