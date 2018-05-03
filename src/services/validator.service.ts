@@ -1,6 +1,6 @@
 import {AdType} from "../models/adType/adType.model";
-import {InstagramAdType} from "../models/adType/instagram/instagram.adType.model";
-import {InstagramAdTypeService} from "../models/adType/instagram/instagram.adType.service";
+import {InstagramAdType} from "../models/adType/instagramAdType.model";
+import {InstagramAdTypeService} from "../models/adType/instagramAdType.service";
 import {Creativity} from "../models/creativity/creativity.model";
 
 /**

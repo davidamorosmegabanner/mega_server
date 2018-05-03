@@ -1,10 +1,10 @@
 import InstagramConfiguration from "../../config/seeds/instagram";
 import TwitterConfiguration from "../../config/seeds/twitter";
 import {AdType} from "../../models/adType/adType.model";
-import {InstagramAdType} from "../../models/adType/instagram/instagram.adType.model";
-import {InstagramAdTypeService} from "../../models/adType/instagram/instagram.adType.service";
-import {TwitterAdType} from "../../models/adType/twitter/twitter.adType.model";
-import {TwitterAdTypeService} from "../../models/adType/twitter/twitter.adType.service";
+import {InstagramAdType} from "../../models/adType/instagramAdType.model";
+import {InstagramAdTypeService} from "../../models/adType/instagramAdType.service";
+import {TwitterAdType} from "../../models/adType/twitterAdType.model";
+import {TwitterAdTypeService} from "../../models/adType/twitterAdType.service";
 import {PlatformService} from "../../models/platform/platform.service";
 
 const instagramAdTypeService = new InstagramAdTypeService();

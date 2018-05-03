@@ -1,5 +1,5 @@
 import {Model, Schema} from "mongoose";
-import {AdType, AllowedSize, default as AdTypeMongo, Duration, NumCreativities} from "../adType.model";
+import {AdType, AllowedSize, default as AdTypeMongo, Duration, NumCreativities} from "./adType.model";
 
 export interface TwitterAdType extends AdType {
     mimetypes?: string[];

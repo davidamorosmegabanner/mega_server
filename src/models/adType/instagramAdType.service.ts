@@ -1,7 +1,7 @@
 import {Model} from "mongoose";
-import {Platform} from "../../platform/platform.model";
-import {AdType} from "../adType.model";
-import {default as InstagramAdTypeMongo, InstagramAdType} from "./instagram.adType.model";
+import {Platform} from "../platform/platform.model";
+import {AdType} from "./adType.model";
+import {default as InstagramAdTypeMongo, InstagramAdType} from "./instagramAdType.model";
 
 export class InstagramAdTypeService {
     private mongoModel: Model<InstagramAdType>;

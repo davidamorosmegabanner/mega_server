@@ -1,7 +1,7 @@
 import {Model} from "mongoose";
-import {Platform} from "../../platform/platform.model";
-import {AdType} from "../adType.model";
-import {default as TwitterAdTypeMongo, TwitterAdType} from "./twitter.adType.model";
+import {Platform} from "../platform/platform.model";
+import {AdType} from "./adType.model";
+import {default as TwitterAdTypeMongo, TwitterAdType} from "./twitterAdType.model";
 
 export class TwitterAdTypeService {
     private mongoModel: Model<TwitterAdType>;

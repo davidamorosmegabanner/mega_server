@@ -1,5 +1,5 @@
 import {Model, Schema} from "mongoose";
-import {Ad, default as AdMongo} from "../ad.model";
+import {Ad, default as AdMongo} from "./ad.model";
 
 export interface TwitterAd extends Ad {
     text: string;
