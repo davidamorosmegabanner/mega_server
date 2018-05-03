@@ -30,6 +30,8 @@ export let login: ExpressSignature = async (request, response, next) => {
             response.status(401).send("Email and password do not match!");
         }
 
+        request.session.userId = user._id;
+
         response.status(200).send({
             _id: user._id,
             token: user.token,
@@ -58,6 +60,9 @@ export let register: ExpressSignature = async (request, response, next) => {
     try {
         const role: Role = await roleService.findByName(params.role);
         const user: User = await userService.create(params.name, params.email, params.password, role, params.phone);
+
+        request.session.userId = user._id;
+
         response.status(200).send({
             token: user.token,
             _id: user._id,
@@ -168,6 +173,7 @@ export let getInfo: ExpressSignature = async (request, response, next) => {
 };
 
 // Request to store user id in user session
+// Probably is not needed, but may be if user is not stored when login or registering
 export let id: ExpressSignature = async (request, response, next) => {
     const allowedRoles = ["admin"];
 
