@@ -26,4 +26,17 @@ export class TwitterAdTypeService {
     public async findByAdType(id: AdType): Promise<TwitterAdType> {
         return await this.mongoModel.findById(id);
     }
+
+    public async assignTwitterParams(params) {
+        return {
+            tweet: params.tweet,
+            webpage: params.webpage,
+            androidAppId: params.androidAppId,
+            androidDeepLink: params.androidDeepLink,
+            iPhoneAppId: params.iPhoneAppId,
+            iPhoneDeepLink: params.iPhoneDeepLink,
+            iPadAppId: params.iPadAppId,
+            iPadDeepLink: params.iPadDeepLink,
+        };
+    }
 }

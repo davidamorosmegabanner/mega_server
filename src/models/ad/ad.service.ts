@@ -4,17 +4,42 @@ import {Campaign} from "../campaign/campaign.model";
 import {Creativity} from "../creativity/creativity.model";
 import {User} from "../user/user.model";
 import {Ad, default as AdMongo} from "./ad.model";
+import {default as TwitterAdMongo, TwitterAd} from "./twitterAd.model";
+import twitter from "../../config/seeds/twitter";
 
 export class AdService {
     private readonly mongoModel: Model<Ad>;
+    private readonly twitterAdModel: Model<TwitterAd>;
 
     constructor(mongoModel?: Model<Ad>) {
         this.mongoModel = mongoModel || AdMongo;
+        this.twitterAdModel = TwitterAdMongo;
     }
 
     public async create(
         name: string, owner: User, adType: AdType, creativities: Creativity[], campaign: Campaign,
-    ): Promise<Ad> {
+        twitterParams: any,
+    ): Promise<any> {
+        if (adType.platform.name === "Twitter") {
+            const ad: TwitterAd = new this.twitterAdModel({
+                name: (name),
+                owner: (owner),
+                adType: (adType),
+                creativities: (creativities),
+                campaign: (campaign),
+                text: (twitterParams.text),
+                url: (twitterParams.url),
+                androidAppId: (twitterParams.androidAppId),
+                androidAppDeepLink: (twitterParams.androidAppDeepLink),
+                iPhoneAppId: (twitterParams.iPhoneAppId),
+                iPhoneAppDeepLink: (twitterParams.iPhoneAppDeepLink),
+                iPadAppId: (twitterParams.iPadAppId),
+                iPadAppDeepLink: (twitterParams.iPadAppDeepLink),
+            });
+            const twitterAdMongo = new this.twitterAdModel(ad);
+            return await twitterAdMongo.save();
+        }
+
         const ad = new this.mongoModel({
             name: (name),
             owner: (owner),

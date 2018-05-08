@@ -15,25 +15,27 @@ export default {
         key: "TW_TWEET",
         description: "Simple tweet that appears in the feed",
         platform: PlatformsConfiguration.Twitter,
+        mandatoryTweet: true,
+        mandatoryAppIds: false,
         mimetypes: [],
-        objectives: ["APP_ENGAGEMENTS", "APP_INSTALLS", "AWARENESS", "FOLLOWERS",
-            "TWEET_ENGAGEMENTS", "VIDEO_VIEWS", "VIDEO_VIEWS_PREROLL", "WEBSITE_CLICKS"],
-        placements: ["ALL_ON_TWITTER", "PUBLISHER_NETWORK", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
+        objectives: ["AWARENESS", "FOLLOWERS", "TWEET_ENGAGEMENTS", "WEBSITE_CLICKS"],
+        placements: ["ALL_ON_TWITTER", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
         numCreativities: {
             min: 0,
             max: 0,
         },
     },
 
-    TwitterImages: {
-        name: "Tweet with image",
+    TwitterTweetImage: {
+        name: "Tweet with image (up to 4 images)",
         key: "TW_TWEET_IMAGE",
         description: "Images that appear on a tweet in the feed",
         platform: PlatformsConfiguration.Twitter,
-        mimetypes: ["image/jpg", "image/png", "image/gif", "image/webp"],
-        objectives: ["APP_ENGAGEMENTS", "APP_INSTALLS", "AWARENESS", "FOLLOWERS",
-            "TWEET_ENGAGEMENTS", "VIDEO_VIEWS", "VIDEO_VIEWS_PREROLL", "WEBSITE_CLICKS"],
-        placements: ["ALL_ON_TWITTER", "PUBLISHER_NETWORK", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
+        mandatoryTweet: true,
+        mandatoryAppIds: false,
+        mimetypes: ["image/jpg", "image/png", "image/webp"],
+        objectives: ["AWARENESS", "FOLLOWERS", "TWEET_ENGAGEMENTS", "WEBSITE_CLICKS"],
+        placements: ["ALL_ON_TWITTER", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
         numCreativities: {
             min: 1,
             max: 4,
@@ -41,11 +43,116 @@ export default {
         allowedSize: {
             min: {
                 width: 1200,
-                height: 1200,
+                height: 800,
             },
             max: {
                 width: 2400,
-                height: 2400,
+                height: 1600,
+            },
+        },
+    },
+
+    TwitterTweetGif: {
+        name: "Tweet with GIF",
+        key: "TW_TWEET_GIF",
+        description: "GIF that appears on a tweet in the feed",
+        platform: PlatformsConfiguration.Twitter,
+        mandatoryTweet: true,
+        mandatoryAppIds: false,
+        mimetypes: ["image/gif"],
+        objectives: ["AWARENESS", "FOLLOWERS", "TWEET_ENGAGEMENTS", "WEBSITE_CLICKS"],
+        placements: ["ALL_ON_TWITTER", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
+        numCreativities: {
+            min: 1,
+            max: 1,
+        },
+        allowedSize: {
+            min: {
+                width: 1200,
+                height: 800,
+            },
+            max: {
+                width: 2400,
+                height: 1600,
+            },
+        },
+    },
+
+    TwitterTweetVideo: {
+        name: "Tweet with video",
+        key: "TW_TWEET_VIDEO",
+        description: "Video that appears on a tweet in the feed",
+        platform: PlatformsConfiguration.Twitter,
+        mandatoryTweet: true,
+        mandatoryAppIds: false,
+        mimetypes: ["video/mp4"],
+        objectives: ["AWARENESS", "FOLLOWERS", "TWEET_ENGAGEMENTS", "VIDEO_VIEWS",
+            "VIDEO_VIEWS_PREROLL", "WEBSITE_CLICKS"],
+        placements: ["ALL_ON_TWITTER", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
+        numCreativities: {
+            min: 1,
+            max: 1,
+        },
+        allowedSize: {
+            min: {
+                width: 1200,
+                height: 600,
+            },
+            max: {
+                width: 2400,
+                height: 1600,
+            },
+        },
+    },
+
+    TwitterAppImage: {
+        name: "Card with an app id that appears on the feed",
+        key: "TW_APP_IMAGE",
+        description: "App card that appears on the feed with an image",
+        platform: PlatformsConfiguration.Twitter,
+        mandatoryTweet: false,
+        mandatoryAppIds: true,
+        mimetypes: ["image/jpg", "image/png", "image/webp"],
+        objectives: ["APP_ENGAGEMENTS", "APP_INSTALLS"],
+        placements: ["ALL_ON_TWITTER", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
+        numCreativities: {
+            min: 1,
+            max: 1,
+        },
+        allowedSize: {
+            min: {
+                width: 500,
+                height: 500,
+            },
+            max: {
+                width: 1200,
+                height: 1200,
+            },
+        },
+    },
+
+    TwitterAppVideo: {
+        name: "Tweet with video",
+        key: "TW_APP_VIDEO",
+        description: "App card that appears on the feed with a video",
+        platform: PlatformsConfiguration.Twitter,
+        mandatoryTweet: false,
+        mandatoryAppIds: true,
+        mimetypes: ["image/jpg", "image/png", "image/webp"],
+        objectives: ["APP_ENGAGEMENTS", "APP_INSTALLS"],
+        placements: ["ALL_ON_TWITTER", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
+        numCreativities: {
+            min: 1,
+            max: 1,
+        },
+        allowedSize: {
+            min: {
+                width: 500,
+                height: 500,
+            },
+            max: {
+                width: 1200,
+                height: 1200,
             },
         },
     },

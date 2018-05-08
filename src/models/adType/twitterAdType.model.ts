@@ -2,6 +2,8 @@ import {Model, Schema} from "mongoose";
 import {AdType, AllowedSize, default as AdTypeMongo, Duration, NumCreativities} from "./adType.model";
 
 export interface TwitterAdType extends AdType {
+    mandatoryTweet: boolean;
+    mandatoryAppIds: boolean;
     mimetypes?: string[];
     allowedSize?: AllowedSize;
     duration?: Duration;
@@ -11,6 +13,14 @@ export interface TwitterAdType extends AdType {
 }
 
 const TwitterAdTypeSchema = new Schema({
+    mandatoryTweet: {
+        type: Boolean,
+        required: true,
+    },
+    mandatoryAppIds: {
+        type: Boolean,
+        required: true,
+    },
     mimetypes: [{
         type: String,
         required: true,

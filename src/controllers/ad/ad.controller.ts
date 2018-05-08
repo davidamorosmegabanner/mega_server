@@ -4,6 +4,7 @@ import {Ad} from "../../models/ad/ad.model";
 import {AdService} from "../../models/ad/ad.service";
 import {AdType} from "../../models/adType/adType.model";
 import {AdTypeService} from "../../models/adType/adType.service";
+import {TwitterAdTypeService} from "../../models/adType/twitterAdType.service";
 import {Campaign} from "../../models/campaign/campaign.model";
 import {CampaignService} from "../../models/campaign/campaign.service";
 import {Creativity} from "../../models/creativity/creativity.model";
@@ -21,6 +22,7 @@ const adService = new AdService();
 const creativityService = new CreativityService();
 const campaignService = new CampaignService();
 const validator = new Validator();
+const twitterAdTypeService = new TwitterAdTypeService();
 
 export let create: ExpressSignature = async (request, response, next) => {
     const params = request.body;
@@ -37,18 +39,21 @@ export let create: ExpressSignature = async (request, response, next) => {
         const creativities: Creativity[] = await creativityService.findById(params.creativities);
         const campaign: Campaign = await campaignService.findById(owner, params.campaign);
 
+        let twitterParams: any = {};
+
+        // Optional params
+        if (adType.platform.name === "Twitter") {
+            twitterParams = twitterAdTypeService.assignTwitterParams(params);
+        }
+
+        // TODO validate twitter params
+
         await validator.validateCreativities(adType, creativities);
 
-        const ad: Ad = await adService.create(name, owner, adType, creativities, campaign);
+        const ad: any = await adService.create(name, owner, adType, creativities, campaign,
+            twitterParams);
 
-        response.status(200).send({
-            ad: ad._id,
-            name: ad.name,
-            owner: ad.owner._id,
-            adType: ad.adType.key,
-            creativities: [ad.creativities],
-            campaign: ad.campaign,
-        });
+        response.status(200).send(ad);
 
     } catch (err) {
         logger.error(err);
