@@ -4,12 +4,10 @@ import {AdType, AllowedSize, default as AdTypeMongo, Duration, NumCreativities} 
 export interface TwitterAdType extends AdType {
     mandatoryTweet: boolean;
     mandatoryAppIds: boolean;
-    mimetypes?: string[];
+    mimetypes: string[];
     allowedSize?: AllowedSize;
     duration?: Duration;
     frames?: number;
-    objectives: string[];
-    placements: string[];
 }
 
 const TwitterAdTypeSchema = new Schema({

@@ -5,7 +5,6 @@ import {Creativity} from "../creativity/creativity.model";
 import {User} from "../user/user.model";
 import {Ad, default as AdMongo} from "./ad.model";
 import {default as TwitterAdMongo, TwitterAd} from "./twitterAd.model";
-import twitter from "../../config/seeds/twitter";
 
 export class AdService {
     private readonly mongoModel: Model<Ad>;
@@ -20,7 +19,8 @@ export class AdService {
         name: string, owner: User, adType: AdType, creativities: Creativity[], campaign: Campaign,
         twitterParams: any,
     ): Promise<any> {
-        if (adType.platform.name === "Twitter") {
+        // Twitter
+        if (adType.platform.key === "TW") {
             const ad: TwitterAd = new this.twitterAdModel({
                 name: (name),
                 owner: (owner),
@@ -40,6 +40,7 @@ export class AdService {
             return await twitterAdMongo.save();
         }
 
+        // Default
         const ad = new this.mongoModel({
             name: (name),
             owner: (owner),

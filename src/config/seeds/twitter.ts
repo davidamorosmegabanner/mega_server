@@ -18,8 +18,6 @@ export default {
         mandatoryTweet: true,
         mandatoryAppIds: false,
         mimetypes: [],
-        objectives: ["AWARENESS", "FOLLOWERS", "TWEET_ENGAGEMENTS", "WEBSITE_CLICKS"],
-        placements: ["ALL_ON_TWITTER", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
         numCreativities: {
             min: 0,
             max: 0,
@@ -34,8 +32,6 @@ export default {
         mandatoryTweet: true,
         mandatoryAppIds: false,
         mimetypes: ["image/jpg", "image/png", "image/webp"],
-        objectives: ["AWARENESS", "FOLLOWERS", "TWEET_ENGAGEMENTS", "WEBSITE_CLICKS"],
-        placements: ["ALL_ON_TWITTER", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
         numCreativities: {
             min: 1,
             max: 4,
@@ -60,8 +56,6 @@ export default {
         mandatoryTweet: true,
         mandatoryAppIds: false,
         mimetypes: ["image/gif"],
-        objectives: ["AWARENESS", "FOLLOWERS", "TWEET_ENGAGEMENTS", "WEBSITE_CLICKS"],
-        placements: ["ALL_ON_TWITTER", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
         numCreativities: {
             min: 1,
             max: 1,
@@ -86,9 +80,6 @@ export default {
         mandatoryTweet: true,
         mandatoryAppIds: false,
         mimetypes: ["video/mp4"],
-        objectives: ["AWARENESS", "FOLLOWERS", "TWEET_ENGAGEMENTS", "VIDEO_VIEWS",
-            "VIDEO_VIEWS_PREROLL", "WEBSITE_CLICKS"],
-        placements: ["ALL_ON_TWITTER", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
         numCreativities: {
             min: 1,
             max: 1,
@@ -113,8 +104,6 @@ export default {
         mandatoryTweet: false,
         mandatoryAppIds: true,
         mimetypes: ["image/jpg", "image/png", "image/webp"],
-        objectives: ["APP_ENGAGEMENTS", "APP_INSTALLS"],
-        placements: ["ALL_ON_TWITTER", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
         numCreativities: {
             min: 1,
             max: 1,
@@ -139,8 +128,6 @@ export default {
         mandatoryTweet: false,
         mandatoryAppIds: true,
         mimetypes: ["image/jpg", "image/png", "image/webp"],
-        objectives: ["APP_ENGAGEMENTS", "APP_INSTALLS"],
-        placements: ["ALL_ON_TWITTER", "TWITTER_PROFILE", "TWITTER_SEARCH", "TWITTER_TIMELINE"],
         numCreativities: {
             min: 1,
             max: 1,

@@ -1,6 +1,5 @@
 import {logger} from "../../config/logger";
 
-import {Ad} from "../../models/ad/ad.model";
 import {AdService} from "../../models/ad/ad.service";
 import {AdType} from "../../models/adType/adType.model";
 import {AdTypeService} from "../../models/adType/adType.service";
@@ -39,15 +38,13 @@ export let create: ExpressSignature = async (request, response, next) => {
         const creativities: Creativity[] = await creativityService.findById(params.creativities);
         const campaign: Campaign = await campaignService.findById(owner, params.campaign);
 
-        let twitterParams: any = {};
-
         // Optional params
-        if (adType.platform.name === "Twitter") {
+        let twitterParams: any = {};
+        if (adType.platform.key === "TW") {
             twitterParams = twitterAdTypeService.assignTwitterParams(params);
         }
 
-        // TODO validate twitter params
-
+        await validator.validateParams(adType, params);
         await validator.validateCreativities(adType, creativities);
 
         const ad: any = await adService.create(name, owner, adType, creativities, campaign,
