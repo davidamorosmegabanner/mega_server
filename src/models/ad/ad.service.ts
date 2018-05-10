@@ -1,5 +1,5 @@
 import {Model} from "mongoose";
-import {AdType} from "../adType/adType.model";
+import {AdType} from "../adType/adType";
 import {Campaign} from "../campaign/campaign.model";
 import {Creativity} from "../creativity/creativity.model";
 import {User} from "../user/user.model";
@@ -24,7 +24,7 @@ export class AdService {
             const ad: TwitterAd = new this.twitterAdModel({
                 name: (name),
                 owner: (owner),
-                adType: (adType),
+                adTypeKey: (adType.key),
                 creativities: (creativities),
                 campaign: (campaign),
                 text: (twitterParams.text),

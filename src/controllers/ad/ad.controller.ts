@@ -1,9 +1,8 @@
 import {logger} from "../../config/logger";
 
 import {AdService} from "../../models/ad/ad.service";
-import {AdType} from "../../models/adType/adType.model";
+import {AdType} from "../../models/adType/adType";
 import {AdTypeService} from "../../models/adType/adType.service";
-import {TwitterAdTypeService} from "../../models/adType/twitterAdType.service";
 import {Campaign} from "../../models/campaign/campaign.model";
 import {CampaignService} from "../../models/campaign/campaign.service";
 import {Creativity} from "../../models/creativity/creativity.model";
@@ -13,15 +12,15 @@ import {UserService} from "../../models/user/user.service";
 import {AuthService} from "../../services/auth.service";
 import {Validator} from "../../services/validator.service";
 import {ExpressSignature} from "../Route";
+import twitter from "../../config/seeds/twitter";
 
 const authService = new AuthService();
 const userService = new UserService();
-const adTypeService = new AdTypeService();
 const adService = new AdService();
 const creativityService = new CreativityService();
 const campaignService = new CampaignService();
 const validator = new Validator();
-const twitterAdTypeService = new TwitterAdTypeService();
+const adTypeService = new AdTypeService();
 
 export let create: ExpressSignature = async (request, response, next) => {
     const params = request.body;
@@ -34,7 +33,7 @@ export let create: ExpressSignature = async (request, response, next) => {
     try {
         const name: string = params.name;
         const owner: User = await userService.findById(params.owner);
-        const adType: AdType = await adTypeService.findByKey(params.adType);
+        const adType: AdType = await adTypeService.assignByKey(params.adType);
         const creativities: Creativity[] = await creativityService.findById(params.creativities);
         const campaign: Campaign = await campaignService.findById(owner, params.campaign);
 
@@ -46,8 +45,9 @@ export let create: ExpressSignature = async (request, response, next) => {
         // + Optional params
         let twitterParams: any = {};
         if (adType.platform.key === "TW") {
-            twitterParams = twitterAdTypeService.assignTwitterParams(params);
+            twitterParams = adTypeService.assignTwitterParams(params);
         }
+
         const ad: any = await adService.create(name, owner, adType, creativities, campaign,
             twitterParams);
 

@@ -1,6 +1,5 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
-import {AdType} from "../adType/adType.model";
 import {Campaign} from "../campaign/campaign.model";
 import {Creativity} from "../creativity/creativity.model";
 import {User} from "../user/user.model";
@@ -9,7 +8,7 @@ export interface Ad extends Document {
     _id: string;
     name: string;
     owner: User;
-    adType: AdType;
+    adTypeKey: string;
     campaign: Campaign;
     creativities?: Creativity[];
     deleted: boolean;
@@ -27,10 +26,9 @@ const AdSchema = new Schema({
         required: true,
         ref: "User",
     },
-    adType: {
-        type: Schema.Types.ObjectId,
+    adTypeKey: {
+        type: String,
         required: true,
-        ref: "AdType",
     },
     campaign: {
         type: Schema.Types.ObjectId,

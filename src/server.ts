@@ -17,8 +17,6 @@ import UserRouter from "./controllers/user/user.router";
 
 import FacebookRouter from "./controllers/facebook/facebook.router";
 
-import InsertAll from "./services/insert/main.insert";
-
 import {logger, Stream} from "./config/logger";
 import TwitterRouter from "./controllers/twitter/twitter.router";
 
@@ -42,7 +40,6 @@ export class Server {
         await this.session();
         await this.config();
         await this.routes();
-        await this.inserts();
 
         logger.info(`App is active in port ${config.port}`);
 
@@ -107,13 +104,6 @@ export class Server {
             limits: { fileSize: config.maxFileSize },
         }));
         logger.info("Files configuration loaded successfully");
-    }
-
-    private async inserts() {
-        if (process.env.INSERT === "true") {
-            const insertAll = new InsertAll();
-            await insertAll.insert();
-        }
     }
 
     private logger() {

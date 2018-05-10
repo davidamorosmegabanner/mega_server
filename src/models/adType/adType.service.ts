@@ -1,25 +1,44 @@
-import {Model} from "mongoose";
-import {AdType, default as AdTypeMongo} from "./adType.model";
+import {AdType} from "./adType";
+import {default as InstagramAdTypes} from "./instagramAdType";
+import {default as TwitterAdTypes} from "./twitterAdType";
 
 export class AdTypeService {
-    private readonly mongoModel: Model<AdType>;
 
-    constructor(mongoModel?: Model<AdType>) {
-        this.mongoModel = mongoModel || AdTypeMongo;
+    public adTypes: AdType[] = [];
+
+    constructor() {
+
+        // Twitter
+        for (const pushing of TwitterAdTypes) { this.adTypes.push(pushing); }
+        // Instagram
+        for (const pushing of InstagramAdTypes) { this.adTypes.push(pushing); }
+
     }
 
-    public async findById(id: string): Promise<AdType> {
-        return await this.mongoModel.findById(id).lean();
-    }
+    public async assignByKey(adTypeKey): Promise<AdType> {
 
-    public async findByKey(key: string): Promise<AdType> {
-        return await this.mongoModel.findOne({key: (key)}).populate("platform").lean();
-    }
-
-    public async insertBulk(adTypes: AdType[]) {
-        adTypes.map(async (adType) => {
-            const adTypeMongo = new this.mongoModel(adType);
-            await adTypeMongo.save();
+        const assigned: AdType = this.adTypes.find((adType) => {
+            return adType.key === adTypeKey;
         });
+
+        if (assigned && typeof assigned === "object") {
+            return assigned;
+        } else {
+            throw new Error("No adType found matching the one specified!");
+        }
     }
+
+    public assignTwitterParams(params) {
+        return {
+            text: params.text,
+            webpage: params.webpage,
+            androidAppId: params.androidAppId,
+            androidDeepLink: params.androidDeepLink,
+            iPhoneAppId: params.iPhoneAppId,
+            iPhoneDeepLink: params.iPhoneDeepLink,
+            iPadAppId: params.iPadAppId,
+            iPadDeepLink: params.iPadDeepLink,
+        };
+    }
+
 }

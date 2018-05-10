@@ -37,7 +37,7 @@ export class CreativityService {
     }
 
     public async findById(creativities: string[]): Promise<Creativity[]> {
-        if (creativities.length) {
+        if (creativities && creativities.length) {
             return await this.mongoModel
                 .find({
                     _id: creativities,

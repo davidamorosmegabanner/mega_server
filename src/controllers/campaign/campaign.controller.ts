@@ -22,11 +22,11 @@ export let create: ExpressSignature = async (request, response, next) => {
     const xAccessToken = request.headers["x-access-token"].toString();
     try {
         const name = params.name.toString();
+        const description = params.description;
         const owner = await userService.findByToken(xAccessToken);
         const dailyBudget = Number(params.dailyBudget);
         const startDate = new Date(params.startDate);
         const endDate = new Date(params.endDate);
-        const description = params.description;
 
         const campaign: Campaign = await campaignService.create(
             name, description, owner, dailyBudget, startDate, endDate,

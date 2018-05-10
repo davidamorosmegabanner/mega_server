@@ -1,8 +1,6 @@
-import {AdType} from "../models/adType/adType.model";
-import {InstagramAdType} from "../models/adType/instagramAdType.model";
-import {InstagramAdTypeService} from "../models/adType/instagramAdType.service";
-import {TwitterAdType} from "../models/adType/twitterAdType.model";
-import {TwitterAdTypeService} from "../models/adType/twitterAdType.service";
+import {AdType} from "../models/adType/adType";
+import {InstagramAdType} from "../models/adType/instagramAdType";
+import {TwitterAdType} from "../models/adType/twitterAdType";
 import {Creativity} from "../models/creativity/creativity.model";
 
 /**
@@ -14,20 +12,17 @@ import {Creativity} from "../models/creativity/creativity.model";
 export class Validator {
 
     // Public creativities validator called when Ad is created
-    public async validateCreativities(adType: AdType, creativities: Creativity[]): Promise<boolean> {
+    public async validateCreativities(adType: any, creativities: Creativity[]): Promise<boolean> {
         let validation: boolean = true;
-        // Implementing different validation depending on type of adType
+        // Implementing different validation depending on type of adType.ts
         switch (adType.platform.key) {
             case "IG": {
-                const instagramAdTypeService = new InstagramAdTypeService();
-                const instagramAdType: InstagramAdType = await instagramAdTypeService.findByAdType(adType);
-                validation = await this.validateInstagramCreativities(instagramAdType, creativities);
+                validation = await this.validateInstagramCreativities(adType, creativities);
                 break;
             }
             case "TW": {
-                const twitterAdTypeService = new TwitterAdTypeService();
-                const twitterAdType: TwitterAdType = await twitterAdTypeService.findByAdType(adType);
-                validation = await this.validateTwitterCreativities(twitterAdType, creativities);
+                validation = await this.validateTwitterCreativities(adType, creativities);
+                break;
             }
             default: {
                 throw new Error("There's been a problem validating creativities. Please contact the admin.");
@@ -37,14 +32,12 @@ export class Validator {
     }
 
     // Public params validator when Ad is created
-    public async validateParams(adType: AdType, params: any): Promise<boolean> {
+    public async validateParams(adType: any, params: any): Promise<boolean> {
         let validation: boolean = true;
-        // Implementing different validation depending on type of adType
+        // Implementing different validation depending on type of adType.ts
         switch (adType.platform.key) {
             case "TW": {
-                const twitterAdTypeService = new TwitterAdTypeService();
-                const twitterAdType: TwitterAdType = await twitterAdTypeService.findByAdType(adType);
-                validation = await this.validateTwitterParams(twitterAdType, params);
+                validation = await this.validateTwitterParams(adType, params);
                 break;
             }
             default: {
@@ -146,8 +139,8 @@ export class Validator {
     // Functions used to validate params received of an ad internally
     private async validateTwitterParams(adType: TwitterAdType, params: any): Promise<boolean> {
 
-        // Validate tweet is present
-        if (adType.mandatoryTweet && !params.tweet && (params.tweet === undefined || params.tweet === null)) {
+        // Validate text is present
+        if (adType.mandatoryTweet && !params.text && (params.text === undefined || params.text === null)) {
             throw new Error(this.errorMissingTweet(adType, "tweet"));
         }
 
