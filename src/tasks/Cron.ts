@@ -8,6 +8,6 @@ export default class CronManager {
     private dummy = cron.schedule(dummyCron.interval, dummyCron.start, false);
 
     public startJobs() {
-        this.dummy.start();
+        // this.dummy.start();
     }
 }

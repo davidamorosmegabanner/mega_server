@@ -102,4 +102,8 @@ export class CampaignService {
 
         return await this.mongoModel.findOneAndUpdate({_id: id}, {$set: {deleted: true}});
     }
+
+    public async getAll(): Promise<Campaign[]> {
+        return await this.mongoModel.find().lean();
+    }
 }

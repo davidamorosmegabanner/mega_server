@@ -89,4 +89,10 @@ export class AdService {
         }
         return findAds;
     }
+
+    public async getCampaignAds(campaign: Campaign): Promise<Ad[]> {
+        return await this.mongoModel
+            .find({ campaign: (campaign) })
+            .lean();
+    }
 }
