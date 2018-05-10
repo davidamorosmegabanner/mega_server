@@ -27,7 +27,103 @@ describe("User controllers test", () => {
             .expect(200)
             .end((err, res) => {
                 if (err) {throw new Error(err);}
-                expect(res.statusCode).to.be.equal(200);
+                expect(res.body).to.have.property("name");
+                done();
+            });
+    });
+
+    it("Should fail creating a TW_TWEET ad", (done) => {
+
+        supertest(server.app)
+            .post("/ad/create")
+            .set({
+                "x-access-token": config.superToken.value,
+                "Content-Type": "application/json",
+            })
+            .send({
+                name: "Test Ad TW_TWEET",
+                owner: "5aac26ce1bd7980cd46251d1",
+                adType: "TW_TWEET",
+                text: "This is a very long long long long long long long long long long long long long long long " +
+                "long long long long long long long long long long long long long long long long long long long " +
+                "long long long long long long long long long long long long long long long long long long long " +
+                "long long long long long long long long long long long long long long long long long long tweet",
+                campaign: "5ac3cbdfb7f5542d592698d3",
+            })
+            .expect(400)
+            .end((err, res) => {
+                if (err) {throw new Error(err);}
+                expect(res.text).contain("Your tweet is too long");
+                done();
+            });
+    });
+
+    it("Should create a TW_TWEET_IMAGE ad", (done) => {
+
+        supertest(server.app)
+            .post("/ad/create")
+            .set({
+                "x-access-token": config.superToken.value,
+                "Content-Type": "application/json",
+            })
+            .send({
+                name: "Test Ad TW_TWEET",
+                owner: "5aac26ce1bd7980cd46251d1",
+                adType: "TW_TWEET_IMAGE",
+                text: "This is a tweeeeeeet",
+                campaign: "5ac3cbdfb7f5542d592698d3",
+                creativities: ["5af4638f3fdea2170d27d71c"]
+            })
+            .expect(200)
+            .end((err, res) => {
+                if (err) {throw new Error(err);}
+                expect(res.body).to.have.property("name");
+                done();
+            });
+    });
+
+    it("Should fail creating a TW_TWEET_IMAGE ad", (done) => {
+
+        supertest(server.app)
+            .post("/ad/create")
+            .set({
+                "x-access-token": config.superToken.value,
+                "Content-Type": "application/json",
+            })
+            .send({
+                name: "Test Ad TW_TWEET",
+                owner: "5aac26ce1bd7980cd46251d1",
+                adType: "TW_TWEET_IMAGE",
+                text: "This is a tweeeeeeet",
+                campaign: "5ac3cbdfb7f5542d592698d3",
+                creativities: ["5ab3b0e45faaaf459c4a5e15"]
+            })
+            .expect(400)
+            .end((err, res) => {
+                if (err) {throw new Error(err);}
+                done();
+            });
+    });
+
+    it("Should create a TW_TWEET_VIDEO ad", (done) => {
+
+        supertest(server.app)
+            .post("/ad/create")
+            .set({
+                "x-access-token": config.superToken.value,
+                "Content-Type": "application/json",
+            })
+            .send({
+                name: "Test Ad TW_TWEET",
+                owner: "5aac26ce1bd7980cd46251d1",
+                adType: "TW_TWEET_VIDEO",
+                text: "This is a tweeeeeeet",
+                campaign: "5ac3cbdfb7f5542d592698d3",
+                creativities: ["5ab3b0e45faaaf459c4a5e15"]
+            })
+            .expect(200)
+            .end((err, res) => {
+                if (err) {throw new Error(err);}
                 expect(res.body).to.have.property("name");
                 done();
             });

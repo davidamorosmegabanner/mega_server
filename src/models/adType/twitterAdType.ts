@@ -53,7 +53,7 @@ TwitterAdTypes.push(new TwitterAdType(
     true,
     false,
     ["image/jpg", "image/png", "image/webp"],
-    new AllowedDimensions(new Dimensions(1200, 800), new Dimensions(2400, 1600)),
+    new AllowedDimensions(new Dimensions(700, 400), new Dimensions(2400, 1600)),
 ));
 
 TwitterAdTypes.push(new TwitterAdType(
@@ -65,7 +65,7 @@ TwitterAdTypes.push(new TwitterAdType(
     true,
     false,
     ["image/gif"],
-    new AllowedDimensions(new Dimensions(1200, 800), new Dimensions(2400, 1600)),
+    new AllowedDimensions(new Dimensions(700, 400), new Dimensions(2400, 1600)),
 ));
 
 TwitterAdTypes.push(new TwitterAdType(
@@ -77,7 +77,7 @@ TwitterAdTypes.push(new TwitterAdType(
     true,
     false,
     ["video/mp4"],
-    new AllowedDimensions(new Dimensions(1200, 800), new Dimensions(2400, 1600)),
+    new AllowedDimensions(new Dimensions(700, 400), new Dimensions(2400, 1600)),
 ));
 
 TwitterAdTypes.push(new TwitterAdType(
@@ -89,7 +89,7 @@ TwitterAdTypes.push(new TwitterAdType(
     false,
     true,
     ["image/jpg", "image/png", "image/webp"],
-    new AllowedDimensions(new Dimensions(500, 500), new Dimensions(1200, 1200)),
+    new AllowedDimensions(new Dimensions(400, 400), new Dimensions(1200, 1200)),
 ));
 
 TwitterAdTypes.push(new TwitterAdType(
@@ -101,7 +101,7 @@ TwitterAdTypes.push(new TwitterAdType(
     false,
     true,
     ["video/mp4"],
-    new AllowedDimensions(new Dimensions(500, 500), new Dimensions(1200, 1200)),
+    new AllowedDimensions(new Dimensions(400, 400), new Dimensions(1200, 1200)),
 ));
 
 export default TwitterAdTypes;

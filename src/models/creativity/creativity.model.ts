@@ -1,11 +1,7 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
 import {User} from "../user/user.model";
-
-export interface Size {
-    width: number;
-    height: number;
-}
+import {Dimensions} from "./dimensions";
 
 export interface Creativity extends Document {
     _id: string;
@@ -16,7 +12,7 @@ export interface Creativity extends Document {
     mimetype: string;
     fileformat: string;
     filetype: string;
-    size: Size;
+    dimensions: Dimensions;
     duration?: number;
     deleted: boolean;
     created: Date;
@@ -52,7 +48,7 @@ const CreativitySchema = new Schema({
         type: String,
         required: true,
     },
-    size: {
+    dimensions: {
         width: {
             type: Number,
             required: true,

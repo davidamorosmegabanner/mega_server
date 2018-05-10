@@ -12,7 +12,6 @@ import {UserService} from "../../models/user/user.service";
 import {AuthService} from "../../services/auth.service";
 import {Validator} from "../../services/validator.service";
 import {ExpressSignature} from "../Route";
-import twitter from "../../config/seeds/twitter";
 
 const authService = new AuthService();
 const userService = new UserService();

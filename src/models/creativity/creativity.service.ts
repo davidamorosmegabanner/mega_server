@@ -1,6 +1,7 @@
 import {Model} from "mongoose";
 import {User} from "../user/user.model";
-import {Creativity, default as CreativityMongo, Size} from "./creativity.model";
+import {Creativity, default as CreativityMongo} from "./creativity.model";
+import {Dimensions} from "./dimensions";
 
 export class CreativityService {
     private readonly mongoModel: Model<Creativity>;
@@ -17,7 +18,7 @@ export class CreativityService {
         mimetype: string,
         fileformat: string,
         filetype: string,
-        size: Size,
+        dimensions: Dimensions,
         duration: number,
     ): Promise<Creativity> {
         const creativity = new this.mongoModel({
@@ -28,7 +29,7 @@ export class CreativityService {
             mimetype: (mimetype),
             fileformat: (fileformat),
             filetype: (filetype),
-            size: (size),
+            dimensions: (dimensions),
         });
 
         if (filetype === "video") { creativity.duration = (duration); }
@@ -69,7 +70,7 @@ export class CreativityService {
                 mimetype: 1,
                 fileformat: 1,
                 filetype: 1,
-                size: 1,
+                dimensions: 1,
                 duration: 1,
             })
             .lean();
@@ -87,7 +88,7 @@ export class CreativityService {
                 mimetype: 1,
                 fileformat: 1,
                 filetype: 1,
-                size: 1,
+                dimensions: 1,
                 duration: 1,
             })
             .lean();

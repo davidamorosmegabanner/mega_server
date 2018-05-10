@@ -63,16 +63,16 @@ export class Validator {
                 throw new Error(this.errorMimetype());
             }
 
-            // Validate sizes
+            // Validate dimensions
             if (
-                creativity.size.height < adType.allowedSize.min.height ||
-                creativity.size.width < adType.allowedSize.min.width
+                creativity.dimensions.height < adType.allowedSize.min.height ||
+                creativity.dimensions.width < adType.allowedSize.min.width
             ) {
                 throw new Error(this.errorSize("small", adType.allowedSize));
             }
             if (
-                creativity.size.height > adType.allowedSize.max.height ||
-                creativity.size.width > adType.allowedSize.max.width
+                creativity.dimensions.height > adType.allowedSize.max.height ||
+                creativity.dimensions.width > adType.allowedSize.max.width
             ) {
                 throw new Error(this.errorSize("big", adType.allowedSize));
             }
@@ -80,7 +80,7 @@ export class Validator {
             // Validate ratios
             const minRatios: number = adType.allowedRatio.min.width / adType.allowedRatio.min.height;
             const maxRatios: number = adType.allowedRatio.max.width / adType.allowedRatio.max.height;
-            const creativityRatios: number = creativity.size.width / creativity.size.height;
+            const creativityRatios: number = creativity.dimensions.width / creativity.dimensions.height;
 
             if (creativityRatios < minRatios || creativityRatios > maxRatios) {
                 throw new Error(this.errorRatio(adType.allowedRatio));
@@ -111,16 +111,16 @@ export class Validator {
                 throw new Error(this.errorMimetype());
             }
 
-            // Validate sizes
+            // Validate dimensionss
             if (
-                creativity.size.height < adType.allowedSize.min.height ||
-                creativity.size.width < adType.allowedSize.min.width
+                creativity.dimensions.height < adType.allowedSize.min.height ||
+                creativity.dimensions.width < adType.allowedSize.min.width
             ) {
                 throw new Error(this.errorSize("small", adType.allowedSize));
             }
             if (
-                creativity.size.height > adType.allowedSize.max.height ||
-                creativity.size.width > adType.allowedSize.max.width
+                creativity.dimensions.height > adType.allowedSize.max.height ||
+                creativity.dimensions.width > adType.allowedSize.max.width
             ) {
                 throw new Error(this.errorSize("big", adType.allowedSize));
             }
@@ -145,7 +145,7 @@ export class Validator {
         }
 
         // Validate tweet length
-        if (adType.mandatoryTweet && params.tweet && params.tweet.length > 240) {
+        if (adType.mandatoryTweet && params.text && params.text.length > 240) {
             throw new Error(this.errorLongTweet());
         }
 
@@ -165,9 +165,9 @@ export class Validator {
     private errorMimetype(): string {
         return (`One or more creativities mimetypes are not compatible with this AdType`);
     }
-    private errorSize(size: string, allowedSize: any): string {
-        return (`One or more creativities are too ${size}.\n` +
-            `Allowed creativity sizes for this AdType are:\n` +
+    private errorSize(dimensions: string, allowedSize: any): string {
+        return (`One or more creativities are too ${dimensions}.\n` +
+            `Allowed creativity dimensionss for this AdType are:\n` +
             `Minimum: ${allowedSize.min.width} x ${allowedSize.min.height}\n` +
             `Maximum: ${allowedSize.max.width} x ${allowedSize.max.height}`);
     }

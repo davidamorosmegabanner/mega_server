@@ -1,8 +1,10 @@
 import {logger} from "../../config/logger";
 
 import * as path from "path";
-import {Creativity, Size} from "../../models/creativity/creativity.model";
+import {Creativity} from "../../models/creativity/creativity.model";
+
 import {CreativityService} from "../../models/creativity/creativity.service";
+import {Dimensions} from "../../models/creativity/dimensions";
 import {User} from "../../models/user/user.model";
 import {UserService} from "../../models/user/user.service";
 import {AuthService} from "../../services/auth.service";
@@ -49,13 +51,13 @@ export let create: ExpressSignature = async (request, response, next) => {
 
         const fileSource: string = path.join(fileService.createPath(user), file.name);
         await file.mv(fileSource);
-        const size: Size = await fileService.getSize(fileSource, filetype);
+        const dimensions: Dimensions = await fileService.getDimensions(fileSource, filetype);
         const thumbnail = await fileService.createThumbnail(fileSource, filetype);
         let duration: number;
         if (filetype === "video") { duration = await fileService.getDuration(fileSource, filetype); }
 
         const creativity: Creativity = await creativityService.create(
-            params.name, user, fileSource, thumbnail, mimetype, fileformat, filetype, size, duration,
+            params.name, user, fileSource, thumbnail, mimetype, fileformat, filetype, dimensions, duration,
         );
 
         response.status(200).send({
@@ -67,7 +69,7 @@ export let create: ExpressSignature = async (request, response, next) => {
             filetype: creativity.filetype,
             fileformat: creativity.fileformat,
             duration: creativity.duration,
-            size: creativity.size,
+            dimensions: creativity.dimensions,
         });
 
     } catch (err) {
