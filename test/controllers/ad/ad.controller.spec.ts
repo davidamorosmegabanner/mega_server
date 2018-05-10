@@ -119,7 +119,7 @@ describe("User controllers test", () => {
                 adType: "TW_TWEET_VIDEO",
                 text: "This is a tweeeeeeet",
                 campaign: "5ac3cbdfb7f5542d592698d3",
-                creativities: ["5ab3b0e45faaaf459c4a5e15"]
+                creativities: ["5af46c9eb9f5a51a1d12a317"]
             })
             .expect(200)
             .end((err, res) => {

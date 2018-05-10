@@ -8,7 +8,6 @@ import * as thumbler from "video-thumb";
 import config from "../config/config";
 import {Dimensions} from "../models/creativity/dimensions";
 import {User} from "../models/user/user.model";
-import axios from "axios";
 
 /**
  *
@@ -64,6 +63,11 @@ export class FileService {
         } else { throw new Error("Check size failed"); }
 
         return size;
+    }
+
+    public async getSize(fileSource): Promise<number> {
+        const stats = fs.statSync(fileSource);
+        return stats.size;
     }
 
     public async createThumbnail(fileSource: string, filetype: string): Promise<string> {

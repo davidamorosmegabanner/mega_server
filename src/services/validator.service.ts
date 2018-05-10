@@ -68,13 +68,13 @@ export class Validator {
                 creativity.dimensions.height < adType.allowedSize.min.height ||
                 creativity.dimensions.width < adType.allowedSize.min.width
             ) {
-                throw new Error(this.errorSize("small", adType.allowedSize));
+                throw new Error(this.errorDimensions("small", adType.allowedSize));
             }
             if (
                 creativity.dimensions.height > adType.allowedSize.max.height ||
                 creativity.dimensions.width > adType.allowedSize.max.width
             ) {
-                throw new Error(this.errorSize("big", adType.allowedSize));
+                throw new Error(this.errorDimensions("big", adType.allowedSize));
             }
 
             // Validate ratios
@@ -113,16 +113,23 @@ export class Validator {
 
             // Validate dimensionss
             if (
-                creativity.dimensions.height < adType.allowedSize.min.height ||
-                creativity.dimensions.width < adType.allowedSize.min.width
+                creativity.dimensions.height < adType.allowedDimensions.min.height ||
+                creativity.dimensions.width < adType.allowedDimensions.min.width
             ) {
-                throw new Error(this.errorSize("small", adType.allowedSize));
+                throw new Error(this.errorDimensions("small", adType.allowedDimensions));
             }
             if (
-                creativity.dimensions.height > adType.allowedSize.max.height ||
-                creativity.dimensions.width > adType.allowedSize.max.width
+                creativity.dimensions.height > adType.allowedDimensions.max.height ||
+                creativity.dimensions.width > adType.allowedDimensions.max.width
             ) {
-                throw new Error(this.errorSize("big", adType.allowedSize));
+                throw new Error(this.errorDimensions("big", adType.allowedDimensions));
+            }
+
+            // Validate size
+            if (
+                creativity.size > adType.maxCreativitySize
+            ) {
+                throw new Error(this.errorSize(creativity.size, adType.maxCreativitySize));
             }
 
             // Validate duration if video
@@ -165,11 +172,14 @@ export class Validator {
     private errorMimetype(): string {
         return (`One or more creativities mimetypes are not compatible with this AdType`);
     }
-    private errorSize(dimensions: string, allowedSize: any): string {
+    private errorDimensions(dimensions: string, allowedSize: any): string {
         return (`One or more creativities are too ${dimensions}.\n` +
             `Allowed creativity dimensionss for this AdType are:\n` +
             `Minimum: ${allowedSize.min.width} x ${allowedSize.min.height}\n` +
             `Maximum: ${allowedSize.max.width} x ${allowedSize.max.height}`);
+    }
+    private errorSize(fileSize, maxFileSize): string {
+        return (`Max file size of ${maxFileSize} bytes exceeded. File size: ${fileSize} bytes`);
     }
     private errorRatio(allowedRatio: any): string {
         return (`One or more creativities have incorrect ratio aspect\n` +

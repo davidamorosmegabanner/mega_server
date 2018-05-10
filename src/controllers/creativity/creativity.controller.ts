@@ -53,11 +53,12 @@ export let create: ExpressSignature = async (request, response, next) => {
         await file.mv(fileSource);
         const dimensions: Dimensions = await fileService.getDimensions(fileSource, filetype);
         const thumbnail = await fileService.createThumbnail(fileSource, filetype);
+        const size = await fileService.getSize(fileSource);
         let duration: number;
         if (filetype === "video") { duration = await fileService.getDuration(fileSource, filetype); }
 
         const creativity: Creativity = await creativityService.create(
-            params.name, user, fileSource, thumbnail, mimetype, fileformat, filetype, dimensions, duration,
+            params.name, user, fileSource, thumbnail, mimetype, fileformat, filetype, dimensions, size, duration,
         );
 
         response.status(200).send({
@@ -70,6 +71,7 @@ export let create: ExpressSignature = async (request, response, next) => {
             fileformat: creativity.fileformat,
             duration: creativity.duration,
             dimensions: creativity.dimensions,
+            size: creativity.size,
         });
 
     } catch (err) {

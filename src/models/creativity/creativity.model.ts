@@ -13,6 +13,7 @@ export interface Creativity extends Document {
     fileformat: string;
     filetype: string;
     dimensions: Dimensions;
+    size: number; // in bytes
     duration?: number;
     deleted: boolean;
     created: Date;
@@ -57,6 +58,10 @@ const CreativitySchema = new Schema({
             type: Number,
             required: true,
         },
+    },
+    size: {
+        type: Number,
+        required: true,
     },
     duration: {
         type: Number,

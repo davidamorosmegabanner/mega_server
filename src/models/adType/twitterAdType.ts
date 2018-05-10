@@ -9,7 +9,7 @@ export class TwitterAdType extends AdType {
     public readonly mandatoryTweet: boolean;
     public readonly mandatoryAppIds: boolean;
     public readonly mimetypes?: string[];
-    public readonly allowedSize?: AllowedDimensions;
+    public readonly allowedDimensions?: AllowedDimensions;
     public readonly duration?: Duration;
     public constructor(
         name: string,
@@ -20,14 +20,15 @@ export class TwitterAdType extends AdType {
         mandatoryTweet: boolean,
         mandatoryAppIds: boolean,
         mimetypes?: string[],
-        allowedSize?: AllowedDimensions,
+        allowedDimensions?: AllowedDimensions,
         duration?: Duration,
+        maxCreativitySize?: number,
     ) {
-        super(name, key, description, platform, numCreativities);
+        super(name, key, description, platform, numCreativities, maxCreativitySize ? maxCreativitySize : null);
         this.mandatoryTweet = (mandatoryTweet);
         this.mandatoryAppIds = (mandatoryAppIds);
         this.mimetypes = (mimetypes);
-        this.allowedSize = (allowedSize);
+        this.allowedDimensions = (allowedDimensions);
         this.duration = (duration);
     }
 }
@@ -53,7 +54,9 @@ TwitterAdTypes.push(new TwitterAdType(
     true,
     false,
     ["image/jpg", "image/png", "image/webp"],
-    new AllowedDimensions(new Dimensions(700, 400), new Dimensions(2400, 1600)),
+    new AllowedDimensions(new Dimensions(640, 480), new Dimensions(2480, 1600)),
+    undefined,
+    5 * 1024 * 1024,
 ));
 
 TwitterAdTypes.push(new TwitterAdType(
@@ -65,7 +68,9 @@ TwitterAdTypes.push(new TwitterAdType(
     true,
     false,
     ["image/gif"],
-    new AllowedDimensions(new Dimensions(700, 400), new Dimensions(2400, 1600)),
+    new AllowedDimensions(new Dimensions(640, 480), new Dimensions(2400, 1600)),
+    undefined,
+    5 * 1024 * 1024,
 ));
 
 TwitterAdTypes.push(new TwitterAdType(
@@ -77,7 +82,9 @@ TwitterAdTypes.push(new TwitterAdType(
     true,
     false,
     ["video/mp4"],
-    new AllowedDimensions(new Dimensions(700, 400), new Dimensions(2400, 1600)),
+    new AllowedDimensions(new Dimensions(640, 480), new Dimensions(2400, 1600)),
+    undefined,
+    15 * 1024 * 1024,
 ));
 
 TwitterAdTypes.push(new TwitterAdType(
@@ -90,6 +97,8 @@ TwitterAdTypes.push(new TwitterAdType(
     true,
     ["image/jpg", "image/png", "image/webp"],
     new AllowedDimensions(new Dimensions(400, 400), new Dimensions(1200, 1200)),
+    undefined,
+    5 * 1024 * 1024,
 ));
 
 TwitterAdTypes.push(new TwitterAdType(
@@ -102,6 +111,8 @@ TwitterAdTypes.push(new TwitterAdType(
     true,
     ["video/mp4"],
     new AllowedDimensions(new Dimensions(400, 400), new Dimensions(1200, 1200)),
+    undefined,
+    15 * 1024 * 1024,
 ));
 
 export default TwitterAdTypes;

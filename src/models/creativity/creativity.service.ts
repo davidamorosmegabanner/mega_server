@@ -19,6 +19,7 @@ export class CreativityService {
         fileformat: string,
         filetype: string,
         dimensions: Dimensions,
+        size: number,
         duration: number,
     ): Promise<Creativity> {
         const creativity = new this.mongoModel({
@@ -30,6 +31,7 @@ export class CreativityService {
             fileformat: (fileformat),
             filetype: (filetype),
             dimensions: (dimensions),
+            size: (size),
         });
 
         if (filetype === "video") { creativity.duration = (duration); }

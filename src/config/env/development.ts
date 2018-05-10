@@ -17,7 +17,10 @@ export default {
     },
     acceptedMedia: [
         "image/jpeg",
+        "image/jpg",
         "image/png",
+        "image/webp",
+        "image/gif",
         "video/mp4",
         "video/mov",
     ],
