@@ -8,17 +8,17 @@ import * as session from "express-session";
 import * as mongoose from "mongoose";
 import * as morgan from "morgan";
 
-import config from "./config/config";
 import AdRouter from "./controllers/ad/ad.route";
 import CampaignRouter from "./controllers/campaign/campaign.router";
 import CreativityRouter from "./controllers/creativity/creativity.router";
+import FacebookRouter from "./controllers/facebook/facebook.router";
 import RoleRouter from "./controllers/role/role.router";
+import TwitterRouter from "./controllers/twitter/twitter.router";
 import UserRouter from "./controllers/user/user.router";
 
-import FacebookRouter from "./controllers/facebook/facebook.router";
-
+import config from "./config/config";
 import {logger, Stream} from "./config/logger";
-import TwitterRouter from "./controllers/twitter/twitter.router";
+import CronManager from "./tasks/Cron";
 
 export class Server {
     public static bootstrap(): Server {
@@ -40,6 +40,7 @@ export class Server {
         await this.session();
         await this.config();
         await this.routes();
+        await this.tasks();
 
         logger.info(`App is active in port ${config.port}`);
 
@@ -109,5 +110,10 @@ export class Server {
     private logger() {
         logger.info("Overriding 'Express' logger");
         this.app.use(morgan("combined", { stream: Stream }));
+    }
+
+    private tasks() {
+        const cronManager = new CronManager();
+        cronManager.startJobs();
     }
 }
