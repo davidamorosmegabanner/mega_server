@@ -38,15 +38,16 @@ export let create: ExpressSignature = async (request, response, next) => {
         const creativities: Creativity[] = await creativityService.findById(params.creativities);
         const campaign: Campaign = await campaignService.findById(owner, params.campaign);
 
-        // Optional params
+        // Validators
+        await validator.validateParams(adType, params);
+        await validator.validateCreativities(adType, creativities);
+
+        // Ad creation
+        // + Optional params
         let twitterParams: any = {};
         if (adType.platform.key === "TW") {
             twitterParams = twitterAdTypeService.assignTwitterParams(params);
         }
-
-        await validator.validateParams(adType, params);
-        await validator.validateCreativities(adType, creativities);
-
         const ad: any = await adService.create(name, owner, adType, creativities, campaign,
             twitterParams);
 

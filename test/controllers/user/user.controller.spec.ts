@@ -6,7 +6,7 @@ import {Server} from "../../../src/server";
 
 const server = Server.bootstrap();
 
-describe("User controller test", () => {
+describe("User controllers test", () => {
     const name = "name2",
         email = "email2@test.com",
         password = "passwordpassword",

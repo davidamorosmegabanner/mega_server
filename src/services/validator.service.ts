@@ -48,7 +48,7 @@ export class Validator {
                 break;
             }
             default: {
-                throw new Error("There's been a problem validating creativities. Please contact the admin.");
+                throw new Error("There's been a problem validating parameters. Please contact the admin.");
             }
         }
         return validation;
