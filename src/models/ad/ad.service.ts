@@ -66,11 +66,20 @@ export class AdService {
 
     public async get(user: User, id: string[]): Promise<Ad> {
         const populateQuery = [
-            {path: "adType", select: "name key -_id -__t"},
             {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size duration campaign"},
         ];
         return await this.mongoModel
-            .find({_id: id, owner: user, deleted: false}, {_id: 1, name: 1, adType: 1, creativities: 1})
+            .find({_id: id, owner: user, deleted: false}, {_id: 1, name: 1, adTypeKey: 1, creativities: 1})
+            .populate(populateQuery)
+            .lean();
+    }
+
+    public async getTwitterAd(id: string): Promise<TwitterAd> {
+        const populateQuery = [
+            {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size duration campaign"},
+        ];
+        return await this.mongoModel
+            .find({_id: id, deleted: false}, {_id: 1, name: 1, adTypeKey: 1, creativities: 1})
             .populate(populateQuery)
             .lean();
     }

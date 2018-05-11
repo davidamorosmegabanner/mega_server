@@ -2,6 +2,7 @@ import {Model, Schema} from "mongoose";
 import {Ad, default as AdMongo} from "./ad.model";
 
 export interface TwitterAd extends Ad {
+    twitterCampaign: string;
     text?: string;
     url?: string;
     androidAppId?: string;
