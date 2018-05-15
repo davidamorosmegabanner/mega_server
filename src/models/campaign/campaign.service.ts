@@ -104,6 +104,9 @@ export class CampaignService {
     }
 
     public async getAll(): Promise<Campaign[]> {
-        return await this.mongoModel.find().lean();
+        return await this.mongoModel
+            .find({ active: true, deleted: false })
+            .populate("owner")
+            .lean();
     }
 }

@@ -26,7 +26,7 @@ const twitterAnalyticsMiddleware = new TwitterAnalyticsMiddleware();
 
 export class StatsCron {
 
-    public interval = "5MIN"; // Every hour
+    public interval = "30SEC";
 
     public async start() {
         logger.info("Stats cron started...");
@@ -34,29 +34,32 @@ export class StatsCron {
         try {
             // First we create the date interval so it doesn't change during execution
             const INTERVAL = getIntervalDate(this.interval);
+
             // Get all campaigns
             const campaigns = await this.getCampaigns();
 
             // For every single campaign...
-            campaigns.map(async (campaign) => {
+            await Promise.all(campaigns.map(async (campaign) => {
 
                 const owner = await userService.findById(campaign.owner._id);
                 const ads = await this.getAds(campaign);
 
                 const statistics: Statistic[] = [];
                 // Get all ads
-                ads.map(async (ad) => {
+                await Promise.all(ads.map(async (ad) => {
 
                     // Then get its statistics / analytics calling the API
                     const adType: AdType = await adTypeService.assignByKey(ad.adTypeKey);
                     const statistic: Statistic = await this.getAnalytics(owner, ad, adType, INTERVAL);
+
+                    console.log(statistic)
 
                     // Save statistic into database
                     await statisticService.create(statistic);
 
                     // Push actual statistic into statistics array
                     statistics.push(statistic);
-                });
+                }));
 
                 // Finally we create the stats object and save it
                 const stats: Stats = {
@@ -67,7 +70,7 @@ export class StatsCron {
                 };
                 await statsService.create(stats);
 
-            });
+            }));
             logger.info("Stats cron finished");
         } catch (err) {
             logger.info("Stats cron error:");
@@ -85,7 +88,7 @@ export class StatsCron {
     }
 
     private async getAnalytics(owner: User, ad: Ad, adType: AdType, interval): Promise<Statistic> {
-        switch (adType.key) {
+        switch (adType.platform.key) {
             case "TW": {
                 const twitterAd: TwitterAd = await adService.getTwitterAd(ad._id);
                 const statistics = (await twitterAnalyticsMiddleware.getStats(
@@ -93,17 +96,21 @@ export class StatsCron {
                     "CAMPAIGN", [twitterAd.twitterCampaign],
                     interval.before, interval.now,
                 )).data[0].id_data[0].metrics;
+                console.log(statistics)
                 return {
                     ad: (ad),
-                    impressions: statistics.impressions,
-                    clicks: statistics.clicks,
-                    follows: statistics.follows,
-                    app_clicks: statistics.app_clicks,
-                    retweets: statistics.retweets,
-                    likes: statistics.likes,
-                    replies: statistics.replies,
-                    url_clicks: statistics.url_clicks,
+                    impressions: +statistics.impressions,
+                    clicks: +statistics.clicks,
+                    follows: +statistics.follows,
+                    app_clicks: +statistics.app_clicks,
+                    retweets: +statistics.retweets,
+                    likes: +statistics.likes,
+                    replies: +statistics.replies,
+                    url_clicks: +statistics.url_clicks,
                 };
+            }
+            default: {
+                throw new Error("Unknown adType " + adType.name);
             }
         }
     }

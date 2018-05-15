@@ -12,13 +12,16 @@ export default class CronManager {
     private stats = cron.schedule(convertToCronTime(statsCron.interval), () => { statsCron.start(); }, false);
 
     public startJobs() {
-        // this.dummy.start();
-        // this.stats.start();
+        this.dummy.start();
+        this.stats.start();
     }
 }
 
 export function convertToCronTime(period: string) {
     switch (period) {
+        case ("30SEC"): {
+            return "0,30 * * * * *";
+        }
         case ("1MIN"): {
             return "0 * * * * *";
         }
@@ -55,6 +58,12 @@ export function convertToCronTime(period: string) {
 export function getIntervalDate(period: string): { now: Date, before: Date } {
     const NOW = new Date();
     switch (period) {
+        case ("30SEC"): {
+            return {
+                now: NOW,
+                before: moment(NOW).subtract(30, "seconds").toDate(),
+            };
+        }
         case ("1MIN"): {
             return {
                 now: NOW,
