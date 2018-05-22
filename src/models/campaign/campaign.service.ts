@@ -103,6 +103,18 @@ export class CampaignService {
         return await this.mongoModel.findOneAndUpdate({_id: id}, {$set: {deleted: true}});
     }
 
+    public async start(campaign: Campaign): Promise<Creativity> {
+        if (campaign === undefined) { throw new Error("Param id is required"); }
+
+        return await this.mongoModel.findOneAndUpdate({_id: campaign._id}, {$set: {active: true}});
+    }
+
+    public async stop(campaign: Campaign): Promise<Creativity> {
+        if (campaign === undefined) { throw new Error("Param id is required"); }
+
+        return await this.mongoModel.findOneAndUpdate({_id: campaign._id}, {$set: {active: false}});
+    }
+
     public async getAll(): Promise<Campaign[]> {
         return await this.mongoModel
             .find({ active: true, deleted: false })
