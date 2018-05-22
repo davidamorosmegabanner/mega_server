@@ -1,9 +1,7 @@
 import {Stats} from "../../models/stats/stats.model";
 import {NormalizedStats} from "../models/normalizedStats";
-import {StatsService} from "../models/stats.service";
 import {DummyStats} from "../models/stats.model";
-import {Ad} from "../../models/ad/ad.model";
-import {Campaign} from "../../models/campaign/campaign.model";
+import {StatsService} from "../models/stats.service";
 
 const statsService = new StatsService();
 

@@ -6,10 +6,10 @@ import {Campaign} from "../../models/campaign/campaign.model";
 export interface DummyStats extends Document {
     date: Date;
     campaign: Campaign;
-    stats: {
+    stats: Array<{
         ad: Ad;
         CTR: number;
-    }[];
+    }>;
 }
 
 const DummyStatsSchema = new Schema({
