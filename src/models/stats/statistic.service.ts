@@ -1,5 +1,4 @@
 import {Model} from "mongoose";
-import {Ad} from "../ad/ad.model";
 import {default as StatisticMongo, Statistic} from "./statistic.model";
 
 export class StatisticService {

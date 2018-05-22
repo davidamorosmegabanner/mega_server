@@ -29,7 +29,7 @@ export class StatsCron {
     public interval = "30SEC";
 
     public async start() {
-        logger.info("Stats cron started...");
+        logger.info("StatsModel cron started...");
 
         try {
             // First we create the date interval so it doesn't change during execution
@@ -71,9 +71,9 @@ export class StatsCron {
                 await statsService.create(stats);
 
             }));
-            logger.info("Stats cron finished");
+            logger.info("StatsModel cron finished");
         } catch (err) {
-            logger.info("Stats cron error:");
+            logger.info("StatsModel cron error:");
             logger.error(err);
             throw new Error(err);
         }

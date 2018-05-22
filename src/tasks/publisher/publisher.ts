@@ -15,9 +15,9 @@ export class PublisherCron {
             // Dummy
             // Publish
 
-            logger.info("Stats cron finished");
+            logger.info("StatsModel cron finished");
         } catch (err) {
-            logger.info("Stats cron error:");
+            logger.info("StatsModel cron error:");
             logger.error(err);
             throw new Error(err);
         }
