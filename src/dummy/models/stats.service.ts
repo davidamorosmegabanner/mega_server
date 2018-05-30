@@ -20,7 +20,9 @@ export class DummyStatsService {
 
     public async getUnpublished(): Promise<DummyStats[]> {
         return await this.mongoModel
-            .find({published: false});
+            .find({published: false})
+            .populate("campaign", "ad", "")
+            .lean();
     }
 
     public async changeToPublished(stat: DummyStats): Promise<DummyStats> {

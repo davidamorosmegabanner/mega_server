@@ -36,6 +36,7 @@ export class AdService {
                 iPadAppId: (twitterParams.iPadAppId),
                 iPadAppDeepLink: (twitterParams.iPadAppDeepLink),
             });
+            ad.twitterCampaign = undefined;
             const twitterAdMongo = new this.twitterAdModel(ad);
             return await twitterAdMongo.save();
         }
@@ -51,6 +52,10 @@ export class AdService {
 
         const adMongo = new this.mongoModel(ad);
         return await adMongo.save();
+    }
+
+    public async assignSocialId(campaign: Campaign, campaignSocialId: string): Promise<Campaign> {
+        return await this.mongoModel.findOneAndUpdate({_id: campaign._id, socialId: campaignSocialId});
     }
 
     public async list(owner: User): Promise<Ad[]> {

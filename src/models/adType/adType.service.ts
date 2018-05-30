@@ -29,7 +29,7 @@ export class AdTypeService {
     public assignTwitterParams(params) {
         return {
             text: params.text,
-            webpage: params.webpage,
+            url: params.url,
             androidAppId: params.androidAppId,
             androidDeepLink: params.androidDeepLink,
             iPhoneAppId: params.iPhoneAppId,

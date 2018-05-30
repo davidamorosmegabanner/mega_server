@@ -15,6 +15,7 @@ export interface Campaign extends Document {
     deleted: boolean;
     created: Date;
     updated: Date;
+    socialId?: string;
 }
 
 const CampaignSchema = new Schema({
@@ -49,7 +50,7 @@ const CampaignSchema = new Schema({
     active: {
         type: Boolean,
         required: true,
-        default: true,
+        default: false,
     },
     deleted: {
         type: Boolean,
@@ -65,6 +66,10 @@ const CampaignSchema = new Schema({
         type: Date,
         required: true,
         default: Date.now,
+    },
+    socialId: {
+        type: String,
+        required: false,
     },
 });
 

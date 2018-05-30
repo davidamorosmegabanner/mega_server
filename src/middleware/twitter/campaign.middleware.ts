@@ -170,4 +170,9 @@ export class TwitterCampaignMiddleware {
         // Go
         return await twitterRequestService.post(accessToken, accessTokenSecret, url, params);
     }
+
+    public async deleteCampaign(accessToken, accessTokenSecret, accountId, campaignId: string): Promise<any> {
+        const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/campaigns/${campaignId}`;
+        return await twitterRequestService.delete(accessToken, accessTokenSecret, url);
+    }
 }
