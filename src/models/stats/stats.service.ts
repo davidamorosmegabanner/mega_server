@@ -1,4 +1,5 @@
 import {Model} from "mongoose";
+import {Campaign} from "../campaign/campaign.model";
 import {default as StatsMongo, Stats} from "./stats.model";
 
 export class StatsService {
@@ -13,8 +14,16 @@ export class StatsService {
         return await statsMongo.save();
     }
 
-    public async get(startDate: Date, endDate: Date): Promise<Stats[]> {
+    public async get(startDate: Date, endDate: Date, campaign?: Campaign): Promise<Stats[]> {
+        const find: any = {
+            date: {
+                $gte: startDate,
+                $lt: endDate,
+            },
+        };
+        if (campaign) { find.campaign = campaign; }
+
         return await this.mongoModel
-            .find({date: {$gte: startDate, $lt: endDate}});
+            .find(find);
     }
 }

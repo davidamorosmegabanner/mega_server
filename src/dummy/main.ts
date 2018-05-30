@@ -5,8 +5,9 @@ import {Stats} from "../models/stats/stats.model";
 import {StatsService} from "../models/stats/stats.service";
 import {getIntervalDate} from "../tasks/Cron";
 import {NormalizedStats} from "./models/normalizedStats";
-import Computer from "./services/computer";
+import ComputerService from "./services/computer";
 import Normalizer from "./services/normalizer";
+import {ComputedStats} from "./models/computedStats";
 
 /*
  *
@@ -22,7 +23,7 @@ const statsService = new StatsService();
 const campaignService = new CampaignService();
 
 const normalizer = new Normalizer();
-const computer = new Computer();
+const computer = new ComputerService();
 
 export default class DummyEngine {
 
@@ -35,23 +36,32 @@ export default class DummyEngine {
         const INTERVAL = getIntervalDate(this.interval);
 
         try {
-            // 0 - Get all campaigns
+            // 0 - Get all active and non deleted campaigns
             const campaigns: Campaign[] = await campaignService.getAll();
 
             // 1 - Get stats
             const stats: Stats[] = await statsService.get(INTERVAL.before, INTERVAL.now);
 
             // 2 - Normalize stats
-            const normalizedStats: NormalizedStats[] = await normalizer.normalize(stats, INTERVAL);
+            const normalizedStats: NormalizedStats[] = await normalizer.normalize(stats);
+            await normalizer.save(normalizedStats, INTERVAL);
 
             // 3 - Do magic
             await Promise.all(campaigns.map(async (campaign) => {
                 const campaignStats: NormalizedStats = normalizedStats.find((stat) => stat.campaign === campaign);
 
                 // We don't have stats of the campaign -> First timer
-                // if (!campaignStats) {
-                //     const campaignStats = await computer.firstTimer(campaignStats);
-                // }
+                if (!campaignStats) {
+                    const computedStats: ComputedStats = await computer.firstTimer(campaign);
+                }
+
+                // We have stats of the campaign -> Find previous stats and pass to engine
+                if (campaignStats) {
+                    const oldStats: Stats[] = await statsService.get(campaign.created, INTERVAL.now, campaign);
+                    const oldStatsNormalized: NormalizedStats[] = await normalizer.normalize(stats);
+
+                    const computedStats: ComputedStats = await computer.compute(campaignStats, oldStatsNormalized);
+                }
             }));
 
             logger.info("Dummy engine finished");

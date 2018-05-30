@@ -7,7 +7,7 @@ const statsService = new StatsService();
 
 export default class Normalizer {
 
-    public async normalize(stats: Stats[], interval): Promise<NormalizedStats[]> {
+    public async normalize(stats: Stats[]): Promise<NormalizedStats[]> {
 
         const normalizedStats: NormalizedStats[] = [];
 
@@ -19,7 +19,9 @@ export default class Normalizer {
                 };
 
                 // Other properties to be interpreted as clicks
-                if (statistic.app_clicks) { CTR = {clicks: statistic.app_clicks, impressions: statistic.impressions}; }
+                if (statistic.app_clicks) {
+                    CTR = {clicks: statistic.app_clicks, impressions: statistic.impressions};
+                }
 
                 // Find if normalizedStat Campaign already exist
                 const NORMALIZED_CAMPAIGN = normalizedStats.find(
@@ -36,12 +38,12 @@ export default class Normalizer {
                     if (NORMALIZED_AD && NORMALIZED_AD !== undefined) {
                         normalizedStats.find(
                             (normalized) => normalized.campaign === stat.campaign).stats.find(
-                                (statAd) => statAd.ad === statistic.ad,
-                            ).CTR = {
-                                clicks: NORMALIZED_AD.CTR.clicks + CTR.clicks,
-                                impressions: NORMALIZED_AD.CTR.impressions + CTR.impressions,
-                            };
-                    // Ad doesn't exist, create new
+                            (statAd) => statAd.ad === statistic.ad,
+                        ).CTR = {
+                            clicks: NORMALIZED_AD.CTR.clicks + CTR.clicks,
+                            impressions: NORMALIZED_AD.CTR.impressions + CTR.impressions,
+                        };
+                        // Ad doesn't exist, create new
                     } else {
                         normalizedStats.find(
                             (normalized) => normalized.campaign === stat.campaign,
@@ -53,7 +55,7 @@ export default class Normalizer {
                             },
                         });
                     }
-                // Campaign doesn't exist, create new
+                    // Campaign doesn't exist, create new
                 } else {
                     normalizedStats.push({
                         campaign: stat.campaign,
@@ -69,6 +71,10 @@ export default class Normalizer {
             }));
         }));
 
+        return normalizedStats;
+    }
+
+    public async save(normalizedStats: NormalizedStats[], interval): Promise<void> {
         await Promise.all(normalizedStats.map(async (stat) => {
             const dummyStat: DummyStats = {
                 date: interval.now,
@@ -79,10 +85,9 @@ export default class Normalizer {
                         CTR: adStat.CTR.clicks / adStat.CTR.impressions,
                     };
                 }),
+                published: false,
             };
             await statsService.create(dummyStat);
         }));
-
-        return normalizedStats;
     }
 }

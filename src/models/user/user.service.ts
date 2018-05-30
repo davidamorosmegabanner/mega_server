@@ -64,6 +64,12 @@ export class UserService {
             .lean();
     }
 
+    public async findAny(): Promise<User> {
+        return await this.mongoModel
+            .findOne({deleted: false})
+            .lean();
+    }
+
     public async remove(id: string): Promise<User> {
         if (id === undefined) {throw new Error("Param id is required"); }
 

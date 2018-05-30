@@ -12,4 +12,9 @@ export class StatsService {
         const statsMongo = new this.mongoModel(stats);
         return await statsMongo.save();
     }
+
+    public async get(startDate: Date, endDate: Date): Promise<DummyStats[]> {
+        return await this.mongoModel
+            .find({date: {$gte: startDate, $lt: endDate}});
+    }
 }

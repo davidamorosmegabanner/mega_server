@@ -10,6 +10,7 @@ export interface DummyStats extends Document {
         ad: Ad;
         CTR: number;
     }>;
+    published: boolean;
 }
 
 const DummyStatsSchema = new Schema({
@@ -33,6 +34,10 @@ const DummyStatsSchema = new Schema({
             required: true,
         },
     }],
+    published: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const DummyStatsMongo: Model<DummyStats> = mongoose.model<DummyStats>("DummyStats", DummyStatsSchema);
