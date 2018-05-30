@@ -18,7 +18,7 @@ describe("Twitter Ad Middleware test", () => {
         done();
     });
 
-    it("Should get or create a funding instrument -- ONLY IN SANDBOX!!!!!", async () => {
+    it("Should getUserAds or create a funding instrument -- ONLY IN SANDBOX!!!!!", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
@@ -36,7 +36,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it("Should get all funding instruments", async () => {
+    it("Should getUserAds all funding instruments", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
@@ -72,7 +72,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it ("Should get all line items", async () => {
+    it ("Should getUserAds all line items", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});

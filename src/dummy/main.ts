@@ -4,10 +4,10 @@ import {CampaignService} from "../models/campaign/campaign.service";
 import {Stats} from "../models/stats/stats.model";
 import {StatsService} from "../models/stats/stats.service";
 import {getIntervalDate} from "../tasks/Cron";
+import {ComputedStats} from "./models/computedStats";
 import {NormalizedStats} from "./models/normalizedStats";
 import ComputerService from "./services/computer";
 import Normalizer from "./services/normalizer";
-import {ComputedStats} from "./models/computedStats";
 
 /*
  *
@@ -44,24 +44,27 @@ export default class DummyEngine {
 
             // 2 - Normalize stats
             const normalizedStats: NormalizedStats[] = await normalizer.normalize(stats);
-            await normalizer.save(normalizedStats, INTERVAL);
 
             // 3 - Do magic
             await Promise.all(campaigns.map(async (campaign) => {
                 const campaignStats: NormalizedStats = normalizedStats.find((stat) => stat.campaign === campaign);
-
+                let computedStats: ComputedStats;
                 // We don't have stats of the campaign -> First timer
                 if (!campaignStats) {
-                    const computedStats: ComputedStats = await computer.firstTimer(campaign);
+                    computedStats = await computer.firstTimer(campaign);
                 }
 
                 // We have stats of the campaign -> Find previous stats and pass to engine
                 if (campaignStats) {
                     const oldStats: Stats[] = await statsService.get(campaign.created, INTERVAL.now, campaign);
-                    const oldStatsNormalized: NormalizedStats[] = await normalizer.normalize(stats);
+                    const oldStatsNormalized: NormalizedStats[] = await normalizer.normalize(oldStats);
 
-                    const computedStats: ComputedStats = await computer.compute(campaignStats, oldStatsNormalized);
+                    computedStats = await computer.compute(campaignStats, oldStatsNormalized);
+                    computedStats = await computer.normalizeWeights(computedStats);
                 }
+
+                // Save computed DummyStats (they will or not have past CTR!!!!)
+                await computer.save(computedStats, INTERVAL);
             }));
 
             logger.info("Dummy engine finished");

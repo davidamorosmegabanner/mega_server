@@ -160,7 +160,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it("Should get a mediaKey when mediaId is passed", async () => {
+    it("Should getUserAds a mediaKey when mediaId is passed", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
@@ -177,7 +177,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it("Should upload an image, get mediaKey and create a website card", async () => {
+    it("Should upload an image, getUserAds mediaKey and create a website card", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
@@ -203,7 +203,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it("Should upload a video, get mediaKey and create a website card", async () => {
+    it("Should upload a video, getUserAds mediaKey and create a website card", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
@@ -229,7 +229,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it("Should upload an image, get mediaKey and create an app card", async () => {
+    it("Should upload an image, getUserAds mediaKey and create an app card", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
@@ -259,7 +259,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it("Should upload a video, get mediaKey and create an app card", async () => {
+    it("Should upload a video, getUserAds mediaKey and create an app card", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});

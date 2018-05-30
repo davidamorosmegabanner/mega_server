@@ -10,7 +10,7 @@ const twitterAuthMiddleware = new TwitterAuthMiddleware();
 const twitterAdMiddleware = new TwitterAdMiddleware();
 const userService = new UserService();
 
-// This is the request to get the oauth_code and redirect the user to:
+// This is the request to getUserAds the oauth_code and redirect the user to:
 // https://twitter.com/oauth/authenticate?oauth_token=[oauth_token]
 // When accepting the connection, will be redirected to:
 // <API_URL>/twitter/authCode/?code=<CODE_TO_GET>

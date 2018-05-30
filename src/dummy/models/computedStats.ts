@@ -1,10 +1,7 @@
-import {Ad} from "../../models/ad/ad.model";
 import {Campaign} from "../../models/campaign/campaign.model";
+import {ComputedUniqueStat} from "./computedUniqueStat";
 
 export interface ComputedStats {
     campaign: Campaign;
-    stats: Array<{
-        ad: Ad;
-        weight: number;
-    }>;
+    stats: ComputedUniqueStat[];
 }

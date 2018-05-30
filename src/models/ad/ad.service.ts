@@ -64,13 +64,19 @@ export class AdService {
             .lean();
     }
 
-    public async get(user: User, id: string[]): Promise<Ad> {
+    public async getUserAds(user: User, id: string[]): Promise<Ad> {
         const populateQuery = [
             {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size duration campaign"},
         ];
         return await this.mongoModel
             .find({_id: id, owner: user, deleted: false}, {_id: 1, name: 1, adTypeKey: 1, creativities: 1})
             .populate(populateQuery)
+            .lean();
+    }
+
+    public async getWithId(id: string): Promise<Ad> {
+        return await this.mongoModel
+            .find({_id: id})
             .lean();
     }
 

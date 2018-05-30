@@ -1,13 +1,7 @@
-import {Ad} from "../../models/ad/ad.model";
 import {Campaign} from "../../models/campaign/campaign.model";
+import {NormalizedUniqueStat} from "./normalizedUniqueStat";
 
 export interface NormalizedStats {
     campaign: Campaign;
-    stats: [{
-        ad: Ad;
-        CTR: {
-            clicks: number,
-            impressions: number,
-        };
-    }];
+    stats: NormalizedUniqueStat[];
 }

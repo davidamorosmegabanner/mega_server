@@ -17,7 +17,7 @@ const facebookAdMiddleware = new FacebookAdMiddleware();
 //      &redirect_uri=http://localhost:3000/facebook/authCode/
 //      &scope=business_management,manage_pages,ads_management
 //
-// We will get the user Id by user id we have stored in session
+// We will getUserAds the user Id by user id we have stored in session
 // PUBLIC CALL!
 export let authCode: ExpressSignature = async (request, response, next) => {
     try {

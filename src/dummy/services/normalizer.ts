@@ -1,9 +1,5 @@
 import {Stats} from "../../models/stats/stats.model";
 import {NormalizedStats} from "../models/normalizedStats";
-import {DummyStats} from "../models/stats.model";
-import {StatsService} from "../models/stats.service";
-
-const statsService = new StatsService();
 
 export default class Normalizer {
 
@@ -72,22 +68,5 @@ export default class Normalizer {
         }));
 
         return normalizedStats;
-    }
-
-    public async save(normalizedStats: NormalizedStats[], interval): Promise<void> {
-        await Promise.all(normalizedStats.map(async (stat) => {
-            const dummyStat: DummyStats = {
-                date: interval.now,
-                campaign: stat.campaign,
-                stats: stat.stats.map((adStat) => {
-                    return {
-                        ad: adStat.ad,
-                        CTR: adStat.CTR.clicks / adStat.CTR.impressions,
-                    };
-                }),
-                published: false,
-            };
-            await statsService.create(dummyStat);
-        }));
     }
 }

@@ -14,7 +14,7 @@ describe("Twitter Ad Middleware test", () => {
         done();
     });
 
-    it("Should get all app store categories", async () => {
+    it("Should getUserAds all app store categories", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
@@ -31,7 +31,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it("Should get all devices", async () => {
+    it("Should getUserAds all devices", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
@@ -48,7 +48,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it("Should get all interests", async () => {
+    it("Should getUserAds all interests", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
@@ -65,7 +65,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it("Should get all languages", async () => {
+    it("Should getUserAds all languages", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
@@ -82,7 +82,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it("Should get all locations", async () => {
+    it("Should getUserAds all locations", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
@@ -99,7 +99,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it("Should get all network operators", async () => {
+    it("Should getUserAds all network operators", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
@@ -116,7 +116,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it("Should get all platforms", async () => {
+    it("Should getUserAds all platforms", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
@@ -133,7 +133,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it("Should get targeting for specific line item", async () => {
+    it("Should getUserAds targeting for specific line item", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});

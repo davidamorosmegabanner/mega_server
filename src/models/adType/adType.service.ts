@@ -7,15 +7,13 @@ export class AdTypeService {
     public adTypes: AdType[] = [];
 
     constructor() {
-
         // Twitter
         for (const pushing of TwitterAdTypes) { this.adTypes.push(pushing); }
         // Instagram
         for (const pushing of InstagramAdTypes) { this.adTypes.push(pushing); }
-
     }
 
-    public async assignByKey(adTypeKey): Promise<AdType> {
+    public async assignByKey(adTypeKey: string): Promise<AdType> {
 
         const assigned: AdType = this.adTypes.find((adType) => {
             return adType.key === adTypeKey;

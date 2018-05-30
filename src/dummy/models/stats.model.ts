@@ -8,7 +8,7 @@ export interface DummyStats extends Document {
     campaign: Campaign;
     stats: Array<{
         ad: Ad;
-        CTR: number;
+        weight: number;
     }>;
     published: boolean;
 }
@@ -29,7 +29,11 @@ const DummyStatsSchema = new Schema({
             ref: "Ad",
             required: true,
         },
-        CTR: {
+        // CTR: {
+        //     type: Number,
+        //     required: true,
+        // },
+        weight: {
             type: Number,
             required: true,
         },

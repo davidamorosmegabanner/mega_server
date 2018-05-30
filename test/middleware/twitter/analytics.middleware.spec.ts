@@ -14,7 +14,7 @@ describe("Twitter Ad Middleware test", () => {
         done();
     });
 
-    it("Should get stats for specified entity and range dates", async () => {
+    it("Should getUserAds stats for specified entity and range dates", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
@@ -38,7 +38,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it("Should get stats for specified campaign and range dates", async () => {
+    it("Should getUserAds stats for specified campaign and range dates", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});

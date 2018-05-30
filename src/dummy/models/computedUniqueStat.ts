@@ -3,5 +3,6 @@ import {Campaign} from "../../models/campaign/campaign.model";
 
 export interface ComputedUniqueStat {
     ad: Ad;
+    // CTR: number;
     weight: number;
 }

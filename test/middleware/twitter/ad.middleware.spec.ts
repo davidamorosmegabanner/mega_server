@@ -14,7 +14,7 @@ describe("Twitter Ad Middleware test", () => {
         done();
     });
 
-    it("Should get account info", async () => {
+    it("Should getUserAds account info", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});
@@ -32,7 +32,7 @@ describe("Twitter Ad Middleware test", () => {
         }
     });
 
-    it("Should get or create (if none) a SANDBOX account", async () => {
+    it("Should getUserAds or create (if none) a SANDBOX account", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ twToken: { $exists: true}, email: "prova@prova.com"});

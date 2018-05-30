@@ -48,7 +48,7 @@ export class StatsCron {
                 // Get all ads
                 await Promise.all(ads.map(async (ad) => {
 
-                    // Then get its statistics / analytics calling the API
+                    // Then getUserAds its statistics / analytics calling the API
                     const adType: AdType = await adTypeService.assignByKey(ad.adTypeKey);
                     const statistic: Statistic = await this.getAnalytics(owner, ad, adType, INTERVAL);
 

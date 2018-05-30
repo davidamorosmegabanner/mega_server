@@ -1,15 +1,17 @@
 import * as path from "path";
 import * as PythonShell from "python-shell";
 
-import {Ad} from "../../models/ad/ad.model";
 import {AdService} from "../../models/ad/ad.service";
 import {Campaign} from "../../models/campaign/campaign.model";
 import {ComputedStats} from "../models/computedStats";
+import {ComputedUniqueStat} from "../models/computedUniqueStat";
 import {NormalizedStats} from "../models/normalizedStats";
 import {NormalizedUniqueStat} from "../models/normalizedUniqueStat";
-import {ComputedUniqueStat} from "../models/computedUniqueStat";
+import {DummyStats} from "../models/stats.model";
+import {DummyStatsService} from "../models/stats.service";
 
 const adService = new AdService();
+const statsService = new DummyStatsService();
 
 export default class ComputerService {
 
@@ -42,17 +44,21 @@ export default class ComputerService {
         });
 
         // Make array for old stats
-        const oldStatsCTR: ComputedUniqueStat[] = [];
+        const oldStatsCTR: NormalizedUniqueStat[] = [];
         oldStats.forEach((oldStat) => {
             oldStat.stats.forEach((oldStatsStat) => {
-                // oldStatsCTR.push(( oldStatsStat.CTR.clicks / oldStatsStat.CTR.impressions ));
                 oldStatsCTR.push({
                     ad: oldStatsStat.ad,
-                    weight: oldStatsStat.CTR.clicks / oldStatsStat.CTR.impressions,
+                    CTR: {
+                        clicks: oldStatsStat.CTR.clicks,
+                        impressions: oldStatsStat.CTR.impressions,
+                    },
                 });
             });
         });
 
+        // Make array for computed stats
+        // And then iterate over every array (ad) to getUserAds its posterior CTR
         const computedArray: ComputedStats = {
             campaign: (newStats.campaign),
             stats: [],
@@ -60,10 +66,10 @@ export default class ComputerService {
         await Promise.all(newStatsArray.map(async (newStat) => {
             const ad = newStat.ad;
             const oldCTRs: number[] = oldStatsCTR.map((oldStat) => {
-                if (oldStat.ad === ad) { return oldStat.weight; }
+                if (oldStat.ad === ad) { return oldStat.CTR.clicks / oldStat.CTR.impressions; }
             });
 
-            // Call python script to get most plausible CTR
+            // Call python script to getUserAds most plausible CTR
             const mostPlausibleCTR: number = await this.runPythonScript(
                 newStat.CTR.clicks, newStat.CTR.impressions, oldCTRs,
             );
@@ -77,6 +83,41 @@ export default class ComputerService {
         return computedArray;
     }
 
+    public normalizeWeights(computedStats: ComputedStats): ComputedStats {
+        let totalWeight: number = 0;
+        computedStats.stats.forEach((computedStat) => {
+            totalWeight += computedStat.weight;
+        });
+
+        const weighted: ComputedUniqueStat[] = computedStats.stats.map((computedStat) => {
+            return {
+                ad: computedStat.ad,
+                weight: computedStat.weight / totalWeight,
+            };
+        });
+
+        return {
+            campaign: computedStats.campaign,
+            stats: weighted,
+        };
+    }
+
+    public async save(computedStats: ComputedStats, interval): Promise<void> {
+        const dummyStat: DummyStats = {
+            date: interval.now,
+            campaign: computedStats.campaign,
+            stats: computedStats.stats.map((adStat: ComputedUniqueStat) => {
+                return {
+                    ad: adStat.ad,
+                    weight: adStat.weight,
+                };
+            }),
+            published: false,
+        };
+        await statsService.create(dummyStat);
+    }
+
+    // Auxiliary (but public to test it)
     public runPythonScript(clicks, impressions, CTRArray): Promise<number> {
         return new Promise((resolve, reject) => {
             const pythonPath = path.join(__dirname, "..", "..", "..", "scripts");
@@ -92,10 +133,11 @@ export default class ComputerService {
 
             pyshell.send(toSend);
             pyshell.on("message", (message) => {
-                // received a message sent from the Python script (a simple "print" statement)
                 messageReceived = message;
             });
             pyshell.end(() => {
+                // Get last message emitted as the correct one
+                // This is done to avoid getting error messages and other prints as ok messages
                 resolve(parseFloat(messageReceived));
             });
         });

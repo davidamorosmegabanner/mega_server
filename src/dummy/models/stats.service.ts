@@ -1,7 +1,7 @@
 import {Model} from "mongoose";
 import {default as DummyStatsMongo, DummyStats} from "./stats.model";
 
-export class StatsService {
+export class DummyStatsService {
     private readonly mongoModel: Model<DummyStats>;
 
     constructor(mongoModel?: Model<DummyStats>) {
@@ -16,5 +16,19 @@ export class StatsService {
     public async get(startDate: Date, endDate: Date): Promise<DummyStats[]> {
         return await this.mongoModel
             .find({date: {$gte: startDate, $lt: endDate}});
+    }
+
+    public async getUnpublished(): Promise<DummyStats[]> {
+        return await this.mongoModel
+            .find({published: false});
+    }
+
+    public async changeToPublished(stat: DummyStats): Promise<DummyStats> {
+        return await this.mongoModel.findOneAndUpdate({
+            date: stat.date,
+            published: stat.published,
+        }, {
+            $set: { published: true },
+        });
     }
 }

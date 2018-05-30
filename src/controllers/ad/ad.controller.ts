@@ -70,7 +70,7 @@ export let list: ExpressSignature = async (request, response, next) => {
         const user: User = await userService.findByToken(xAccessToken);
         let ads: any;
         if (request.query.id) {
-            ads = await adService.get(user, request.query.id);
+            ads = await adService.getUserAds(user, request.query.id);
         } else {
             ads = await adService.list(user);
         }
