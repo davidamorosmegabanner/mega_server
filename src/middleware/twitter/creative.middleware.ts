@@ -227,7 +227,7 @@ export class TwitterCreativeMiddleware {
         mediaCategory = fileMimetype.indexOf("gif") !== -1 ? "TWEET_GIF" :
             mediaCategory = fileMimetype.indexOf("image") !== -1 ? "TWEET_IMAGE" : "TWEET_VIDEO";
 
-        const url = `https://ads-api.twitter.com/3/accounts/${accountId}/media_library`;
+        const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/media_library`;
         const params = {
             account_id: accountId,
             media_id: mediaId,

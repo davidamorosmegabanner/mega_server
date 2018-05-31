@@ -39,6 +39,27 @@ export class CreativityService {
         return await creativity.save();
     }
 
+    public async find(creativities: Creativity[]): Promise<Creativity[]> {
+        if (creativities && creativities.length) {
+            const ids = creativities.map((creativity) => creativity._id);
+            return await this.mongoModel
+                .find({
+                    _id: { $in: ids },
+                    deleted: false,
+                }, {
+                    deleted: 0,
+                    created: 0,
+                    owner: 0,
+                    fileformat: 0,
+                    filetype: 0,
+                    __v: 0,
+                })
+                .lean();
+        } else {
+            return [];
+        }
+    }
+
     public async findById(creativities: string[]): Promise<Creativity[]> {
         if (creativities && creativities.length) {
             return await this.mongoModel

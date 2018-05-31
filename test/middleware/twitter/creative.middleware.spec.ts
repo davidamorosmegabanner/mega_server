@@ -240,9 +240,11 @@ describe("Twitter Ad Middleware test", () => {
                 user.twToken, user.twTokenSecret, filePath,
             );
             const adAccount = await twitterAdMiddleware.makeSandboxAccount(user.twToken, user.twTokenSecret);
+            console.log(adAccount)
             const mediaKey = await twitterCreativeMiddleware.getMediaKey(
-                user.twToken, user.twTokenSecret, user.twAdAccount, image, "image/jpg",
+                user.twToken, user.twTokenSecret, adAccount.data[0].id, image, "image/jpg",
             );
+            console.log(mediaKey)
             const websiteImageCard = await twitterCreativeMiddleware.createAppImageCard(
                 user.twToken, user.twTokenSecret, adAccount.data[0].id,
                 "Website test", mediaKey, "ES",
