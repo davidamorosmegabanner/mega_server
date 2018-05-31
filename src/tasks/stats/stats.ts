@@ -1,8 +1,6 @@
 import {logger} from "../../config/logger";
-import {TwitterAnalyticsMiddleware} from "../../middleware/twitter/analytics.middleware";
 import {Ad} from "../../models/ad/ad.model";
 import {AdService} from "../../models/ad/ad.service";
-import {TwitterAd} from "../../models/ad/twitterAd.model";
 import {AdType} from "../../models/adType/adType";
 import {AdTypeService} from "../../models/adType/adType.service";
 import {Campaign} from "../../models/campaign/campaign.model";
@@ -14,6 +12,7 @@ import {StatsService} from "../../models/stats/stats.service";
 import {User} from "../../models/user/user.model";
 import {UserService} from "../../models/user/user.service";
 import {getIntervalDate} from "../Cron";
+import {TwitterStats} from "./twitterStats";
 
 const campaignService = new CampaignService();
 const adService = new AdService();
@@ -22,7 +21,7 @@ const userService = new UserService();
 const statisticService = new StatisticService();
 const statsService = new StatsService();
 
-const twitterAnalyticsMiddleware = new TwitterAnalyticsMiddleware();
+const twitterStats = new TwitterStats();
 
 export class StatsCron {
 
@@ -51,8 +50,6 @@ export class StatsCron {
                     // Then getUserAds its statistics / analytics calling the API
                     const adType: AdType = await adTypeService.assignByKey(ad.adTypeKey);
                     const statistic: Statistic = await this.getAnalytics(owner, ad, adType, INTERVAL);
-
-                    console.log(statistic)
 
                     // Save statistic into database
                     await statisticService.create(statistic);
@@ -90,24 +87,7 @@ export class StatsCron {
     private async getAnalytics(owner: User, ad: Ad, adType: AdType, interval): Promise<Statistic> {
         switch (adType.platform.key) {
             case "TW": {
-                const twitterAd: TwitterAd = await adService.getTwitterAd(ad._id);
-                const statistics = (await twitterAnalyticsMiddleware.getStats(
-                    owner.twToken, owner.twTokenSecret, owner.twAdAccount,
-                    "CAMPAIGN", [twitterAd.twitterCampaign],
-                    interval.before, interval.now,
-                )).data[0].id_data[0].metrics;
-                console.log(statistics)
-                return {
-                    ad: (ad),
-                    impressions: +statistics.impressions,
-                    clicks: +statistics.clicks,
-                    follows: +statistics.follows,
-                    app_clicks: +statistics.app_clicks,
-                    retweets: +statistics.retweets,
-                    likes: +statistics.likes,
-                    replies: +statistics.replies,
-                    url_clicks: +statistics.url_clicks,
-                };
+                return await twitterStats.getStats(owner, ad, interval);
             }
             default: {
                 throw new Error("Unknown adType " + adType.name);
