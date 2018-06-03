@@ -1,6 +1,6 @@
 import {logger} from "../../config/logger";
 
-import {RoleModel} from "../../models/role/role.model";
+import {Role} from "../../models/role/role.model";
 import {RoleService} from "../../models/role/role.service";
 import {PasswordService} from "../../services/password.service";
 import {User} from "../../models/user/user.model";
@@ -57,7 +57,7 @@ export let register: ExpressSignature = async (request, response, next) => {
     }
 
     try {
-        const role: RoleModel = await roleService.findByName(params.role);
+        const role: Role = await roleService.findByName(params.role);
         const user: User = await userService.create(params.name, params.email, params.password, role, params.phone);
 
         request.session.userId = user._id;

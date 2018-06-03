@@ -1,7 +1,7 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
 import {Location, LocationSchema} from "./location.model";
-import {SubCategory} from "./subCategory.model";
+import {SubCategory} from "../category/subCategory.model";
 
 export interface Targeting extends Document{
     age?: [number, number];

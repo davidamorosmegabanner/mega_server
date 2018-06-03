@@ -1,9 +1,9 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
 import {User} from "../user/user.model";
-import {Targeting} from "./targeting.model";
-import {Category} from "./category.model";
-import {SubCategory} from "./subCategory.model";
+import {Targeting} from "../targeting/targeting.model";
+import {Category} from "../category/category.model";
+import {SubCategory} from "../category/subCategory.model";
 
 export interface Campaign extends Document {
     _id: string;

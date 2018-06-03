@@ -21,7 +21,7 @@ export class DummyStatsService {
     public async getUnpublished(): Promise<DummyStats[]> {
         return await this.mongoModel
             .find({published: false})
-            .populate("campaign", "ad", "")
+            .populate("campaign", "ad")
             .lean();
     }
 

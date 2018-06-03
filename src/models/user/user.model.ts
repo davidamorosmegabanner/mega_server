@@ -1,6 +1,6 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
-import {RoleModel} from "../role/role.model";
+import {Role} from "../role/role.model";
 
 export interface User extends Document {
     _id: string;
@@ -9,7 +9,7 @@ export interface User extends Document {
     email: string;
     password: string;
     phone: string;
-    role: RoleModel;
+    role: Role;
     active: boolean;
     deleted: boolean;
     // Social parameters
@@ -42,8 +42,7 @@ const UserSchema = new Schema({
         required: true,
     },
     role: {
-        type: Schema.Types.ObjectId,
-        ref: "RoleModel",
+        type: String,
         required: true,
     },
     phone: {

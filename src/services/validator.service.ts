@@ -1,6 +1,6 @@
 import {AdType} from "../models/adType/adType.model";
 import {InstagramAdTypeModel} from "../models/adType/instagramAdType.model";
-import {TwitterAdType} from "../models/adType/twitterAdType";
+import {TwitterAdType} from "../models/adType/twitterAdType.model";
 import {CreativityModel} from "../models/creativity/creativity.model";
 
 /**

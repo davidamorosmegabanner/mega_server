@@ -27,7 +27,7 @@ const computer = new ComputerService();
 
 export default class DummyEngine {
 
-    public interval = "1MIN";
+    public interval = "10MIN";
 
     public async start() {
         logger.info("Dummy engine started...");

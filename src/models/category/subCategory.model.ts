@@ -1,4 +1,4 @@
-import {CampaignService} from "./campaign.service";
+import {CampaignService} from "../campaign/campaign.service";
 import {Category} from "./category.model";
 
 export interface SubCategory {

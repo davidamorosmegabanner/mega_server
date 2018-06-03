@@ -43,6 +43,7 @@ export class PublisherCron {
                     await adService.changeToPublished(unpublishedAd);
                 }
             }));
+            console.log("unpublished ads")
             console.log(unpublishedAdsArray)
 
             // Then we look for stats and publish those ads that have new stats
@@ -53,15 +54,17 @@ export class PublisherCron {
                     await dummyStatsService.changeToPublished(unpublishedStats);
                 }
             }));
+            console.log("unpublished stats")
             console.log(unpublishedStatsArray)
 
-            // Finally we look for those ads width non valid or deleted campaigns and unpublish them
+            // Finally we look for those ads with non valid or deleted campaigns and unpublish them
             const notValidAds: AdModel[] = await adService.getPublishedAndNotValid();
             await Promise.all(notValidAds.map(async (notValidAd) => {
                 const adType: AdType = await adTypeService.assignByKey(notValidAd.adTypeKey);
                 await this.deletePublishedAd(notValidAd, adType, notValidAd.owner);
                 await adService.changeToUnpublished(notValidAd);
             }));
+            console.log("not valid ads")
             console.log(notValidAds)
 
             logger.info("Publisher cron finished");
@@ -73,7 +76,6 @@ export class PublisherCron {
     }
 
     private async publishUnpublishedAd(unpublishedAd: AdModel): Promise<boolean> {
-        let published: boolean = true;
         const campaign = await campaignService.findById(unpublishedAd.owner, unpublishedAd.campaign._id);
         const adType: AdType = await adTypeService.assignByKey(unpublishedAd.adTypeKey);
         // Just to make sure we have all user data
@@ -94,8 +96,9 @@ export class PublisherCron {
     private async publishStat(unpublishedStats: DummyStats): Promise<boolean> {
         let published: boolean = true;
         await Promise.all(unpublishedStats.stats.map(async (unpublishedStat) => {
+            console.log(unpublishedStat)
             const campaign: Campaign = unpublishedStats.campaign; //
-            const ad: AdModel = unpublishedStat.ad;
+            const ad: AdModel = await adService.getWithId(unpublishedStat.ad.toString());
             const adType: AdType = await adTypeService.assignByKey(ad.adTypeKey);
             // Just to make sure we have all user data
             const owner = await userService.findById(ad.owner._id);

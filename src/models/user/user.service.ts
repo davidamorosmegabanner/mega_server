@@ -1,5 +1,5 @@
 import {Model} from "mongoose";
-import {RoleModel} from "../role/role.model";
+import {Role} from "../role/role.model";
 import {PasswordService} from "../../services/password.service";
 import {TokenService} from "../../services/token.service";
 import {default as UserMongo, User} from "./user.model";
@@ -11,7 +11,7 @@ export class UserService {
         this.mongoModel = mongoModel || UserMongo;
     }
 
-    public async create(name: string, email: string, password: string, role: RoleModel, phone: string): Promise<User> {
+    public async create(name: string, email: string, password: string, role: Role, phone: string): Promise<User> {
 
         const user = new this.mongoModel({
             email: (email),
@@ -77,7 +77,7 @@ export class UserService {
             .findOneAndUpdate({_id: id}, {$set: {deleted: true}});
     }
 
-    public async listUsers(role?: RoleModel): Promise<User[]> {
+    public async listUsers(role?: Role): Promise<User[]> {
         const find: any = {};
         find.deleted = false;
         if (role && role !== undefined) {find.role = role; }

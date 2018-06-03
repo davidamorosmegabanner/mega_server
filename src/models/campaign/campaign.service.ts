@@ -2,7 +2,7 @@ import {Model} from "mongoose";
 import {CreativityModel} from "../creativity/creativity.model";
 import {User} from "../user/user.model";
 import {Campaign, default as CampaignMongo} from "./campaign.model";
-import {default as Categories, Category} from "./category.model";
+import {default as Categories, Category} from "../category/category.model";
 
 export class CampaignService {
     private readonly mongoModel: Model<Campaign>;
