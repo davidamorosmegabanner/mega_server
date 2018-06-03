@@ -2,7 +2,7 @@ import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
 import {User} from "../user/user.model";
 
-export interface Campaign extends Document {
+export interface CampaignModel extends Document {
     _id: string;
     name: string;
     description: string;
@@ -15,7 +15,6 @@ export interface Campaign extends Document {
     deleted: boolean;
     created: Date;
     updated: Date;
-    socialId?: string;
 }
 
 const CampaignSchema = new Schema({
@@ -73,5 +72,5 @@ const CampaignSchema = new Schema({
     },
 });
 
-const CampaignMongo: Model<Campaign> = mongoose.model<Campaign>("Campaign", CampaignSchema);
+const CampaignMongo: Model<CampaignModel> = mongoose.model<CampaignModel>("CampaignModel", CampaignSchema);
 export default CampaignMongo;

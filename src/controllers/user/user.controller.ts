@@ -1,8 +1,8 @@
 import {logger} from "../../config/logger";
 
-import {Role} from "../../models/role/role.model";
+import {RoleModel} from "../../models/role/role.model";
 import {RoleService} from "../../models/role/role.service";
-import {Password} from "../../models/user/password";
+import {PasswordService} from "../../services/password.service";
 import {User} from "../../models/user/user.model";
 import {UserService} from "../../models/user/user.service";
 import {AuthService} from "../../services/auth.service";
@@ -25,7 +25,7 @@ export let login: ExpressSignature = async (request, response, next) => {
 
         const user: User = await userService.findByEmail(params.email);
 
-        if (Password.encrypt(params.password).value !== user.password) {
+        if (PasswordService.encrypt(params.password).value !== user.password) {
             response.status(401).send("Email and password do not match!");
         }
 
@@ -57,7 +57,7 @@ export let register: ExpressSignature = async (request, response, next) => {
     }
 
     try {
-        const role: Role = await roleService.findByName(params.role);
+        const role: RoleModel = await roleService.findByName(params.role);
         const user: User = await userService.create(params.name, params.email, params.password, role, params.phone);
 
         request.session.userId = user._id;

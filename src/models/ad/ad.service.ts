@@ -1,27 +1,29 @@
+import * as _ from "lodash";
 import {Model} from "mongoose";
-import {AdType} from "../adType/adType";
-import {Campaign} from "../campaign/campaign.model";
-import {Creativity} from "../creativity/creativity.model";
+
+import {AdTypeModel} from "../adType/adType.model";
+import {CampaignModel} from "../campaign/campaign.model";
+import {CreativityModel} from "../creativity/creativity.model";
 import {User} from "../user/user.model";
-import {Ad, default as AdMongo} from "./ad.model";
-import {default as TwitterAdMongo, TwitterAd} from "./twitterAd.model";
+import {AdModel, default as AdMongo} from "./ad.model";
+import {default as TwitterAdMongo, TwitterAdModel} from "./twitterAd.model";
 
 export class AdService {
-    private readonly mongoModel: Model<Ad>;
-    private readonly twitterAdModel: Model<TwitterAd>;
+    private readonly mongoModel: Model<AdModel>;
+    private readonly twitterAdModel: Model<TwitterAdModel>;
 
-    constructor(mongoModel?: Model<Ad>) {
+    constructor(mongoModel?: Model<AdModel>) {
         this.mongoModel = mongoModel || AdMongo;
         this.twitterAdModel = TwitterAdMongo;
     }
 
     public async create(
-        name: string, owner: User, adType: AdType, creativities: Creativity[], campaign: Campaign,
+        name: string, owner: User, adType: AdTypeModel, creativities: CreativityModel[], campaign: CampaignModel,
         twitterParams: any,
     ): Promise<any> {
         // Twitter
         if (adType.platform.key === "TW") {
-            const ad: TwitterAd = new this.twitterAdModel({
+            const ad: TwitterAdModel = new this.twitterAdModel({
                 name: (name),
                 owner: (owner),
                 adTypeKey: (adType.key),
@@ -54,14 +56,14 @@ export class AdService {
         return await adMongo.save();
     }
 
-    public async assignSocialId(campaign: Campaign, campaignSocialId: string): Promise<Campaign> {
-        return await this.mongoModel.findOneAndUpdate({_id: campaign._id, socialId: campaignSocialId});
+    public async assignTwitterCampaign(campaign: CampaignModel, twitterCampaignId: string): Promise<CampaignModel> {
+        return await this.mongoModel.findOneAndUpdate({_id: campaign._id, twitterCampaign: twitterCampaignId});
     }
 
-    public async list(owner: User): Promise<Ad[]> {
+    public async list(owner: User): Promise<AdModel[]> {
         const populateQuery = [
             {path: "adType", select: "name key -_id -__t"},
-            {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size duration campaign"},
+            {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size allowedDuration"},
         ];
         return await this.mongoModel
             .find({owner: (owner), deleted: false}, {_id: 1, name: 1, adType: 1, creativities: 1})
@@ -69,9 +71,9 @@ export class AdService {
             .lean();
     }
 
-    public async getUserAds(user: User, id: string[]): Promise<Ad> {
+    public async getUserAds(user: User, id: string[]): Promise<AdModel> {
         const populateQuery = [
-            {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size duration campaign"},
+            {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size allowedDuration"},
         ];
         return await this.mongoModel
             .find({_id: id, owner: user, deleted: false}, {_id: 1, name: 1, adTypeKey: 1, creativities: 1})
@@ -79,15 +81,15 @@ export class AdService {
             .lean();
     }
 
-    public async getWithId(id: string): Promise<Ad> {
+    public async getWithId(id: string): Promise<AdModel> {
         return await this.mongoModel
             .find({_id: id})
             .lean();
     }
 
-    public async getTwitterAd(id: string): Promise<TwitterAd> {
+    public async getTwitterAd(id: string): Promise<TwitterAdModel> {
         const populateQuery = [
-            {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size duration campaign"},
+            {path: "creativities", select: "name path thumbnail mimetype fileformat filetype size allowedDuration"},
         ];
         return await this.mongoModel
             .find({_id: id, deleted: false}, {_id: 1, name: 1, adTypeKey: 1, creativities: 1})
@@ -95,13 +97,13 @@ export class AdService {
             .lean();
     }
 
-    public async remove(id: string): Promise<Creativity> {
+    public async remove(id: string): Promise<CreativityModel> {
         if (id === undefined) { throw new Error("Param id is required"); }
 
         return await this.mongoModel.findOneAndUpdate({_id: id}, {$set: {deleted: true}});
     }
 
-    public async findAndCheck(ads: string[]): Promise<Ad[]> {
+    public async findAndCheck(ads: string[]): Promise<AdModel[]> {
         const findAds = await this.mongoModel.find({ _id: { $in: (ads) }});
         // Compare length of ads input array with length of mongo ads array to know if all input ads are correct
         if (findAds.length !== ads.length) {
@@ -110,9 +112,43 @@ export class AdService {
         return findAds;
     }
 
-    public async getCampaignAds(campaign: Campaign): Promise<Ad[]> {
+    public async getCampaignAds(campaign: CampaignModel): Promise<AdModel[]> {
         return await this.mongoModel
             .find({ campaign: (campaign) })
             .lean();
+    }
+
+    public async getUnpublished(): Promise<AdModel[]> {
+        return await this.mongoModel
+            .find({published: false, active: true, deleted: false})
+            .populate("campaign", "owner")
+            .lean();
+    }
+
+    public async getPublishedAndNotValid(): Promise<AdModel[]> {
+        const ads: AdModel[] = await this.mongoModel
+            .find({published: true})
+            .populate("campaign", "owner")
+            .lean();
+
+        return ads.filter((ad) => {
+            return (ad.campaign.deleted || !ad.campaign.active);
+        });
+    }
+
+    public async changeToPublished(ad: AdModel): Promise<AdModel> {
+        return await this.mongoModel.findOneAndUpdate({
+            _id: ad._id,
+        }, {
+            $set: { published: true },
+        });
+    }
+
+    public async changeToUnpublished(ad: AdModel): Promise<AdModel> {
+        return await this.mongoModel.findOneAndUpdate({
+            _id: ad._id,
+        }, {
+            $set: { published: false },
+        });
     }
 }

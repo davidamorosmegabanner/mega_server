@@ -1,7 +1,7 @@
-import {Campaign} from "../../models/campaign/campaign.model";
+import {CampaignModel} from "../../models/campaign/campaign.model";
 import {ComputedUniqueStat} from "./computedUniqueStat";
 
 export interface ComputedStats {
-    campaign: Campaign;
+    campaign: CampaignModel;
     stats: ComputedUniqueStat[];
 }

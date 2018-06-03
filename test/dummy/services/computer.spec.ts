@@ -3,14 +3,14 @@ import * as mongoose from "mongoose";
 import config from "../../../src/config/config";
 import {NormalizedStats} from "../../../src/dummy/models/normalizedStats";
 import ComputerService from "../../../src/dummy/services/computer";
-import {Ad} from "../../../src/models/ad/ad.model";
-import {Campaign} from "../../../src/models/campaign/campaign.model";
+import {AdModel} from "../../../src/models/ad/ad.model";
+import {CampaignModel} from "../../../src/models/campaign/campaign.model";
 import {UserService} from "../../../src/models/user/user.service";
 
 const computerService = new ComputerService();
 const userService = new UserService();
 
-describe("Ad middleware test", () => {
+describe("AdModel middleware test", () => {
 
     before((done) => {
         mongoose.connect(config.db);
@@ -21,7 +21,8 @@ describe("Ad middleware test", () => {
         try {
             const clicks = 15;
             const impressions = 20;
-            const randomCTRArray = Array.from({length: 100}, () => Math.floor(Math.random() * 1000 / 4) / 1000);
+            // const randomCTRArray = Array.from({length: 100}, () => Math.floor(Math.random() * 1000 / 4) / 1000);
+            const randomCTRArray = [];
             console.log(randomCTRArray);
 
             const test = await computerService.runPythonScript(clicks, impressions, randomCTRArray);
@@ -39,9 +40,9 @@ describe("Ad middleware test", () => {
             const before = new Date(); before.setDate(before.getDate() - 5);
             const after = new Date(); after.setDate(after.getDate() + 5);
             const user = await userService.findAny();
-            const campaign: Campaign = {
+            const campaign: CampaignModel = {
                 _id: "abcd",
-                name: "Campaign 1",
+                name: "CampaignModel 1",
                 description: "something",
                 owner: user,
                 budget: 200,
@@ -53,15 +54,16 @@ describe("Ad middleware test", () => {
                 created: before,
                 updated: before,
             };
-            const ad: Ad = {
+            const ad: AdModel = {
                 _id: "12345",
-                name: "Ad",
+                name: "AdModel",
                 owner: user,
                 adTypeKey: "TW_TWEET",
                 campaign: (campaign),
                 deleted: false,
                 created: before,
                 updated: before,
+                published: false,
             };
             const newStats: NormalizedStats = {
                 campaign: (campaign),

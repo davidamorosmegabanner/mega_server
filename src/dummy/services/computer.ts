@@ -2,7 +2,7 @@ import * as path from "path";
 import * as PythonShell from "python-shell";
 
 import {AdService} from "../../models/ad/ad.service";
-import {Campaign} from "../../models/campaign/campaign.model";
+import {CampaignModel} from "../../models/campaign/campaign.model";
 import {ComputedStats} from "../models/computedStats";
 import {ComputedUniqueStat} from "../models/computedUniqueStat";
 import {NormalizedStats} from "../models/normalizedStats";
@@ -15,7 +15,7 @@ const statsService = new DummyStatsService();
 
 export default class ComputerService {
 
-    public async firstTimer(campaign: Campaign): Promise<ComputedStats> {
+    public async firstTimer(campaign: CampaignModel): Promise<ComputedStats> {
 
         const ads = await adService.getCampaignAds(campaign);
 
@@ -58,7 +58,7 @@ export default class ComputerService {
         });
 
         // Make array for computed stats
-        // And then iterate over every array (ad) to getUserAds its posterior CTR
+        // And then iterate over every array (ad) to get its posterior CTR
         const computedArray: ComputedStats = {
             campaign: (newStats.campaign),
             stats: [],
@@ -134,6 +134,7 @@ export default class ComputerService {
             pyshell.send(toSend);
             pyshell.on("message", (message) => {
                 messageReceived = message;
+                console.log(message)
             });
             pyshell.end(() => {
                 // Get last message emitted as the correct one

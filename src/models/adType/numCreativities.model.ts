@@ -1,4 +1,4 @@
-export class Duration {
+export class NumCreativitiesModel {
     public readonly min: number;
     public readonly max: number;
     constructor(

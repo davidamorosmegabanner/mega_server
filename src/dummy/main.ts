@@ -1,5 +1,5 @@
 import {logger} from "../config/logger";
-import {Campaign} from "../models/campaign/campaign.model";
+import {CampaignModel} from "../models/campaign/campaign.model";
 import {CampaignService} from "../models/campaign/campaign.service";
 import {Stats} from "../models/stats/stats.model";
 import {StatsService} from "../models/stats/stats.service";
@@ -27,7 +27,7 @@ const computer = new ComputerService();
 
 export default class DummyEngine {
 
-    public interval = "1DAY";
+    public interval = "1MIN";
 
     public async start() {
         logger.info("Dummy engine started...");
@@ -37,7 +37,7 @@ export default class DummyEngine {
 
         try {
             // 0 - Get all active and non deleted campaigns
-            const campaigns: Campaign[] = await campaignService.getAll();
+            const campaigns: CampaignModel[] = await campaignService.getAll();
 
             // 1 - Get stats
             const stats: Stats[] = await statsService.get(INTERVAL.before, INTERVAL.now);

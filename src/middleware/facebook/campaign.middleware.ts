@@ -9,7 +9,7 @@ export class FacebookCampaignMiddleware {
     public facebookURL: string = config.facebookAPI.facebookURL;
 
     /*
-        Campaign
+        CampaignModel
      */
 
     public async listCampaigns(adAccountId: string, accessToken: string): Promise<any> {

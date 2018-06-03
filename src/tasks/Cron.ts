@@ -1,18 +1,22 @@
 import * as moment from "moment";
 import * as cron from "node-cron";
-import {DummyCron} from "./publisher/dummy";
+import {PublisherCron} from "./publisher/publisher";
 import {StatsCron} from "./stats/stats";
+import DummyEngine from "../dummy/main";
 
-const dummyCron = new DummyCron();
+const dummyCron = new DummyEngine();
+const publisherCron = new PublisherCron();
 const statsCron = new StatsCron();
 
 export default class CronManager {
 
-    private dummy = cron.schedule(convertToCronTime(dummyCron.interval), () => { dummyCron.start(); }, false);
+    private dummy = cron.schedule(convertToCronTime(dummyCron.interval), () => {dummyCron.start(); }, false);
+    private publish = cron.schedule(convertToCronTime(publisherCron.interval), () => { publisherCron.start(); }, false);
     private stats = cron.schedule(convertToCronTime(statsCron.interval), () => { statsCron.start(); }, false);
 
     public startJobs() {
         this.dummy.start();
+        this.publish.start();
         this.stats.start();
     }
 }

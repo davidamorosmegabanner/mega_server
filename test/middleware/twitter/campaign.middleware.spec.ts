@@ -11,7 +11,7 @@ const twitterCampaignMiddleware = new TwitterCampaignMiddleware();
 const twitterCreativeMiddleware = new TwitterCreativeMiddleware();
 const twitterAuthMiddleware = new TwitterAuthMiddleware();
 
-describe("Twitter Ad Middleware test", () => {
+describe("Twitter AdModel Middleware test", () => {
 
     before((done) => {
         mongoose.connect(config.db);
@@ -108,7 +108,7 @@ describe("Twitter Ad Middleware test", () => {
             const endDate = new Date(); endDate.setDate(startDate.getDate() + 1);
             const campaignId = (await twitterCampaignMiddleware.createCampaign(
                 user.twToken, user.twTokenSecret, "gq1drn",
-                1, fundingInstrumentId, "Campaign test",
+                1, fundingInstrumentId, "CampaignModel test",
                 startDate, endDate,
             )).data.id;
 
@@ -149,7 +149,7 @@ describe("Twitter Ad Middleware test", () => {
             const endDate = new Date(); endDate.setDate(startDate.getDate() + 1);
             const campaignId = (await twitterCampaignMiddleware.createCampaign(
                 user.twToken, user.twTokenSecret, "gq1drn",
-                1, fundingInstrumentId, "Campaign test",
+                1, fundingInstrumentId, "CampaignModel test",
                 startDate, endDate,
             )).data.id;
 

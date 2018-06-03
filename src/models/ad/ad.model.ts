@@ -1,19 +1,20 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
-import {Campaign} from "../campaign/campaign.model";
-import {Creativity} from "../creativity/creativity.model";
+import {CampaignModel} from "../campaign/campaign.model";
+import {CreativityModel} from "../creativity/creativity.model";
 import {User} from "../user/user.model";
 
-export interface Ad extends Document {
+export interface AdModel extends Document {
     _id: string;
     name: string;
     owner: User;
     adTypeKey: string;
-    campaign: Campaign;
-    creativities?: Creativity[];
+    campaign: CampaignModel;
+    creativities?: CreativityModel[];
     deleted: boolean;
     created: Date;
     updated: Date;
+    published: boolean;
 }
 
 const AdSchema = new Schema({
@@ -33,11 +34,11 @@ const AdSchema = new Schema({
     campaign: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: "Campaign",
+        ref: "CampaignModel",
     },
     creativities: [{
         type: Schema.Types.ObjectId,
-        ref: "Creativity",
+        ref: "CreativityModel",
     }],
     deleted: {
         type: Boolean,
@@ -54,7 +55,12 @@ const AdSchema = new Schema({
         required: true,
         default: Date.now,
     },
+    published: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
 });
 
-const AdMongo: Model<Ad> = mongoose.model<Ad>("Ad", AdSchema);
+const AdMongo: Model<AdModel> = mongoose.model<AdModel>("AdModel", AdSchema);
 export default AdMongo;

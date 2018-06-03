@@ -1,4 +1,4 @@
-export class Platform {
+export class PlatformModel {
     public readonly name: string;
     public readonly key: string;
     public readonly description: string;
@@ -13,25 +13,25 @@ export class Platform {
     }
 }
 
-export const Twitter: Platform = new Platform(
+export const Twitter: PlatformModel = new PlatformModel(
     "Twitter",
     "TW",
     "Twitter Social Network",
 );
 
-export const Instagram: Platform = new Platform(
+export const Instagram: PlatformModel = new PlatformModel(
     "Instagram",
     "IG",
     "Instagram Social Network",
 );
 
-export const Facebook: Platform = new Platform(
+export const Facebook: PlatformModel = new PlatformModel(
     "Facebook",
     "FB",
     "Facebook Social Network",
 );
 
-export const YouTube: Platform = new Platform(
+export const YouTube: PlatformModel = new PlatformModel(
     "YouTube",
     "YT",
     "YouTube Social Network",

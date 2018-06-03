@@ -2,12 +2,12 @@ import {logger} from "../../config/logger";
 import {ComputedUniqueStat} from "../../dummy/models/computedUniqueStat";
 import {TwitterCampaignMiddleware} from "../../middleware/twitter/campaign.middleware";
 import {TwitterCreativeMiddleware} from "../../middleware/twitter/creative.middleware";
-import {Ad} from "../../models/ad/ad.model";
+import {AdModel} from "../../models/ad/ad.model";
 import {AdService} from "../../models/ad/ad.service";
-import {TwitterAd} from "../../models/ad/twitterAd.model";
-import {AdType} from "../../models/adType/adType";
-import {Campaign} from "../../models/campaign/campaign.model";
-import {Creativity} from "../../models/creativity/creativity.model";
+import {TwitterAdModel} from "../../models/ad/twitterAd.model";
+import {AdTypeModel} from "../../models/adType/adType.model";
+import {CampaignModel} from "../../models/campaign/campaign.model";
+import {CreativityModel} from "../../models/creativity/creativity.model";
 import {CreativityService} from "../../models/creativity/creativity.service";
 import {User} from "../../models/user/user.model";
 
@@ -20,10 +20,10 @@ export default class TwitterPublisher {
 
     public async publish(
         stat: ComputedUniqueStat,
-        campaign: Campaign,
-        ad: Ad,
+        campaign: CampaignModel,
+        ad: AdModel,
         owner: User,
-        adType: AdType,
+        adType: AdTypeModel,
     ): Promise<string> {
         switch (adType.name) {
             case ("TW_TWEET"): {
@@ -53,8 +53,8 @@ export default class TwitterPublisher {
 
     private async publishTweet(
         stat: ComputedUniqueStat,
-        campaign: Campaign,
-        ad: Ad,
+        campaign: CampaignModel,
+        ad: AdModel,
         owner: User,
     ): Promise<string> {
         // Create campaign
@@ -70,7 +70,7 @@ export default class TwitterPublisher {
             startDate, endDate,
         )).data.id;
 
-        const twitterAd: TwitterAd = await adService.getTwitterAd(ad._id);
+        const twitterAd: TwitterAdModel = await adService.getTwitterAd(ad._id);
 
         const tweetId = (await twitterCreativeMiddleware.createTweet(
             owner.twToken, owner.twTokenSecret, owner.twAdAccount, twitterAd.text,
@@ -87,8 +87,8 @@ export default class TwitterPublisher {
 
     private async publishTweetWithMedia(
         stat: ComputedUniqueStat,
-        campaign: Campaign,
-        ad: Ad,
+        campaign: CampaignModel,
+        ad: AdModel,
         owner: User,
     ): Promise<string> {
         // Create campaign
@@ -104,10 +104,10 @@ export default class TwitterPublisher {
             startDate, endDate,
         )).data.id;
 
-        const twitterAd: TwitterAd = await adService.getTwitterAd(ad._id);
+        const twitterAd: TwitterAdModel = await adService.getTwitterAd(ad._id);
 
         // Uploading images to twitter
-        const creativities: Creativity[] = await creativityService.find(twitterAd.creativities);
+        const creativities: CreativityModel[] = await creativityService.find(twitterAd.creativities);
         const creativitiesPaths = creativities.map((creativity) => creativity.path);
         const twitterImages: string[] = [];
         await Promise.all(creativitiesPaths.map(async (creativityPath) => {
@@ -134,8 +134,8 @@ export default class TwitterPublisher {
 
     private async publishAppWithMedia(
         stat: ComputedUniqueStat,
-        campaign: Campaign,
-        ad: Ad,
+        campaign: CampaignModel,
+        ad: AdModel,
         owner: User,
         mediaType: string,
     ): Promise<string> {
@@ -152,10 +152,10 @@ export default class TwitterPublisher {
             startDate, endDate,
         )).data.id;
 
-        const twitterAd: TwitterAd = await adService.getTwitterAd(ad._id);
+        const twitterAd: TwitterAdModel = await adService.getTwitterAd(ad._id);
 
         // Uploading images to twitter
-        const creativities: Creativity[] = await creativityService.find(twitterAd.creativities);
+        const creativities: CreativityModel[] = await creativityService.find(twitterAd.creativities);
         const creativitiesPaths = creativities.map((creativity) => creativity.path);
         const twitterImages: string[] = [];
         const twitterImage = await twitterCreativeMiddleware.uploadMedia(

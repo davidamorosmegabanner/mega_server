@@ -1,9 +1,9 @@
 import * as jwt from "jsonwebtoken";
-import config from "../../config/env/all";
+import config from "../config/env/all";
 
-export class Token {
-  public static generateToken(email: string, pass: string): Token {
-      return new Token(email, pass);
+export class TokenService {
+  public static generateToken(email: string, pass: string): TokenService {
+      return new TokenService(email, pass);
   }
 
   public readonly value: string;

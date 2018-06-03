@@ -1,12 +1,12 @@
 import {Model} from "mongoose";
-import {Creativity} from "../creativity/creativity.model";
+import {CreativityModel} from "../creativity/creativity.model";
 import {User} from "../user/user.model";
-import {Campaign, default as CampaignMongo} from "./campaign.model";
+import {CampaignModel, default as CampaignMongo} from "./campaign.model";
 
 export class CampaignService {
-    private readonly mongoModel: Model<Campaign>;
+    private readonly mongoModel: Model<CampaignModel>;
 
-    constructor(mongoModel?: Model<Campaign>) {
+    constructor(mongoModel?: Model<CampaignModel>) {
         this.mongoModel = mongoModel || CampaignMongo;
     }
 
@@ -32,7 +32,7 @@ export class CampaignService {
         return await campaign.save();
     }
 
-    public async findById(user:User, id: string): Promise<Campaign> {
+    public async findById(user:User, id: string): Promise<CampaignModel> {
         return await this.mongoModel
             .findOne({
                 owner: user,
@@ -53,7 +53,7 @@ export class CampaignService {
             .lean();
     }
 
-    public async get(user: User, id: string[]): Promise<Campaign> {
+    public async get(user: User, id: string[]): Promise<CampaignModel> {
         return await this.mongoModel
             .find({
                 owner: user,
@@ -75,7 +75,7 @@ export class CampaignService {
             .lean();
     }
 
-    public async list(user: User): Promise<Campaign[]> {
+    public async list(user: User): Promise<CampaignModel[]> {
         return await this.mongoModel
             .find({
                 owner: user,
@@ -97,25 +97,25 @@ export class CampaignService {
             .lean();
     }
 
-    public async remove(id: string): Promise<Creativity> {
+    public async remove(id: string): Promise<CreativityModel> {
         if (id === undefined) { throw new Error("Param id is required"); }
 
         return await this.mongoModel.findOneAndUpdate({_id: id}, {$set: {deleted: true}});
     }
 
-    public async start(campaign: Campaign): Promise<Creativity> {
+    public async start(campaign: CampaignModel): Promise<CreativityModel> {
         if (campaign === undefined) { throw new Error("Param id is required"); }
 
         return await this.mongoModel.findOneAndUpdate({_id: campaign._id}, {$set: {active: true}});
     }
 
-    public async stop(campaign: Campaign): Promise<Creativity> {
+    public async stop(campaign: CampaignModel): Promise<CreativityModel> {
         if (campaign === undefined) { throw new Error("Param id is required"); }
 
         return await this.mongoModel.findOneAndUpdate({_id: campaign._id}, {$set: {active: false}});
     }
 
-    public async getAll(): Promise<Campaign[]> {
+    public async getAll(): Promise<CampaignModel[]> {
         return await this.mongoModel
             .find({ active: true, deleted: false })
             .populate("owner")

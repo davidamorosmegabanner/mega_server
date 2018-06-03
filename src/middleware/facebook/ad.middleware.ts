@@ -12,7 +12,7 @@ export class FacebookAdMiddleware {
     public facebookURL: string = config.facebookAPI.facebookURL;
 
     /*
-        Ad
+        AdModel
      */
 
     public async createAd(
@@ -43,7 +43,7 @@ export class FacebookAdMiddleware {
     }
 
     /*
-        Ad account
+        AdModel account
      */
 
     public async getAdAccount(userId: string, accessToken: string): Promise<any> {

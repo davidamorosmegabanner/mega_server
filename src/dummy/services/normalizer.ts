@@ -19,18 +19,18 @@ export default class Normalizer {
                     CTR = {clicks: statistic.app_clicks, impressions: statistic.impressions};
                 }
 
-                // Find if normalizedStat Campaign already exist
+                // Find if normalizedStat CampaignModel already exist
                 const NORMALIZED_CAMPAIGN = normalizedStats.find(
                     (normalized) => normalized.campaign === stat.campaign,
                 );
 
-                // Campaign exists
+                // CampaignModel exists
                 if (NORMALIZED_CAMPAIGN && NORMALIZED_CAMPAIGN !== undefined) {
-                    // Find if normalizedStat Ad already exist
+                    // Find if normalizedStat AdModel already exist
                     const NORMALIZED_AD = NORMALIZED_CAMPAIGN.stats.find(
                         (normalizedStat) => normalizedStat.ad === statistic.ad,
                     );
-                    // Ad exists
+                    // AdModel exists
                     if (NORMALIZED_AD && NORMALIZED_AD !== undefined) {
                         normalizedStats.find(
                             (normalized) => normalized.campaign === stat.campaign).stats.find(
@@ -39,7 +39,7 @@ export default class Normalizer {
                             clicks: NORMALIZED_AD.CTR.clicks + CTR.clicks,
                             impressions: NORMALIZED_AD.CTR.impressions + CTR.impressions,
                         };
-                        // Ad doesn't exist, create new
+                        // AdModel doesn't exist, create new
                     } else {
                         normalizedStats.find(
                             (normalized) => normalized.campaign === stat.campaign,
@@ -51,7 +51,7 @@ export default class Normalizer {
                             },
                         });
                     }
-                    // Campaign doesn't exist, create new
+                    // CampaignModel doesn't exist, create new
                 } else {
                     normalizedStats.push({
                         campaign: stat.campaign,

@@ -12,7 +12,7 @@ const facebookAdCreativeMiddleware = new FacebookAdCreativeMiddleware();
 const facebookPageMiddleware = new FacebookPageMiddleware();
 const fbCampaignMiddleware = new FacebookCampaignMiddleware();
 
-describe("Ad middleware test", () => {
+describe("AdModel middleware test", () => {
 
     before((done) => {
         mongoose.connect(config.db);
@@ -36,13 +36,13 @@ describe("Ad middleware test", () => {
 
     });
 
-    it("Should create a Creative Link Ad -- Not working while app in development", async () => {
+    it("Should create a Creative Link AdModel -- Not working while app in development", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});
             if (!user) {assert.ifError( "Error finding user with fbtoken"); }
 
-            const name = "Creative Link Ad Test";
+            const name = "Creative Link AdModel Test";
             const campaignId = (await fbCampaignMiddleware.listCampaigns(user.fbAdAccount, user.fbToken)).data[0].id;
             const actionType = "SIGN_UP";
             const actionValue = {link: "http://megabanner.net"};
@@ -62,13 +62,13 @@ describe("Ad middleware test", () => {
         }
     });
 
-    it("Should create a Creative Link Ad -- Not working while app in development", async () => {
+    it("Should create a Creative Link AdModel -- Not working while app in development", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});
             if (!user) {assert.ifError( "Error finding user with fbtoken"); }
 
-            const name = "Creative Link Ad Test";
+            const name = "Creative Link AdModel Test";
             const campaignId = (await fbCampaignMiddleware.listCampaigns(user.fbAdAccount, user.fbToken)).data[0].id;
             const actionType = "SIGN_UP";
             const actionValue = {link: "http://megabanner.net"};

@@ -14,7 +14,7 @@ const facebookBasicMiddleware = new FacebookAuthMiddleware();
 const facebookCampaignMiddleware = new FacebookCampaignMiddleware();
 const facebookAdCreativeMiddleware = new FacebookAdCreativeMiddleware();
 
-describe("Ad middleware test", () => {
+describe("AdModel middleware test", () => {
 
     before((done) => {
         mongoose.connect(config.db);
@@ -53,7 +53,7 @@ describe("Ad middleware test", () => {
             console.log(adAccount);
 
             const newAdAccount = await facebookAdMiddleware.createAdAccount(
-                "Megabanner test Ad Account",
+                "Megabanner test AdModel Account",
                 "EUR",
                 "1",
                 "1844629475818586", // Megabanner page
@@ -70,7 +70,7 @@ describe("Ad middleware test", () => {
         }
     });
 
-    it("Should create an Ad", async () => {
+    it("Should create an AdModel", async () => {
         try {
             const mongoUser = UserMongo;
             const user: User = await mongoUser.findOne({ fbToken: { $exists: true}, email: "prova@prova.com"});

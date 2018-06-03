@@ -1,27 +1,24 @@
-import {Document, Model, Schema} from "mongoose";
-import * as mongoose from "mongoose";
-
-export interface Role extends Document {
-    _id: string;
-    name: string;
-    key: string;
-    description: string;
+export class RoleModel {
+    public readonly name: string;
+    public readonly key: string;
+    public readonly description: string;
+    public constructor(
+        name: string,
+        key: string,
+        description: string,
+    ) {
+        this.name = (name);
+        this.key = (key);
+        this.description = (description);
+    }
 }
 
-const RoleSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    key: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-    },
-});
+const Roles: RoleModel[] = [];
 
-const RoleMongo: Model<Role> = mongoose.model<Role>("Role", RoleSchema);
-export default RoleMongo;
+Roles.push(new RoleModel(
+    "Administrator",
+    "admin",
+    "Administrator of the system",
+));
+
+export default Roles;

@@ -6,7 +6,7 @@ import * as path from "path";
 import * as uuidv4 from "uuid/v4";
 import * as thumbler from "video-thumb";
 import config from "../config/config";
-import {Dimensions} from "../models/creativity/dimensions";
+import {DimensionsModel} from "../models/creativity/dimensions.model";
 import {User} from "../models/user/user.model";
 
 /**
@@ -41,8 +41,8 @@ export class FileService {
         return(mimetype.replace("video/", "").replace("image/", ""));
     }
 
-    public async getDimensions(fileSource: string, filetype: string): Promise<Dimensions> {
-        let size: Dimensions;
+    public async getDimensions(fileSource: string, filetype: string): Promise<DimensionsModel> {
+        let size: DimensionsModel;
 
         if (filetype === "image") {
 

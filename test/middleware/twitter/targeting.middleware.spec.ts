@@ -7,7 +7,7 @@ import {default as UserMongo, User} from "../../../src/models/user/user.model";
 
 const twitterTargetingMiddleware = new TwitterTargetingMiddleware();
 
-describe("Twitter Ad Middleware test", () => {
+describe("Twitter AdModel Middleware test", () => {
 
     before((done) => {
         mongoose.connect(config.db);

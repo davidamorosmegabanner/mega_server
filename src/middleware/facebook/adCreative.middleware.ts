@@ -11,7 +11,7 @@ export class FacebookAdCreativeMiddleware {
     public facebookURL: string = config.facebookAPI.facebookURL;
 
     /*
-        Ad Image
+        AdModel Image
      */
 
     public async uploadImage(file: string, adAccountId: string, accessToken: string) {

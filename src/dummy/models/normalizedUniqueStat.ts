@@ -1,7 +1,7 @@
-import {Ad} from "../../models/ad/ad.model";
+import {AdModel} from "../../models/ad/ad.model";
 
 export interface NormalizedUniqueStat {
-    ad: Ad;
+    ad: AdModel;
     CTR: {
         clicks: number,
         impressions: number,

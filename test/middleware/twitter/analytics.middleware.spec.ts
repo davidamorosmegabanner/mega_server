@@ -7,7 +7,7 @@ import {TwitterAnalyticsMiddleware} from "../../../src/middleware/twitter/analyt
 
 const twitterAnalyticsMiddleware = new TwitterAnalyticsMiddleware();
 
-describe("Twitter Ad Middleware test", () => {
+describe("Twitter AdModel Middleware test", () => {
 
     before((done) => {
         mongoose.connect(config.db);

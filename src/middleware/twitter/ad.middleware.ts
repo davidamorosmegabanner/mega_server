@@ -7,7 +7,7 @@ export class TwitterAdMiddleware {
     private env = (process.env.NODE_ENV || "development");
 
     /*
-        Ad middleware
+        AdModel middleware
      */
 
     // Returns first ad account owned by user

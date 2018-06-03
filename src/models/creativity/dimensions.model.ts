@@ -1,4 +1,4 @@
-export class Dimensions {
+export class DimensionsModel {
     public readonly width: number;
     public readonly height: number;
     constructor(

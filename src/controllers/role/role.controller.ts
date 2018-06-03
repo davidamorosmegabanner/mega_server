@@ -1,12 +1,10 @@
 import {logger} from "../../config/logger";
 
-import {Role} from "../../models/role/role.model";
-import {RoleService} from "../../models/role/role.service";
+import {RoleModel, default as Roles} from "../../models/role/role.model";
 import {AuthService} from "../../services/auth.service";
 import {ExpressSignature} from "../Route";
 
 const authService = new AuthService();
-const roleService = new RoleService();
 
 export let list: ExpressSignature = async (request, response, next) => {
 
@@ -17,7 +15,7 @@ export let list: ExpressSignature = async (request, response, next) => {
     }
 
     try {
-        const roles: Role[] = await roleService.listRoles();
+        const roles: RoleModel[] = Roles;
         response.status(200).send(
             roles,
         );

@@ -11,9 +11,9 @@ import * as morgan from "morgan";
 import AdRouter from "./controllers/ad/ad.route";
 import CampaignRouter from "./controllers/campaign/campaign.router";
 import CreativityRouter from "./controllers/creativity/creativity.router";
-import FacebookRouter from "./controllers/facebook/facebook.router";
+import FacebookRouter from "./controllers/social/facebook.router";
 import RoleRouter from "./controllers/role/role.router";
-import TwitterRouter from "./controllers/twitter/twitter.router";
+import TwitterRouter from "./controllers/social/twitter.router";
 import UserRouter from "./controllers/user/user.router";
 
 import config from "./config/config";
@@ -38,7 +38,8 @@ export class Server {
         this.logger();
         this.files();
         await this.session();
-        await this.config();
+        await this.mongo();
+        this.parser();
         await this.routes();
         await this.tasks();
 
@@ -51,17 +52,20 @@ export class Server {
         });
     }
 
-    private async config() {
+    private async mongo() {
         try {
             await mongoose.connect(config.db);
             logger.info("Connected to MongoDB");
-            this.app.use(bodyParser.urlencoded({extended: true}));
-            this.app.use(bodyParser.json({limit: "50mb"}));
         } catch (err) {
             logger.error("Could not connect to MongoDB!");
             logger.info(err);
             throw new Error(err);
         }
+    }
+
+    private parser() {
+        this.app.use(bodyParser.urlencoded({extended: true}));
+        this.app.use(bodyParser.json({limit: "50mb"}));
     }
 
     private async routes() {

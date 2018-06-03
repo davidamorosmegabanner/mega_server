@@ -1,10 +1,10 @@
-import {AdType} from "./adType";
-import {default as InstagramAdTypes} from "./instagramAdType";
-import {default as TwitterAdTypes} from "./twitterAdType";
+import {AdTypeModel} from "./adType.model";
+import {default as InstagramAdTypes} from "./instagramAdType.model";
+import {default as TwitterAdTypes} from "./twitterAdType.model";
 
 export class AdTypeService {
 
-    public adTypes: AdType[] = [];
+    public adTypes: AdTypeModel[] = [];
 
     constructor() {
         // Twitter
@@ -13,9 +13,9 @@ export class AdTypeService {
         for (const pushing of InstagramAdTypes) { this.adTypes.push(pushing); }
     }
 
-    public async assignByKey(adTypeKey: string): Promise<AdType> {
+    public async assignByKey(adTypeKey: string): Promise<AdTypeModel> {
 
-        const assigned: AdType = this.adTypes.find((adType) => {
+        const assigned: AdTypeModel = this.adTypes.find((adType) => {
             return adType.key === adTypeKey;
         });
 
@@ -38,5 +38,4 @@ export class AdTypeService {
             iPadDeepLink: params.iPadDeepLink,
         };
     }
-
 }

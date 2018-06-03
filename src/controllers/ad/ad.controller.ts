@@ -1,11 +1,11 @@
 import {logger} from "../../config/logger";
 
 import {AdService} from "../../models/ad/ad.service";
-import {AdType} from "../../models/adType/adType";
+import {AdTypeModel} from "../../models/adType/adType.model";
 import {AdTypeService} from "../../models/adType/adType.service";
-import {Campaign} from "../../models/campaign/campaign.model";
+import {CampaignModel} from "../../models/campaign/campaign.model";
 import {CampaignService} from "../../models/campaign/campaign.service";
-import {Creativity} from "../../models/creativity/creativity.model";
+import {CreativityModel} from "../../models/creativity/creativity.model";
 import {CreativityService} from "../../models/creativity/creativity.service";
 import {User} from "../../models/user/user.model";
 import {UserService} from "../../models/user/user.service";
@@ -32,15 +32,15 @@ export let create: ExpressSignature = async (request, response, next) => {
     try {
         const name: string = params.name;
         const owner: User = await userService.findById(params.owner);
-        const adType: AdType = await adTypeService.assignByKey(params.adType);
-        const creativities: Creativity[] = await creativityService.findById(params.creativities);
-        const campaign: Campaign = await campaignService.findById(owner, params.campaign);
+        const adType: AdTypeModel = await adTypeService.assignByKey(params.adType);
+        const creativities: CreativityModel[] = await creativityService.findById(params.creativities);
+        const campaign: CampaignModel = await campaignService.findById(owner, params.campaign);
 
         // Validators
         await validator.validateParams(adType, params);
         await validator.validateCreativities(adType, creativities);
 
-        // Ad creation
+        // AdModel creation
         // + Optional params
         let twitterParams: any = {};
         if (adType.platform.key === "TW") {
