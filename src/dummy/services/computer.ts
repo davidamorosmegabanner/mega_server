@@ -2,7 +2,7 @@ import * as path from "path";
 import * as PythonShell from "python-shell";
 
 import {AdService} from "../../models/ad/ad.service";
-import {CampaignModel} from "../../models/campaign/campaign.model";
+import {Campaign} from "../../models/campaign/campaign.model";
 import {ComputedStats} from "../models/computedStats";
 import {ComputedUniqueStat} from "../models/computedUniqueStat";
 import {NormalizedStats} from "../models/normalizedStats";
@@ -15,7 +15,7 @@ const statsService = new DummyStatsService();
 
 export default class ComputerService {
 
-    public async firstTimer(campaign: CampaignModel): Promise<ComputedStats> {
+    public async firstTimer(campaign: Campaign): Promise<ComputedStats> {
 
         const ads = await adService.getCampaignAds(campaign);
 

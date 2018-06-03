@@ -5,8 +5,8 @@ import {TwitterCreativeMiddleware} from "../../middleware/twitter/creative.middl
 import {AdModel} from "../../models/ad/ad.model";
 import {AdService} from "../../models/ad/ad.service";
 import {TwitterAdModel} from "../../models/ad/twitterAd.model";
-import {AdTypeModel} from "../../models/adType/adType.model";
-import {CampaignModel} from "../../models/campaign/campaign.model";
+import {AdType} from "../../models/adType/adType.model";
+import {Campaign} from "../../models/campaign/campaign.model";
 import {CreativityModel} from "../../models/creativity/creativity.model";
 import {CreativityService} from "../../models/creativity/creativity.service";
 import {User} from "../../models/user/user.model";
@@ -20,10 +20,10 @@ export default class TwitterPublisher {
 
     public async publish(
         stat: ComputedUniqueStat,
-        campaign: CampaignModel,
+        campaign: Campaign,
         ad: AdModel,
         owner: User,
-        adType: AdTypeModel,
+        adType: AdType,
     ): Promise<string> {
         switch (adType.name) {
             case ("TW_TWEET"): {
@@ -53,7 +53,7 @@ export default class TwitterPublisher {
 
     private async publishTweet(
         stat: ComputedUniqueStat,
-        campaign: CampaignModel,
+        campaign: Campaign,
         ad: AdModel,
         owner: User,
     ): Promise<string> {
@@ -87,7 +87,7 @@ export default class TwitterPublisher {
 
     private async publishTweetWithMedia(
         stat: ComputedUniqueStat,
-        campaign: CampaignModel,
+        campaign: Campaign,
         ad: AdModel,
         owner: User,
     ): Promise<string> {
@@ -134,7 +134,7 @@ export default class TwitterPublisher {
 
     private async publishAppWithMedia(
         stat: ComputedUniqueStat,
-        campaign: CampaignModel,
+        campaign: Campaign,
         ad: AdModel,
         owner: User,
         mediaType: string,

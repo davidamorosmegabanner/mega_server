@@ -1,8 +1,8 @@
 import * as _ from "lodash";
 import {Model} from "mongoose";
 
-import {AdTypeModel} from "../adType/adType.model";
-import {CampaignModel} from "../campaign/campaign.model";
+import {AdType} from "../adType/adType.model";
+import {Campaign} from "../campaign/campaign.model";
 import {CreativityModel} from "../creativity/creativity.model";
 import {User} from "../user/user.model";
 import {AdModel, default as AdMongo} from "./ad.model";
@@ -18,7 +18,7 @@ export class AdService {
     }
 
     public async create(
-        name: string, owner: User, adType: AdTypeModel, creativities: CreativityModel[], campaign: CampaignModel,
+        name: string, owner: User, adType: AdType, creativities: CreativityModel[], campaign: Campaign,
         twitterParams: any,
     ): Promise<any> {
         // Twitter
@@ -56,7 +56,7 @@ export class AdService {
         return await adMongo.save();
     }
 
-    public async assignTwitterCampaign(campaign: CampaignModel, twitterCampaignId: string): Promise<CampaignModel> {
+    public async assignTwitterCampaign(campaign: Campaign, twitterCampaignId: string): Promise<Campaign> {
         return await this.mongoModel.findOneAndUpdate({_id: campaign._id, twitterCampaign: twitterCampaignId});
     }
 
@@ -112,7 +112,7 @@ export class AdService {
         return findAds;
     }
 
-    public async getCampaignAds(campaign: CampaignModel): Promise<AdModel[]> {
+    public async getCampaignAds(campaign: Campaign): Promise<AdModel[]> {
         return await this.mongoModel
             .find({ campaign: (campaign) })
             .lean();

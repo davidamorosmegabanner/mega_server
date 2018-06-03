@@ -1,6 +1,6 @@
-import {AdTypeModel} from "../models/adType/adType.model";
+import {AdType} from "../models/adType/adType.model";
 import {InstagramAdTypeModel} from "../models/adType/instagramAdType.model";
-import {TwitterAdTypeModel} from "../models/adType/twitterAdType.model";
+import {TwitterAdType} from "../models/adType/twitterAdType";
 import {CreativityModel} from "../models/creativity/creativity.model";
 
 /**
@@ -96,7 +96,7 @@ export class Validator {
 
         return true;
     }
-    private async validateTwitterCreativities(adType: TwitterAdTypeModel, creativities: CreativityModel[]): Promise<boolean> {
+    private async validateTwitterCreativities(adType: TwitterAdType, creativities: CreativityModel[]): Promise<boolean> {
 
         // Validate number of creativities
         if (adType.numCreativities.min > creativities.length || adType.numCreativities.max < creativities.length) {
@@ -144,7 +144,7 @@ export class Validator {
     }
 
     // Functions used to validate params received of an ad internally
-    private async validateTwitterParams(adType: TwitterAdTypeModel, params: any): Promise<boolean> {
+    private async validateTwitterParams(adType: TwitterAdType, params: any): Promise<boolean> {
 
         // Validate text is present
         if (adType.mandatoryTweet && !params.text && (params.text === undefined || params.text === null)) {
@@ -165,7 +165,7 @@ export class Validator {
     }
 
     // Error responses
-    private errorNumCreativities(adType: AdTypeModel): string {
+    private errorNumCreativities(adType: AdType): string {
         return (`Error in number of creativities. Max creativities: ${adType.numCreativities.max}. ` +
                 `Min creativities: ${adType.numCreativities.min}`);
     }
@@ -193,7 +193,7 @@ export class Validator {
             `Minimum duration: ${duration.min / 1000} sec\n` +
             `Maximum duration: ${duration.max / 1000} sec`);
     }
-    private errorMissingTweet(adType: AdTypeModel, tweetParam): string {
+    private errorMissingTweet(adType: AdType, tweetParam): string {
         return (`No tweet was received. For adType ${adType.name} you must send a tweet in param ${tweetParam}`);
     }
     private errorLongTweet(): string {

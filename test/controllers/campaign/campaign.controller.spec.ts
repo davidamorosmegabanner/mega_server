@@ -7,8 +7,8 @@ import {Server} from "../../../src/server";
 const server = Server.bootstrap();
 
 describe("User controllers test", () => {
-    const name = "CampaignModel new";
-    const description = "CampaignModel to test everything is ok";
+    const name = "Campaign new";
+    const description = "Campaign to test everything is ok";
     const dailyBudget = 666;
     const startDate = new Date();
     const endDate = new Date(); endDate.setDate(startDate.getDate() + 1); // +1 day

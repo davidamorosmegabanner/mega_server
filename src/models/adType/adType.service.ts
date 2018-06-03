@@ -1,10 +1,10 @@
-import {AdTypeModel} from "./adType.model";
+import {AdType} from "./adType.model";
 import {default as InstagramAdTypes} from "./instagramAdType.model";
-import {default as TwitterAdTypes} from "./twitterAdType.model";
+import {default as TwitterAdTypes} from "./twitterAdType";
 
 export class AdTypeService {
 
-    public adTypes: AdTypeModel[] = [];
+    public adTypes: AdType[] = [];
 
     constructor() {
         // Twitter
@@ -13,9 +13,9 @@ export class AdTypeService {
         for (const pushing of InstagramAdTypes) { this.adTypes.push(pushing); }
     }
 
-    public async assignByKey(adTypeKey: string): Promise<AdTypeModel> {
+    public async assignByKey(adTypeKey: string): Promise<AdType> {
 
-        const assigned: AdTypeModel = this.adTypes.find((adType) => {
+        const assigned: AdType = this.adTypes.find((adType) => {
             return adType.key === adTypeKey;
         });
 

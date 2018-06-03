@@ -19,12 +19,12 @@ export default class Normalizer {
                     CTR = {clicks: statistic.app_clicks, impressions: statistic.impressions};
                 }
 
-                // Find if normalizedStat CampaignModel already exist
+                // Find if normalizedStat Campaign already exist
                 const NORMALIZED_CAMPAIGN = normalizedStats.find(
                     (normalized) => normalized.campaign === stat.campaign,
                 );
 
-                // CampaignModel exists
+                // Campaign exists
                 if (NORMALIZED_CAMPAIGN && NORMALIZED_CAMPAIGN !== undefined) {
                     // Find if normalizedStat AdModel already exist
                     const NORMALIZED_AD = NORMALIZED_CAMPAIGN.stats.find(
@@ -51,7 +51,7 @@ export default class Normalizer {
                             },
                         });
                     }
-                    // CampaignModel doesn't exist, create new
+                    // Campaign doesn't exist, create new
                 } else {
                     normalizedStats.push({
                         campaign: stat.campaign,

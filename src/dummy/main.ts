@@ -1,5 +1,5 @@
 import {logger} from "../config/logger";
-import {CampaignModel} from "../models/campaign/campaign.model";
+import {Campaign} from "../models/campaign/campaign.model";
 import {CampaignService} from "../models/campaign/campaign.service";
 import {Stats} from "../models/stats/stats.model";
 import {StatsService} from "../models/stats/stats.service";
@@ -37,7 +37,7 @@ export default class DummyEngine {
 
         try {
             // 0 - Get all active and non deleted campaigns
-            const campaigns: CampaignModel[] = await campaignService.getAll();
+            const campaigns: Campaign[] = await campaignService.getAll();
 
             // 1 - Get stats
             const stats: Stats[] = await statsService.get(INTERVAL.before, INTERVAL.now);

@@ -1,9 +1,9 @@
 import {logger} from "../../config/logger";
 import {AdModel} from "../../models/ad/ad.model";
 import {AdService} from "../../models/ad/ad.service";
-import {AdTypeModel} from "../../models/adType/adType.model";
+import {AdType} from "../../models/adType/adType.model";
 import {AdTypeService} from "../../models/adType/adType.service";
-import {CampaignModel} from "../../models/campaign/campaign.model";
+import {Campaign} from "../../models/campaign/campaign.model";
 import {CampaignService} from "../../models/campaign/campaign.service";
 import {Statistic} from "../../models/stats/statistic.model";
 import {StatisticService} from "../../models/stats/statistic.service";
@@ -50,7 +50,7 @@ export class StatsCron {
                     // Check if ad is published...
                     if (ad.published) {
                         // Then get its statistics / analytics calling the API
-                        const adType: AdTypeModel = await adTypeService.assignByKey(ad.adTypeKey);
+                        const adType: AdType = await adTypeService.assignByKey(ad.adTypeKey);
                         const statistic: Statistic = await this.getAnalytics(owner, ad, adType, INTERVAL);
 
                         // Save statistic into database
@@ -78,15 +78,15 @@ export class StatsCron {
         }
     }
 
-    private async getCampaigns(): Promise<CampaignModel[]> {
+    private async getCampaigns(): Promise<Campaign[]> {
         return await campaignService.getAll();
     }
 
-    private async getAds(campaign: CampaignModel): Promise<AdModel[]> {
+    private async getAds(campaign: Campaign): Promise<AdModel[]> {
         return await adService.getCampaignAds(campaign);
     }
 
-    private async getAnalytics(owner: User, ad: AdModel, adType: AdTypeModel, interval): Promise<Statistic> {
+    private async getAnalytics(owner: User, ad: AdModel, adType: AdType, interval): Promise<Statistic> {
         switch (adType.platform.key) {
             case "TW": {
                 return await twitterStats.getStats(owner, ad, interval);

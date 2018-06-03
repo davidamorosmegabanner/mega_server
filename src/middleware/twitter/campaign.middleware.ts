@@ -129,7 +129,7 @@ export class TwitterCampaignMiddleware {
     }
 
     /*
-        CampaignModel
+        Campaign
      */
 
     public async getCampaigns(accessToken, accessTokenSecret, accountId): Promise<any> {

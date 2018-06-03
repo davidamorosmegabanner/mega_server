@@ -1,7 +1,7 @@
 import {PlatformModel} from "../platform/platform.model";
 import {NumCreativitiesModel} from "./numCreativities.model";
 
-export abstract class AdTypeModel {
+export abstract class AdType {
     public readonly name: string;
     public readonly key: string;
     public readonly description: string;

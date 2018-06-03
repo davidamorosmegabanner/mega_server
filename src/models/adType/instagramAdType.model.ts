@@ -1,12 +1,12 @@
 import {Instagram, PlatformModel} from "../platform/platform.model";
-import {AdTypeModel} from "./adType.model";
+import {AdType} from "./adType.model";
 import {AllowedDimensionsModel} from "./allowedDimensions.model";
 import {AllowedRatioModel} from "./allowedRatio.model";
 import {DimensionsModel} from "./dimensions.model";
 import {AllowedDurationModel} from "./allowedDuration.model";
 import {NumCreativitiesModel} from "./numCreativities.model";
 
-export class InstagramAdTypeModel extends AdTypeModel {
+export class InstagramAdTypeModel extends AdType {
     public readonly mimetypes: string[];
     public readonly allowedDimensions: AllowedDimensionsModel;
     public readonly allowedRatio: AllowedRatioModel;
@@ -36,7 +36,7 @@ export class InstagramAdTypeModel extends AdTypeModel {
     }
 }
 
-const InstagramAdTypes: AdTypeModel[] = [];
+const InstagramAdTypes: AdType[] = [];
 
 InstagramAdTypes.push(new InstagramAdTypeModel(
     "Instagram feed image",

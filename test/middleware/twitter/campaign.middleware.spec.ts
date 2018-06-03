@@ -108,7 +108,7 @@ describe("Twitter AdModel Middleware test", () => {
             const endDate = new Date(); endDate.setDate(startDate.getDate() + 1);
             const campaignId = (await twitterCampaignMiddleware.createCampaign(
                 user.twToken, user.twTokenSecret, "gq1drn",
-                1, fundingInstrumentId, "CampaignModel test",
+                1, fundingInstrumentId, "Campaign test",
                 startDate, endDate,
             )).data.id;
 
@@ -149,7 +149,7 @@ describe("Twitter AdModel Middleware test", () => {
             const endDate = new Date(); endDate.setDate(startDate.getDate() + 1);
             const campaignId = (await twitterCampaignMiddleware.createCampaign(
                 user.twToken, user.twTokenSecret, "gq1drn",
-                1, fundingInstrumentId, "CampaignModel test",
+                1, fundingInstrumentId, "Campaign test",
                 startDate, endDate,
             )).data.id;
 

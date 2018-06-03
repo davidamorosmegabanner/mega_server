@@ -1,24 +1,15 @@
-export class RoleModel {
-    public readonly name: string;
-    public readonly key: string;
-    public readonly description: string;
-    public constructor(
-        name: string,
-        key: string,
-        description: string,
-    ) {
-        this.name = (name);
-        this.key = (key);
-        this.description = (description);
-    }
+export interface Role {
+    name: string;
+    key: string;
+    description: string;
 }
 
-const Roles: RoleModel[] = [];
+const Roles: Role[] = [];
 
-Roles.push(new RoleModel(
-    "Administrator",
-    "admin",
-    "Administrator of the system",
-));
+Roles.push({
+    name: "Administrator",
+    key: "admin",
+    description: "Administrator of the system",
+});
 
 export default Roles;

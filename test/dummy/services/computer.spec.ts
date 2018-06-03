@@ -4,7 +4,7 @@ import config from "../../../src/config/config";
 import {NormalizedStats} from "../../../src/dummy/models/normalizedStats";
 import ComputerService from "../../../src/dummy/services/computer";
 import {AdModel} from "../../../src/models/ad/ad.model";
-import {CampaignModel} from "../../../src/models/campaign/campaign.model";
+import {Campaign} from "../../../src/models/campaign/campaign.model";
 import {UserService} from "../../../src/models/user/user.service";
 
 const computerService = new ComputerService();
@@ -40,9 +40,9 @@ describe("AdModel middleware test", () => {
             const before = new Date(); before.setDate(before.getDate() - 5);
             const after = new Date(); after.setDate(after.getDate() + 5);
             const user = await userService.findAny();
-            const campaign: CampaignModel = {
+            const campaign: Campaign = {
                 _id: "abcd",
-                name: "CampaignModel 1",
+                name: "Campaign 1",
                 description: "something",
                 owner: user,
                 budget: 200,

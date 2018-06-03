@@ -1,12 +1,12 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
 import {AdModel} from "../ad/ad.model";
-import {CampaignModel} from "../campaign/campaign.model";
+import {Campaign} from "../campaign/campaign.model";
 import {Statistic} from "./statistic.model";
 
 export interface Stats extends Document {
     date: Date;
-    campaign: CampaignModel;
+    campaign: Campaign;
     statistics: Statistic[];
 }
 
@@ -18,7 +18,7 @@ const StatsSchema = new Schema({
     campaign: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: "CampaignModel",
+        ref: "Campaign",
     },
     ads: [{
         type: Schema.Types.ObjectId,

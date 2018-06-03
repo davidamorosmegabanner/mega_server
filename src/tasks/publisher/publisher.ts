@@ -6,9 +6,9 @@ import {TwitterCampaignMiddleware} from "../../middleware/twitter/campaign.middl
 import {AdModel} from "../../models/ad/ad.model";
 import {AdService} from "../../models/ad/ad.service";
 import {TwitterAdModel} from "../../models/ad/twitterAd.model";
-import {AdTypeModel} from "../../models/adType/adType.model";
+import {AdType} from "../../models/adType/adType.model";
 import {AdTypeService} from "../../models/adType/adType.service";
-import {CampaignModel} from "../../models/campaign/campaign.model";
+import {Campaign} from "../../models/campaign/campaign.model";
 import {User} from "../../models/user/user.model";
 import {UserService} from "../../models/user/user.service";
 import TwitterPublisher from "./twitterPublisher";
@@ -58,7 +58,7 @@ export class PublisherCron {
             // Finally we look for those ads width non valid or deleted campaigns and unpublish them
             const notValidAds: AdModel[] = await adService.getPublishedAndNotValid();
             await Promise.all(notValidAds.map(async (notValidAd) => {
-                const adType: AdTypeModel = await adTypeService.assignByKey(notValidAd.adTypeKey);
+                const adType: AdType = await adTypeService.assignByKey(notValidAd.adTypeKey);
                 await this.deletePublishedAd(notValidAd, adType, notValidAd.owner);
                 await adService.changeToUnpublished(notValidAd);
             }));
@@ -75,7 +75,7 @@ export class PublisherCron {
     private async publishUnpublishedAd(unpublishedAd: AdModel): Promise<boolean> {
         let published: boolean = true;
         const campaign = await campaignService.findById(unpublishedAd.owner, unpublishedAd.campaign._id);
-        const adType: AdTypeModel = await adTypeService.assignByKey(unpublishedAd.adTypeKey);
+        const adType: AdType = await adTypeService.assignByKey(unpublishedAd.adTypeKey);
         // Just to make sure we have all user data
         const owner = await userService.findById(unpublishedAd.owner._id);
 
@@ -94,9 +94,9 @@ export class PublisherCron {
     private async publishStat(unpublishedStats: DummyStats): Promise<boolean> {
         let published: boolean = true;
         await Promise.all(unpublishedStats.stats.map(async (unpublishedStat) => {
-            const campaign: CampaignModel = unpublishedStats.campaign; //
+            const campaign: Campaign = unpublishedStats.campaign; //
             const ad: AdModel = unpublishedStat.ad;
-            const adType: AdTypeModel = await adTypeService.assignByKey(ad.adTypeKey);
+            const adType: AdType = await adTypeService.assignByKey(ad.adTypeKey);
             // Just to make sure we have all user data
             const owner = await userService.findById(ad.owner._id);
 
@@ -112,7 +112,7 @@ export class PublisherCron {
         return published;
     }
 
-    private async deletePublishedAd(ad: AdModel, adType: AdTypeModel, owner: User): Promise<void> {
+    private async deletePublishedAd(ad: AdModel, adType: AdType, owner: User): Promise<void> {
         switch (adType.platform.key) {
             case ("TW"): {
                 const twitterAd: TwitterAdModel = await adService.getTwitterAd(ad._id);
@@ -131,7 +131,7 @@ export class PublisherCron {
     }
 
     private async publishAd(
-        stat: ComputedUniqueStat, campaign: CampaignModel, ad: AdModel, adType: AdTypeModel, owner: User,
+        stat: ComputedUniqueStat, campaign: Campaign, ad: AdModel, adType: AdType, owner: User,
     ): Promise<boolean> {
         let published = true;
         try {

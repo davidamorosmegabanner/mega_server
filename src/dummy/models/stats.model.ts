@@ -1,11 +1,11 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
 import {AdModel} from "../../models/ad/ad.model";
-import {CampaignModel} from "../../models/campaign/campaign.model";
+import {Campaign} from "../../models/campaign/campaign.model";
 
 export interface DummyStats extends Document {
     date: Date;
-    campaign: CampaignModel;
+    campaign: Campaign;
     stats: Array<{
         ad: AdModel;
         weight: number;
@@ -20,7 +20,7 @@ const DummyStatsSchema = new Schema({
     },
     campaign: {
         type: Schema.Types.ObjectId,
-        ref: "CampaignModel",
+        ref: "Campaign",
         required: true,
     },
     stats: [{

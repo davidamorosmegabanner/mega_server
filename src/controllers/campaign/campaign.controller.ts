@@ -1,6 +1,6 @@
 import {logger} from "../../config/logger";
 
-import {CampaignModel} from "../../models/campaign/campaign.model";
+import {Campaign} from "../../models/campaign/campaign.model";
 import {CampaignService} from "../../models/campaign/campaign.service";
 import {User} from "../../models/user/user.model";
 import {UserService} from "../../models/user/user.service";
@@ -28,7 +28,7 @@ export let create: ExpressSignature = async (request, response, next) => {
         const startDate = new Date(params.startDate);
         const endDate = new Date(params.endDate);
 
-        const campaign: CampaignModel = await campaignService.create(
+        const campaign: Campaign = await campaignService.create(
             name, description, owner, dailyBudget, startDate, endDate,
         );
 
@@ -102,7 +102,7 @@ export let start: ExpressSignature = async (request, response, next) => {
     const xAccessToken = request.headers["x-access-token"].toString();
     try {
         const user: User = await userService.findByToken(xAccessToken);
-        let campaign: CampaignModel = await campaignService.findById(user, params.campaign);
+        let campaign: Campaign = await campaignService.findById(user, params.campaign);
 
         await campaignService.start(campaign);
 
@@ -126,7 +126,7 @@ export let stop: ExpressSignature = async (request, response, next) => {
     const xAccessToken = request.headers["x-access-token"].toString();
     try {
         const user: User = await userService.findByToken(xAccessToken);
-        let campaign: CampaignModel = await campaignService.findById(user, params.campaign);
+        let campaign: Campaign = await campaignService.findById(user, params.campaign);
 
         await campaignService.stop(campaign);
 

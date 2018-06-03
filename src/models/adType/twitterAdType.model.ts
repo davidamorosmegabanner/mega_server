@@ -1,11 +1,11 @@
 import {PlatformModel, Twitter} from "../platform/platform.model";
-import {AdTypeModel} from "./adType.model";
+import {AdType} from "./adType.model";
 import {AllowedDimensionsModel} from "./allowedDimensions.model";
 import {DimensionsModel} from "./dimensions.model";
 import {AllowedDurationModel} from "./allowedDuration.model";
 import {NumCreativitiesModel} from "./numCreativities.model";
 
-export class TwitterAdTypeModel extends AdTypeModel {
+export class TwitterAdType extends AdType {
     public readonly mandatoryTweet: boolean;
     public readonly mandatoryAppIds: boolean;
     public readonly mimetypes?: string[];
@@ -33,9 +33,9 @@ export class TwitterAdTypeModel extends AdTypeModel {
     }
 }
 
-const TwitterAdTypes: AdTypeModel[] = [];
+const TwitterAdTypes: AdType[] = [];
 
-TwitterAdTypes.push(new TwitterAdTypeModel(
+TwitterAdTypes.push(new TwitterAdType(
     "Tweet",
     "TW_TWEET",
     "Simple tweet that appears in the feed",
@@ -45,7 +45,7 @@ TwitterAdTypes.push(new TwitterAdTypeModel(
     false,
 ));
 
-TwitterAdTypes.push(new TwitterAdTypeModel(
+TwitterAdTypes.push(new TwitterAdType(
     "Tweet with image (up to 4 images)",
     "TW_TWEET_IMAGE",
     "Images that appear on a tweet in the feed",
@@ -59,7 +59,7 @@ TwitterAdTypes.push(new TwitterAdTypeModel(
     5 * 1024 * 1024,
 ));
 
-TwitterAdTypes.push(new TwitterAdTypeModel(
+TwitterAdTypes.push(new TwitterAdType(
     "Tweet with GIF",
     "TW_TWEET_GIF",
     "GIF that appears on a tweet in the feed",
@@ -73,7 +73,7 @@ TwitterAdTypes.push(new TwitterAdTypeModel(
     5 * 1024 * 1024,
 ));
 
-TwitterAdTypes.push(new TwitterAdTypeModel(
+TwitterAdTypes.push(new TwitterAdType(
     "Tweet with video",
     "TW_TWEET_VIDEO",
     "Video that appears on a tweet in the feed",
@@ -87,7 +87,7 @@ TwitterAdTypes.push(new TwitterAdTypeModel(
     15 * 1024 * 1024,
 ));
 
-TwitterAdTypes.push(new TwitterAdTypeModel(
+TwitterAdTypes.push(new TwitterAdType(
     "App card with image",
     "TW_APP_IMAGE",
     "App card that appears on the feed with an image",
@@ -101,7 +101,7 @@ TwitterAdTypes.push(new TwitterAdTypeModel(
     5 * 1024 * 1024,
 ));
 
-TwitterAdTypes.push(new TwitterAdTypeModel(
+TwitterAdTypes.push(new TwitterAdType(
     "App card with video",
     "TW_APP_VIDEO",
     "App card that appears on the feed with a video",
