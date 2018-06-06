@@ -9,7 +9,7 @@ export interface User extends Document {
     email: string;
     password: string;
     phone: string;
-    role: Role;
+    role: string;
     active: boolean;
     deleted: boolean;
     // Social parameters

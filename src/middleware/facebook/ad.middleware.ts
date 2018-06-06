@@ -1,5 +1,5 @@
 import config from "../../config/config";
-import {RequestService} from "../../services/request.service";
+import {RequestService} from "../request.service";
 
 const requestService = new RequestService();
 
@@ -12,7 +12,7 @@ export class FacebookAdMiddleware {
     public facebookURL: string = config.facebookAPI.facebookURL;
 
     /*
-        AdModel
+        Ad
      */
 
     public async createAd(
@@ -43,7 +43,7 @@ export class FacebookAdMiddleware {
     }
 
     /*
-        AdModel account
+        Ad account
      */
 
     public async getAdAccount(userId: string, accessToken: string): Promise<any> {

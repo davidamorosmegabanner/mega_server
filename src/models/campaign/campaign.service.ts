@@ -1,5 +1,5 @@
 import {Model} from "mongoose";
-import {CreativityModel} from "../creativity/creativity.model";
+import {Creativity} from "../creativity/creativity.model";
 import {User} from "../user/user.model";
 import {Campaign, default as CampaignMongo} from "./campaign.model";
 import {default as Categories, Category} from "../category/category.model";
@@ -48,6 +48,8 @@ export class CampaignService {
                 startDate: 1,
                 endDate: 1,
                 active: 1,
+                deleted: 1,
+                valid: 1,
                 created: 1,
                 updated: 1,
             })
@@ -70,6 +72,7 @@ export class CampaignService {
                 startDate: 1,
                 endDate: 1,
                 active: 1,
+                valid: 1,
                 created: 1,
                 updated: 1,
             })
@@ -92,33 +95,49 @@ export class CampaignService {
                 startDate: 1,
                 endDate: 1,
                 active: 1,
+                valid: 1,
                 created: 1,
                 updated: 1,
             })
             .lean();
     }
 
-    public async remove(id: string): Promise<CreativityModel> {
+    public async remove(id: string): Promise<Creativity> {
         if (id === undefined) { throw new Error("Param id is required"); }
 
         return await this.mongoModel.findOneAndUpdate({_id: id}, {$set: {deleted: true}});
     }
 
-    public async start(campaign: Campaign): Promise<CreativityModel> {
+    public async start(campaign: Campaign): Promise<Creativity> {
         if (campaign === undefined) { throw new Error("Param id is required"); }
 
         return await this.mongoModel.findOneAndUpdate({_id: campaign._id}, {$set: {active: true}});
     }
 
-    public async stop(campaign: Campaign): Promise<CreativityModel> {
+    public async stop(campaign: Campaign): Promise<Creativity> {
         if (campaign === undefined) { throw new Error("Param id is required"); }
 
         return await this.mongoModel.findOneAndUpdate({_id: campaign._id}, {$set: {active: false}});
     }
 
+    public async changeToNotValid(campaign: Campaign): Promise<Creativity> {
+        return await this.mongoModel.findOneAndUpdate({_id: campaign._id}, {$set: {valid: false}});
+    }
+
+    public async changeToValid(campaign: Campaign): Promise<Creativity> {
+        return await this.mongoModel.findOneAndUpdate({_id: campaign._id}, {$set: {valid: true}});
+    }
+
     public async getAll(): Promise<Campaign[]> {
         return await this.mongoModel
             .find({ active: true, deleted: false })
+            .populate("owner")
+            .lean();
+    }
+
+    public async getAllValid(): Promise<Campaign[]> {
+        return await this.mongoModel
+            .find({ active: true, valid: true, deleted: false })
             .populate("owner")
             .lean();
     }

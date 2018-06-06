@@ -5,20 +5,21 @@ import {AdType} from "../../models/adType/adType.model";
 import {AdTypeService} from "../../models/adType/adType.service";
 import {Campaign} from "../../models/campaign/campaign.model";
 import {CampaignService} from "../../models/campaign/campaign.service";
-import {CreativityModel} from "../../models/creativity/creativity.model";
+import {Creativity} from "../../models/creativity/creativity.model";
 import {CreativityService} from "../../models/creativity/creativity.service";
 import {User} from "../../models/user/user.model";
 import {UserService} from "../../models/user/user.service";
-import {AuthService} from "../../services/auth.service";
-import {Validator} from "../../services/validator.service";
+import {AuthService} from "../user/auth.service";
+import {ValidatorService} from "./validator.service";
 import {ExpressSignature} from "../Route";
+import {Ad} from "../../models/ad/ad.model";
 
 const authService = new AuthService();
 const userService = new UserService();
 const adService = new AdService();
 const creativityService = new CreativityService();
 const campaignService = new CampaignService();
-const validator = new Validator();
+const validatorService = new ValidatorService();
 const adTypeService = new AdTypeService();
 
 export let create: ExpressSignature = async (request, response, next) => {
@@ -29,18 +30,19 @@ export let create: ExpressSignature = async (request, response, next) => {
         response.status(401).send("Unauthorized");
     }
 
+    const xAccessToken = request.headers["x-access-token"].toString();
     try {
         const name: string = params.name;
-        const owner: User = await userService.findById(params.owner);
+        const owner: User = await userService.findByToken(xAccessToken);
         const adType: AdType = await adTypeService.assignByKey(params.adType);
-        const creativities: CreativityModel[] = await creativityService.findById(params.creativities);
+        const creativities: Creativity[] = await creativityService.findById(params.creativities);
         const campaign: Campaign = await campaignService.findById(owner, params.campaign);
 
         // Validators
-        await validator.validateParams(adType, params);
-        await validator.validateCreativities(adType, creativities);
+        await validatorService.validateParams(adType, params);
+        await validatorService.validateCreativities(adType, creativities);
 
-        // AdModel creation
+        // Ad creation
         // + Optional params
         let twitterParams: any = {};
         if (adType.platform.key === "TW") {
@@ -68,7 +70,7 @@ export let list: ExpressSignature = async (request, response, next) => {
     const xAccessToken = request.headers["x-access-token"].toString();
     try {
         const user: User = await userService.findByToken(xAccessToken);
-        let ads: any;
+        let ads: Ad[];
         if (request.query.id) {
             ads = await adService.getUserAds(user, request.query.id);
         } else {

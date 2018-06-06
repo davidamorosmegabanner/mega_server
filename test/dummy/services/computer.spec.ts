@@ -3,14 +3,14 @@ import * as mongoose from "mongoose";
 import config from "../../../src/config/config";
 import {NormalizedStats} from "../../../src/dummy/models/normalizedStats";
 import ComputerService from "../../../src/dummy/services/computer";
-import {AdModel} from "../../../src/models/ad/ad.model";
+import {Ad} from "../../../src/models/ad/ad.model";
 import {Campaign} from "../../../src/models/campaign/campaign.model";
 import {UserService} from "../../../src/models/user/user.service";
 
 const computerService = new ComputerService();
 const userService = new UserService();
 
-describe("AdModel middleware test", () => {
+describe("Ad middleware test", () => {
 
     before((done) => {
         mongoose.connect(config.db);
@@ -49,14 +49,15 @@ describe("AdModel middleware test", () => {
                 dailyBudget: 10,
                 active: true,
                 deleted: false,
+                valid: true,
                 startDate: before,
                 endDate: after,
                 created: before,
                 updated: before,
             };
-            const ad: AdModel = {
+            const ad: Ad = {
                 _id: "12345",
-                name: "AdModel",
+                name: "Ad",
                 owner: user,
                 adTypeKey: "TW_TWEET",
                 campaign: (campaign),

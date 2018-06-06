@@ -26,11 +26,11 @@ export default class Normalizer {
 
                 // Campaign exists
                 if (NORMALIZED_CAMPAIGN && NORMALIZED_CAMPAIGN !== undefined) {
-                    // Find if normalizedStat AdModel already exist
+                    // Find if normalizedStat Ad already exist
                     const NORMALIZED_AD = NORMALIZED_CAMPAIGN.stats.find(
                         (normalizedStat) => normalizedStat.ad === statistic.ad,
                     );
-                    // AdModel exists
+                    // Ad exists
                     if (NORMALIZED_AD && NORMALIZED_AD !== undefined) {
                         normalizedStats.find(
                             (normalized) => normalized.campaign === stat.campaign).stats.find(
@@ -39,7 +39,7 @@ export default class Normalizer {
                             clicks: NORMALIZED_AD.CTR.clicks + CTR.clicks,
                             impressions: NORMALIZED_AD.CTR.impressions + CTR.impressions,
                         };
-                        // AdModel doesn't exist, create new
+                        // Ad doesn't exist, create new
                     } else {
                         normalizedStats.find(
                             (normalized) => normalized.campaign === stat.campaign,

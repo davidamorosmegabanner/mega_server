@@ -1,4 +1,4 @@
-export class AllowedDurationModel {
+export class AllowedDuration {
     public readonly min: number;
     public readonly max: number;
     constructor(

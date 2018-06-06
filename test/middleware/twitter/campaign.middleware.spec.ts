@@ -11,7 +11,7 @@ const twitterCampaignMiddleware = new TwitterCampaignMiddleware();
 const twitterCreativeMiddleware = new TwitterCreativeMiddleware();
 const twitterAuthMiddleware = new TwitterAuthMiddleware();
 
-describe("Twitter AdModel Middleware test", () => {
+describe("Twitter Ad Middleware test", () => {
 
     before((done) => {
         mongoose.connect(config.db);

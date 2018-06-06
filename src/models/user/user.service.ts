@@ -1,7 +1,7 @@
 import {Model} from "mongoose";
 import {Role} from "../role/role.model";
-import {PasswordService} from "../../services/password.service";
-import {TokenService} from "../../services/token.service";
+import {PasswordService} from "../../controllers/user/password.service";
+import {TokenService} from "../../controllers/user/token.service";
 import {default as UserMongo, User} from "./user.model";
 
 export class UserService {
@@ -47,7 +47,6 @@ export class UserService {
     public async findByToken(token: string): Promise<User> {
         return await this.mongoModel
             .findOne({token: (token), deleted: false})
-            .populate("role")
             .lean();
     }
 
@@ -60,7 +59,6 @@ export class UserService {
     public async findByEmail(email: string): Promise<User> {
         return await this.mongoModel
             .findOne({email: (email), deleted: false})
-            .populate("role")
             .lean();
     }
 
@@ -83,8 +81,7 @@ export class UserService {
         if (role && role !== undefined) {find.role = role; }
 
         return await this.mongoModel
-            .find(find, {_id: 1, name: 1, email: 1})
-            .populate("role", {name: 1, _id: 0})
+            .find(find, {_id: 1, name: 1, email: 1, role: 1})
             .lean();
     }
 
@@ -100,7 +97,6 @@ export class UserService {
                 name: 1,
                 phone: 1,
             })
-            .populate("role", {name: 1, _id: 0})
             .lean();
     }
 

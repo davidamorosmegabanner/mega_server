@@ -15,7 +15,6 @@ export class AdTypeService {
 
     public async assignByKey(adTypeKey: string): Promise<AdType> {
 
-        console.log(adTypeKey)
         const assigned: AdType = this.adTypes.find((adType) => {
             return adType.key === adTypeKey;
         });

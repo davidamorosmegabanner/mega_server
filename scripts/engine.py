@@ -44,11 +44,9 @@ for x in click_through_rates:
         print(x)
 
 ## 1 - Likelihood
-# Getting likelihood of theta for new campaign
 ctr = clicks / impressions
 possible_theta_values = list(map(lambda x: x/100., range(100)))
 likelihoods = list(map(lambda theta: likelihood(theta, impressions, clicks), possible_theta_values))
-mle = possible_theta_values[np.argmax(likelihoods)] # Used?
 
 ## 2 - Prior distribution
 prior_parameters = beta.fit(click_through_rates, floc = 0, fscale = 1)

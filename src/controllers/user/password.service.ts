@@ -1,5 +1,5 @@
 import * as crypto from "crypto";
-import config from "../config/env/all";
+import config from "../../config/env/all";
 
 export class PasswordService {
   public static encrypt(password: string): PasswordService {

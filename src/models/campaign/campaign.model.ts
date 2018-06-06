@@ -1,9 +1,9 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
-import {User} from "../user/user.model";
-import {Targeting} from "../targeting/targeting.model";
 import {Category} from "../category/category.model";
 import {SubCategory} from "../category/subCategory.model";
+import {Targeting} from "../targeting/targeting.model";
+import {User} from "../user/user.model";
 
 export interface Campaign extends Document {
     _id: string;
@@ -16,6 +16,7 @@ export interface Campaign extends Document {
     endDate: Date;
     active: boolean;
     deleted: boolean;
+    valid: boolean;
     created: Date;
     updated: Date;
     targeting?: Targeting;
@@ -55,9 +56,14 @@ const CampaignSchema = new Schema({
     active: {
         type: Boolean,
         required: true,
-        default: false,
+        default: true,
     },
     deleted: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
+    valid: {
         type: Boolean,
         required: true,
         default: false,
@@ -78,7 +84,6 @@ const CampaignSchema = new Schema({
     },
     targeting: {
         type: Schema.Types.ObjectId,
-        required: true,
         ref: "Targeting",
     },
     category: {
@@ -86,7 +91,7 @@ const CampaignSchema = new Schema({
     },
     subCategory: {
         type: String,
-    }
+    },
 });
 
 const CampaignMongo: Model<Campaign> = mongoose.model<Campaign>("Campaign", CampaignSchema);

@@ -3,7 +3,7 @@
 import {assert, expect} from "chai";
 import * as mongoose from "mongoose";
 import config from "../../src/config/config";
-import {AuthService} from "../../src/services/auth.service";
+import {AuthService} from "../../src/controllers/user/auth.service";
 
 const authService = new AuthService();
 

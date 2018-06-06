@@ -1,4 +1,4 @@
-import {RequestTwitterService} from "../../services/request.twitter.service";
+import {RequestTwitterService} from "../request.twitter.service";
 
 const requestTwitterService = new RequestTwitterService();
 

@@ -37,34 +37,32 @@ export default class DummyEngine {
 
         try {
             // 0 - Get all active and non deleted campaigns
-            const campaigns: Campaign[] = await campaignService.getAll();
+            const campaigns: Campaign[] = await campaignService.getAllValid();
 
-            // 1 - Get stats
+            // 1 - Get statistics
             const stats: Stats[] = await statsService.get(INTERVAL.before, INTERVAL.now);
 
-            // 2 - Normalize stats
+            // 2 - Normalize statistics
             const normalizedStats: NormalizedStats[] = await normalizer.normalize(stats);
 
             // 3 - Do magic
             await Promise.all(campaigns.map(async (campaign) => {
                 const campaignStats: NormalizedStats = normalizedStats.find((stat) => stat.campaign === campaign);
                 let computedStats: ComputedStats;
-                // We don't have stats of the campaign -> First timer
-                if (!campaignStats) {
-                    computedStats = await computer.firstTimer(campaign);
-                }
 
-                // We have stats of the campaign -> Find previous stats and pass to engine
+                // We have statistics of the campaign -> Find previous statistics and pass to engine
                 if (campaignStats) {
-                    const oldStats: Stats[] = await statsService.get(campaign.created, INTERVAL.now, campaign);
+                    const oldStats: Stats[] = await statsService.get(campaign.created, INTERVAL.before, campaign);
                     const oldStatsNormalized: NormalizedStats[] = await normalizer.normalize(oldStats);
 
                     computedStats = await computer.compute(campaignStats, oldStatsNormalized);
                     computedStats = await computer.normalizeWeights(computedStats);
-                }
 
-                // Save computed DummyStats (they will or not have past CTR!!!!)
-                await computer.save(computedStats, INTERVAL);
+                    // Save computed DummyStats
+                    await computer.save(computedStats, INTERVAL);
+                    // Turn statistics into computed
+                    await statsService.changeToComputed(stats);
+                }
             }));
 
             logger.info("Dummy engine finished");

@@ -1,5 +1,5 @@
 import {Model} from "mongoose";
-import {default as DummyStatsMongo, DummyStats} from "./stats.model";
+import {default as DummyStatsMongo, DummyStats} from "./dummyStats.model";
 
 export class DummyStatsService {
     private readonly mongoModel: Model<DummyStats>;

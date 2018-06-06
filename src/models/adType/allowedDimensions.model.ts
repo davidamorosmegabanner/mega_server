@@ -1,6 +1,6 @@
 import {DimensionsModel} from "./dimensions.model";
 
-export class AllowedDimensionsModel {
+export class AllowedDimensions {
     public readonly min: DimensionsModel;
     public readonly max: DimensionsModel;
     constructor(

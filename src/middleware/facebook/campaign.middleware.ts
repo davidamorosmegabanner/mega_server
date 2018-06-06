@@ -1,5 +1,5 @@
 import config from "../../config/config";
-import {RequestService} from "../../services/request.service";
+import {RequestService} from "../request.service";
 
 const requestService = new RequestService();
 

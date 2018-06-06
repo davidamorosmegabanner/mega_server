@@ -18,7 +18,7 @@ describe("User controllers test", () => {
                 "Content-Type": "application/json",
             })
             .send({
-                name: "Test AdModel TW_TWEET",
+                name: "Test Ad TW_TWEET",
                 owner: "5aac26ce1bd7980cd46251d1",
                 adType: "TW_TWEET",
                 text: "This is a tweeeeeeet",
@@ -41,7 +41,7 @@ describe("User controllers test", () => {
                 "Content-Type": "application/json",
             })
             .send({
-                name: "Test AdModel TW_TWEET",
+                name: "Test Ad TW_TWEET",
                 owner: "5aac26ce1bd7980cd46251d1",
                 adType: "TW_TWEET",
                 text: "This is a very long long long long long long long long long long long long long long long " +
@@ -67,7 +67,7 @@ describe("User controllers test", () => {
                 "Content-Type": "application/json",
             })
             .send({
-                name: "Test AdModel TW_TWEET",
+                name: "Test Ad TW_TWEET",
                 owner: "5aac26ce1bd7980cd46251d1",
                 adType: "TW_TWEET_IMAGE",
                 text: "This is a tweeeeeeet",
@@ -91,7 +91,7 @@ describe("User controllers test", () => {
                 "Content-Type": "application/json",
             })
             .send({
-                name: "Test AdModel TW_TWEET",
+                name: "Test Ad TW_TWEET",
                 owner: "5aac26ce1bd7980cd46251d1",
                 adType: "TW_TWEET_IMAGE",
                 text: "This is a tweeeeeeet",
@@ -114,7 +114,7 @@ describe("User controllers test", () => {
                 "Content-Type": "application/json",
             })
             .send({
-                name: "Test AdModel TW_TWEET",
+                name: "Test Ad TW_TWEET",
                 owner: "5aac26ce1bd7980cd46251d1",
                 adType: "TW_TWEET_VIDEO",
                 text: "This is a tweeeeeeet",

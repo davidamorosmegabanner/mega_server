@@ -5,9 +5,9 @@ import * as sizeOf from "image-size";
 import * as path from "path";
 import * as uuidv4 from "uuid/v4";
 import * as thumbler from "video-thumb";
-import config from "../config/config";
-import {DimensionsModel} from "../models/creativity/dimensions.model";
-import {User} from "../models/user/user.model";
+import config from "../../config/config";
+import {DimensionsModel} from "../../models/creativity/dimensions.model";
+import {User} from "../../models/user/user.model";
 
 /**
  *

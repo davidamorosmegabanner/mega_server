@@ -1,7 +1,7 @@
 import {Model, Schema} from "mongoose";
-import {AdModel, default as AdMongo} from "./ad.model";
+import {Ad, default as AdMongo} from "./ad.model";
 
-export interface TwitterAdModel extends AdModel {
+export interface TwitterAd extends Ad {
     twitterCampaign: string;
     text?: string;
     url?: string;
@@ -14,9 +14,13 @@ export interface TwitterAdModel extends AdModel {
 }
 
 const TwitterAdSchema = new Schema({
-    text: {
+    twitterCampaign: {
         type: String,
         required: true,
+        default: undefined,
+    },
+    text: {
+        type: String,
     },
     url: {
         type: String,
@@ -41,6 +45,6 @@ const TwitterAdSchema = new Schema({
     },
 });
 
-const TwitterAdMongo: Model<TwitterAdModel> =
-    AdMongo.discriminator("TwitterAdModel", TwitterAdSchema);
+const TwitterAdMongo: Model<TwitterAd> =
+    AdMongo.discriminator("TwitterAd", TwitterAdSchema);
 export default TwitterAdMongo;

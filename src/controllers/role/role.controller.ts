@@ -1,7 +1,7 @@
 import {logger} from "../../config/logger";
 
 import {Role, default as Roles} from "../../models/role/role.model";
-import {AuthService} from "../../services/auth.service";
+import {AuthService} from "../user/auth.service";
 import {ExpressSignature} from "../Route";
 
 const authService = new AuthService();

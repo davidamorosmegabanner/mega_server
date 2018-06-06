@@ -57,7 +57,7 @@ export let authTokens: ExpressSignature = async (request, response, next) => {
             accessTokens.accessToken, accessTokens.accessTokenSecret
         );
         if (!adAccount || !adAccount.id) {
-            response.status(400).send("Cannot find an AdModel Account associated with user");
+            response.status(400).send("Cannot find an Ad Account associated with user");
         }
 
         await userService.assignTwitterAccessToken(user, accessTokens.accessToken);

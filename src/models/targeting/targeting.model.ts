@@ -1,9 +1,9 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
-import {Location, LocationSchema} from "./location.model";
 import {SubCategory} from "../category/subCategory.model";
+import {Location, LocationSchema} from "./location.model";
 
-export interface Targeting extends Document{
+export interface Targeting extends Document {
     age?: [number, number];
     sex?: string;
     sentimentalStatus?: string;
@@ -24,7 +24,7 @@ const TargetingSchema = new Schema({
         type: String,
     },
     formation: {
-        type: Schema,
+        type: String,
     },
     employed: {
         type: Boolean,

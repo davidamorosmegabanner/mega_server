@@ -1,5 +1,5 @@
 import {OAuth} from "oauth";
-import {RequestTwitterService} from "../../services/request.twitter.service";
+import {RequestTwitterService} from "../request.twitter.service";
 
 const requestTwitterService = new RequestTwitterService();
 
@@ -7,7 +7,7 @@ export class TwitterAdMiddleware {
     private env = (process.env.NODE_ENV || "development");
 
     /*
-        AdModel middleware
+        Ad middleware
      */
 
     // Returns first ad account owned by user

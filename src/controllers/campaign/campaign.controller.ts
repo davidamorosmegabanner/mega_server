@@ -4,7 +4,7 @@ import {Campaign} from "../../models/campaign/campaign.model";
 import {CampaignService} from "../../models/campaign/campaign.service";
 import {User} from "../../models/user/user.model";
 import {UserService} from "../../models/user/user.service";
-import {AuthService} from "../../services/auth.service";
+import {AuthService} from "../user/auth.service";
 import {ExpressSignature} from "../Route";
 
 const authService = new AuthService();

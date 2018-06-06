@@ -1,12 +1,12 @@
 import {Model} from "mongoose";
 import {User} from "../user/user.model";
-import {CreativityModel, default as CreativityMongo} from "./creativity.model";
+import {Creativity, default as CreativityMongo} from "./creativity.model";
 import {DimensionsModel} from "./dimensions.model";
 
 export class CreativityService {
-    private readonly mongoModel: Model<CreativityModel>;
+    private readonly mongoModel: Model<Creativity>;
 
-    constructor(mongoModel?: Model<CreativityModel>) {
+    constructor(mongoModel?: Model<Creativity>) {
         this.mongoModel = mongoModel || CreativityMongo;
     }
 
@@ -21,7 +21,7 @@ export class CreativityService {
         dimensions: DimensionsModel,
         size: number,
         duration: number,
-    ): Promise<CreativityModel> {
+    ): Promise<Creativity> {
         const creativity = new this.mongoModel({
             name: (name),
             owner: (owner),
@@ -39,7 +39,7 @@ export class CreativityService {
         return await creativity.save();
     }
 
-    public async find(creativities: CreativityModel[]): Promise<CreativityModel[]> {
+    public async find(creativities: Creativity[]): Promise<Creativity[]> {
         if (creativities && creativities.length) {
             const ids = creativities.map((creativity) => creativity._id);
             return await this.mongoModel
@@ -60,7 +60,7 @@ export class CreativityService {
         }
     }
 
-    public async findById(creativities: string[]): Promise<CreativityModel[]> {
+    public async findById(creativities: string[]): Promise<Creativity[]> {
         if (creativities && creativities.length) {
             return await this.mongoModel
                 .find({
@@ -80,7 +80,7 @@ export class CreativityService {
         }
     }
 
-    public async get(user: User, id: string[]): Promise<CreativityModel> {
+    public async get(user: User, id: string[]): Promise<Creativity> {
         return await this.mongoModel
             .find({
                 _id: id,
@@ -99,7 +99,7 @@ export class CreativityService {
             .lean();
     }
 
-    public async list(user: User): Promise<CreativityModel[]> {
+    public async list(user: User): Promise<Creativity[]> {
         return await this.mongoModel
             .find({
                 owner: user,
@@ -117,7 +117,7 @@ export class CreativityService {
             .lean();
     }
 
-    public async remove(id: string): Promise<CreativityModel> {
+    public async remove(id: string): Promise<Creativity> {
         if (id === undefined) { throw new Error("Param id is required"); }
 
         return await this.mongoModel.findOneAndUpdate({_id: id}, {$set: {deleted: true}});

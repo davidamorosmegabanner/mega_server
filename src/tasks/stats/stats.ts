@@ -1,5 +1,5 @@
 import {logger} from "../../config/logger";
-import {AdModel} from "../../models/ad/ad.model";
+import {Ad} from "../../models/ad/ad.model";
 import {AdService} from "../../models/ad/ad.service";
 import {AdType} from "../../models/adType/adType.model";
 import {AdTypeService} from "../../models/adType/adType.service";
@@ -25,7 +25,7 @@ const twitterStats = new TwitterStats();
 
 export class StatsCron {
 
-    public interval = "30SEC";
+    public interval = "2HOUR";
 
     public async start() {
         logger.info("Stats cron started...");
@@ -54,18 +54,19 @@ export class StatsCron {
                         const statistic: Statistic = await this.getAnalytics(owner, ad, adType, INTERVAL);
 
                         // Save statistic into database
-                        await statisticService.create(statistic);
+                        const mongoStatistic: Statistic = await statisticService.create(statistic);
 
                         // Push actual statistic into statistics array
-                        statistics.push(statistic);
+                        statistics.push(mongoStatistic);
                     }
                 }));
 
-                // Finally we create the stats object and save it
+                // Finally we create the statistics object and save it
                 const stats: Stats = {
                     date: INTERVAL.now,
                     campaign: (campaign),
                     statistics: (statistics),
+                    computed: false,
                 };
                 await statsService.create(stats);
 
@@ -79,14 +80,14 @@ export class StatsCron {
     }
 
     private async getCampaigns(): Promise<Campaign[]> {
-        return await campaignService.getAll();
+        return await campaignService.getAllValid();
     }
 
-    private async getAds(campaign: Campaign): Promise<AdModel[]> {
+    private async getAds(campaign: Campaign): Promise<Ad[]> {
         return await adService.getCampaignAds(campaign);
     }
 
-    private async getAnalytics(owner: User, ad: AdModel, adType: AdType, interval): Promise<Statistic> {
+    private async getAnalytics(owner: User, ad: Ad, adType: AdType, interval): Promise<Statistic> {
         switch (adType.platform.key) {
             case "TW": {
                 return await twitterStats.getStats(owner, ad, interval);

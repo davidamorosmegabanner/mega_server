@@ -1,6 +1,6 @@
 import config from "../../config/config";
-import {FileService} from "../../services/file.service";
-import {RequestService} from "../../services/request.service";
+import {FileService} from "../../controllers/creativity/file.service";
+import {RequestService} from "../request.service";
 
 const fileService = new FileService();
 const requestService = new RequestService();
@@ -11,7 +11,7 @@ export class FacebookAdCreativeMiddleware {
     public facebookURL: string = config.facebookAPI.facebookURL;
 
     /*
-        AdModel Image
+        Ad Image
      */
 
     public async uploadImage(file: string, adAccountId: string, accessToken: string) {

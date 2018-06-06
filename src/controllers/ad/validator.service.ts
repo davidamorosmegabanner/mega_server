@@ -1,7 +1,7 @@
-import {AdType} from "../models/adType/adType.model";
-import {InstagramAdTypeModel} from "../models/adType/instagramAdType.model";
-import {TwitterAdType} from "../models/adType/twitterAdType.model";
-import {CreativityModel} from "../models/creativity/creativity.model";
+import {AdType} from "../../models/adType/adType.model";
+import {InstagramAdTypeModel} from "../../models/adType/instagramAdType.model";
+import {TwitterAdType} from "../../models/adType/twitterAdType.model";
+import {Creativity} from "../../models/creativity/creativity.model";
 
 /**
  *
@@ -9,10 +9,10 @@ import {CreativityModel} from "../models/creativity/creativity.model";
  *
  */
 
-export class Validator {
+export class ValidatorService {
 
-    // Public creativities validator called when AdModel is created
-    public async validateCreativities(adType: any, creativities: CreativityModel[]): Promise<boolean> {
+    // Public creativities validator called when Ad is created
+    public async validateCreativities(adType: any, creativities: Creativity[]): Promise<boolean> {
         let validation: boolean = true;
         // Implementing different validation depending on type of adType.model.ts
         switch (adType.platform.key) {
@@ -31,7 +31,7 @@ export class Validator {
         return validation;
     }
 
-    // Public params validator when AdModel is created
+    // Public params validator when Ad is created
     public async validateParams(adType: any, params: any): Promise<boolean> {
         let validation: boolean = true;
         // Implementing different validation depending on type of adType.model.ts
@@ -48,7 +48,7 @@ export class Validator {
     }
 
     // Functions used to validate creativities of an ad internally
-    private async validateInstagramCreativities(adType: InstagramAdTypeModel, creativities: CreativityModel[]): Promise<boolean> {
+    private async validateInstagramCreativities(adType: InstagramAdTypeModel, creativities: Creativity[]): Promise<boolean> {
 
         // Validate number of creativities
         if (adType.numCreativities.min > creativities.length || adType.numCreativities.max < creativities.length) {
@@ -96,7 +96,7 @@ export class Validator {
 
         return true;
     }
-    private async validateTwitterCreativities(adType: TwitterAdType, creativities: CreativityModel[]): Promise<boolean> {
+    private async validateTwitterCreativities(adType: TwitterAdType, creativities: Creativity[]): Promise<boolean> {
 
         // Validate number of creativities
         if (adType.numCreativities.min > creativities.length || adType.numCreativities.max < creativities.length) {
@@ -148,7 +148,7 @@ export class Validator {
 
         // Validate text is present
         if (adType.mandatoryTweet && !params.text && (params.text === undefined || params.text === null)) {
-            throw new Error(this.errorMissingTweet(adType, "tweet"));
+            throw new Error(this.errorMissingTweet(adType, "text"));
         }
 
         // Validate tweet length

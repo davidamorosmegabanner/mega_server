@@ -20,7 +20,6 @@ describe("Page middleware test", () => {
             if (!user) {assert.ifError( "Error finding user with fbtoken"); }
 
             const pages = await facebookPageMiddleware.getOwnedPages(user.fbToken);
-            console.log(pages);
 
             expect(pages).to.satisfy((o) => typeof o === "object");
         } catch (err) {

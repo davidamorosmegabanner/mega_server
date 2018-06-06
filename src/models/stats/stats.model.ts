@@ -1,13 +1,15 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
-import {AdModel} from "../ad/ad.model";
+import {Ad} from "../ad/ad.model";
 import {Campaign} from "../campaign/campaign.model";
 import {Statistic} from "./statistic.model";
+import {isBoolean} from "util";
 
 export interface Stats extends Document {
     date: Date;
     campaign: Campaign;
     statistics: Statistic[];
+    computed: boolean;
 }
 
 const StatsSchema = new Schema({
@@ -23,13 +25,18 @@ const StatsSchema = new Schema({
     ads: [{
         type: Schema.Types.ObjectId,
         required: true,
-        ref: "AdModel",
+        ref: "Ad",
     }],
     statistics: [{
         type: Schema.Types.ObjectId,
         required: true,
         ref: "Statistic",
     }],
+    computed: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
 });
 
 const StatsMongo: Model<Stats> = mongoose.model<Stats>("Stats", StatsSchema);

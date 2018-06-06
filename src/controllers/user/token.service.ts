@@ -1,5 +1,5 @@
 import * as jwt from "jsonwebtoken";
-import config from "../config/env/all";
+import config from "../../config/env/all";
 
 export class TokenService {
   public static generateToken(email: string, pass: string): TokenService {

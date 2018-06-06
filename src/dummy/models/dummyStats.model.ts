@@ -1,13 +1,13 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
-import {AdModel} from "../../models/ad/ad.model";
+import {Ad} from "../../models/ad/ad.model";
 import {Campaign} from "../../models/campaign/campaign.model";
 
 export interface DummyStats extends Document {
     date: Date;
     campaign: Campaign;
-    stats: Array<{
-        ad: AdModel;
+    statistics: Array<{
+        ad: Ad;
         weight: number;
     }>;
     published: boolean;
@@ -23,16 +23,12 @@ const DummyStatsSchema = new Schema({
         ref: "Campaign",
         required: true,
     },
-    stats: [{
+    statistics: [{
         ad: {
             type: Schema.Types.ObjectId,
-            ref: "AdModel",
+            ref: "Ad",
             required: true,
         },
-        // CTR: {
-        //     type: Number,
-        //     required: true,
-        // },
         weight: {
             type: Number,
             required: true,

@@ -1,6 +1,6 @@
 import moment = require("moment");
 
-import {RequestTwitterService} from "../../services/request.twitter.service";
+import {RequestTwitterService} from "../request.twitter.service";
 
 const requestTwitterService = new RequestTwitterService();
 
@@ -10,12 +10,13 @@ export class TwitterAnalyticsMiddleware {
 
     public async getStats(accessToken, accessTokenSecret, accountId,
                           entity, entityIds: string[], startTime: Date, endTime: Date): Promise<any> {
-        const startTimeForm = moment(startTime).format("YYYY-MM-DD");
-        const endTimeForm = moment(endTime).format("YYYY-MM-DD");
+        const startTimeForm = moment(startTime).toISOString();
+        const endTimeForm = moment(endTime).toISOString();
         const url = `https://ads-api${this.sandbox}.twitter.com/3/stats/accounts/${accountId}`
                     + `?entity=${entity}&entity_ids=${entityIds.join(",")}`
                     + `&start_time=${startTimeForm}&end_time=${endTimeForm}`
                     + `&granularity=HOUR&metric_groups=BILLING,ENGAGEMENT&placement=ALL_ON_TWITTER`;
+        console.log(url)
         return await requestTwitterService.get(accessToken, accessTokenSecret, url);
     }
 }

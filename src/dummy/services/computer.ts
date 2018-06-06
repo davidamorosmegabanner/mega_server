@@ -5,10 +5,10 @@ import {AdService} from "../../models/ad/ad.service";
 import {Campaign} from "../../models/campaign/campaign.model";
 import {ComputedStats} from "../models/computedStats";
 import {ComputedUniqueStat} from "../models/computedUniqueStat";
+import {DummyStats} from "../models/dummyStats.model";
+import {DummyStatsService} from "../models/dummyStats.service";
 import {NormalizedStats} from "../models/normalizedStats";
 import {NormalizedUniqueStat} from "../models/normalizedUniqueStat";
-import {DummyStats} from "../models/stats.model";
-import {DummyStatsService} from "../models/stats.service";
 
 const adService = new AdService();
 const statsService = new DummyStatsService();
@@ -34,7 +34,7 @@ export default class ComputerService {
     }
 
     public async compute(newStats: NormalizedStats, oldStats: NormalizedStats[]): Promise<ComputedStats> {
-        // Make array for new stats
+        // Make array for new statistics
         const newStatsArray: NormalizedUniqueStat[] = [];
         newStats.stats.forEach((newStatsStat) => {
             newStatsArray.push({
@@ -43,7 +43,7 @@ export default class ComputerService {
             });
         });
 
-        // Make array for old stats
+        // Make array for old statistics
         const oldStatsCTR: NormalizedUniqueStat[] = [];
         oldStats.forEach((oldStat) => {
             oldStat.stats.forEach((oldStatsStat) => {
@@ -57,7 +57,7 @@ export default class ComputerService {
             });
         });
 
-        // Make array for computed stats
+        // Make array for computed statistics
         // And then iterate over every array (ad) to get its posterior CTR
         const computedArray: ComputedStats = {
             campaign: (newStats.campaign),
@@ -106,7 +106,7 @@ export default class ComputerService {
         const dummyStat: DummyStats = {
             date: interval.now,
             campaign: computedStats.campaign,
-            stats: computedStats.stats.map((adStat: ComputedUniqueStat) => {
+            statistics: computedStats.stats.map((adStat: ComputedUniqueStat) => {
                 return {
                     ad: adStat.ad,
                     weight: adStat.weight,
@@ -134,7 +134,7 @@ export default class ComputerService {
             pyshell.send(toSend);
             pyshell.on("message", (message) => {
                 messageReceived = message;
-                console.log(message)
+                console.log(message);
             });
             pyshell.end(() => {
                 // Get last message emitted as the correct one

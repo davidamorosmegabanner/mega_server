@@ -1,7 +1,7 @@
 import {sign, verify} from "jsonwebtoken";
 import {Model} from "mongoose";
-import config from "../config/config";
-import {UserService} from "../models/user/user.service";
+import config from "../../config/config";
+import {UserService} from "../../models/user/user.service";
 
 const userService = new UserService();
 
@@ -29,7 +29,7 @@ export class AuthService {
 
         const user = await userService.findByToken(request.headers["x-access-token"]);
         if (user) {
-            return (roles.indexOf(user.role.name) !== -1);
+            return (roles.indexOf(user.role) !== -1);
 
         } else {
             return false;

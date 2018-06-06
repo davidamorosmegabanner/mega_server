@@ -1,15 +1,15 @@
 import {logger} from "../../config/logger";
 
 import * as path from "path";
-import {CreativityModel} from "../../models/creativity/creativity.model";
+import {Creativity} from "../../models/creativity/creativity.model";
 
 import {CreativityService} from "../../models/creativity/creativity.service";
 import {DimensionsModel} from "../../models/creativity/dimensions.model";
 import {User} from "../../models/user/user.model";
 import {UserService} from "../../models/user/user.service";
-import {AuthService} from "../../services/auth.service";
-import {FileService} from "../../services/file.service";
 import {ExpressSignature} from "../Route";
+import {AuthService} from "../user/auth.service";
+import {FileService} from "./file.service";
 
 const authService = new AuthService();
 const creativityService = new CreativityService();
@@ -57,7 +57,7 @@ export let create: ExpressSignature = async (request, response, next) => {
         let duration: number;
         if (filetype === "video") { duration = await fileService.getDuration(fileSource, filetype); }
 
-        const creativity: CreativityModel = await creativityService.create(
+        const creativity: Creativity = await creativityService.create(
             params.name, user, fileSource, thumbnail, mimetype, fileformat, filetype, dimensions, size, duration,
         );
 

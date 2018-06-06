@@ -2,10 +2,10 @@ import {logger} from "../../config/logger";
 
 import {Role} from "../../models/role/role.model";
 import {RoleService} from "../../models/role/role.service";
-import {PasswordService} from "../../services/password.service";
+import {PasswordService} from "./password.service";
 import {User} from "../../models/user/user.model";
 import {UserService} from "../../models/user/user.service";
-import {AuthService} from "../../services/auth.service";
+import {AuthService} from "./auth.service";
 import {ExpressSignature} from "../Route";
 
 const userService = new UserService();
@@ -36,7 +36,7 @@ export let login: ExpressSignature = async (request, response, next) => {
             token: user.token,
             name: user.name,
             email: user.email,
-            role: user.role.name,
+            role: user.role,
             phone: user.phone,
         });
     } catch (err) {
@@ -57,8 +57,9 @@ export let register: ExpressSignature = async (request, response, next) => {
     }
 
     try {
-        const role: Role = await roleService.findByName(params.role);
-        const user: User = await userService.create(params.name, params.email, params.password, role, params.phone);
+        const user: User = await userService.create(
+            params.name, params.email, params.password, params.role, params.phone
+        );
 
         request.session.userId = user._id;
 
@@ -68,7 +69,7 @@ export let register: ExpressSignature = async (request, response, next) => {
             email: user.email,
             name: user.name,
             phone: user.phone,
-            role: role.name,
+            role: user.role,
         });
     } catch (err) {
         logger.error(err);
@@ -138,11 +139,8 @@ export let list: ExpressSignature = async (request, response, next) => {
 
     try {
         let role: any;
-        if (params.role) {
-            role = await roleService.findByName(params.role);
-        }
 
-        const user: User[] = await userService.listUsers(role);
+        const user: User[] = await userService.listUsers(params.role);
 
         response.status(200).send({
             user,

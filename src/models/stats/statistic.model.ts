@@ -1,9 +1,9 @@
 import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
-import {AdModel} from "../ad/ad.model";
+import {Ad} from "../ad/ad.model";
 
 export interface Statistic extends Document {
-    ad: AdModel;
+    ad: Ad;
     impressions: number;
     clicks: number;
     // Twitter
@@ -19,7 +19,7 @@ const StatisticSchema = new Schema({
     ad: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: "AdModel",
+        ref: "Ad",
     },
     impressions: {
         type: Number,

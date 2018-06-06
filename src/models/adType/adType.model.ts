@@ -1,19 +1,19 @@
-import {PlatformModel} from "../platform/platform.model";
-import {NumCreativitiesModel} from "./numCreativities.model";
+import {Platform} from "../platform/platform.model";
+import {NumCreativities} from "./numCreativities.model";
 
-export abstract class AdType {
+export class AdType {
     public readonly name: string;
     public readonly key: string;
     public readonly description: string;
-    public readonly platform: PlatformModel;
-    public readonly numCreativities: NumCreativitiesModel;
+    public readonly platform: Platform;
+    public readonly numCreativities: NumCreativities;
     public readonly maxCreativitySize?: number;
     protected constructor(
         name: string,
         key: string,
         description: string,
-        platform: PlatformModel,
-        numCreativities: NumCreativitiesModel,
+        platform: Platform,
+        numCreativities: NumCreativities,
         maxCreativitySize?: number,
     ) {
         this.name = (name);

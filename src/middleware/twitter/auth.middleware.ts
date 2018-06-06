@@ -1,7 +1,7 @@
 import * as twitterAPI from "node-twitter-api";
 import * as oauth from "oauth";
 import config from "../../config/config";
-import {RequestTwitterService} from "../../services/request.twitter.service";
+import {RequestTwitterService} from "../request.twitter.service";
 
 const twitterRequestService = new RequestTwitterService();
 

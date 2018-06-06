@@ -3,7 +3,7 @@ import * as mongoose from "mongoose";
 import {User} from "../user/user.model";
 import {DimensionsModel} from "./dimensions.model";
 
-export interface CreativityModel extends Document {
+export interface Creativity extends Document {
     _id: string;
     name: string;
     owner: User;
@@ -78,5 +78,5 @@ const CreativitySchema = new Schema({
     },
 });
 
-const CreativityMongo: Model<CreativityModel> = mongoose.model<CreativityModel>("CreativityModel", CreativitySchema);
+const CreativityMongo: Model<Creativity> = mongoose.model<Creativity>("Creativity", CreativitySchema);
 export default CreativityMongo;

@@ -1,20 +1,24 @@
 import * as moment from "moment";
 import * as cron from "node-cron";
+import DummyEngine from "../dummy/main";
 import {PublisherCron} from "./publisher/publisher";
 import {StatsCron} from "./stats/stats";
-import DummyEngine from "../dummy/main";
+import {UpdaterCron} from "./updater/updater";
 
+const updaterCron = new UpdaterCron();
 const dummyCron = new DummyEngine();
 const publisherCron = new PublisherCron();
 const statsCron = new StatsCron();
 
 export default class CronManager {
 
+    private update = cron.schedule(convertToCronTime(updaterCron.interval), () => { updaterCron.start(); }, false);
     private dummy = cron.schedule(convertToCronTime(dummyCron.interval), () => {dummyCron.start(); }, false);
     private publish = cron.schedule(convertToCronTime(publisherCron.interval), () => { publisherCron.start(); }, false);
     private stats = cron.schedule(convertToCronTime(statsCron.interval), () => { statsCron.start(); }, false);
 
     public startJobs() {
+        this.update.start();
         this.dummy.start();
         this.publish.start();
         this.stats.start();
@@ -23,38 +27,35 @@ export default class CronManager {
 
 export function convertToCronTime(period: string) {
     switch (period) {
-        case ("30SEC"): {
-            return "0,30 * * * * *";
-        }
         case ("1MIN"): {
-            return "0 * * * * *";
+            return "* * * * *";
         }
         case ("5MIN"): {
-            return "* 0,5,10,15,20,25,30,35,40,45,50,55 * * * *";
+            return "*/5 * * * *";
         }
         case ("10MIN"): {
-            return "* 0,10,20,30,40,50 * * * *";
+            return "*/10 * * * *";
         }
         case ("30MIN"): {
-            return "* 0,30 * * * *";
+            return "*/30 * * * *";
         }
         case ("1HOUR"): {
-            return "* 0 * * * *";
+            return "0 * * * *";
         }
         case ("2HOUR"): {
-            return "* * 0,2,4,6,8,10,12,14,16,18,20,22 * * *";
+            return "0 */2 * * *";
         }
         case ("4HOUR"): {
-            return "* * 0,4,8,12,16,20 * * *";
+            return "0 */4 * * *";
         }
         case ("6HOUR"): {
-            return "* * 0,6,12,18 * * *";
+            return "0 */6 * * *";
         }
         case ("12HOUR"): {
-            return "* * 0,12 * * *";
+            return "0 */12 * * *";
         }
         case ("1DAY"): {
-            return "* * 0 * * *";
+            return "0 0 * * *";
         }
     }
 }
@@ -62,12 +63,6 @@ export function convertToCronTime(period: string) {
 export function getIntervalDate(period: string): { now: Date, before: Date } {
     const NOW = new Date();
     switch (period) {
-        case ("30SEC"): {
-            return {
-                now: NOW,
-                before: moment(NOW).subtract(30, "seconds").toDate(),
-            };
-        }
         case ("1MIN"): {
             return {
                 now: NOW,
