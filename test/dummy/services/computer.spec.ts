@@ -103,10 +103,16 @@ describe("Ad middleware test", () => {
 
             const computedStats = await computerService.compute(newStats, oldStats);
 
-            expect(computedStats).to.satisfy(() => typeof computedStats === "object");
-            expect(computedStats.stats[0]).to.satisfy(() => typeof computedStats === "object");
-            expect(computedStats.stats[0].weight).to.be.at.least(0);
-            expect(computedStats.stats[0].weight).to.be.at.most(1);
+            expect(computedStats).to.be.a("object");
+            expect(computedStats.stats[0]).to.be.a("object");
+            expect(computedStats.stats[1]).to.have.property("ad");
+            expect(computedStats).to.satisfy(() => {
+                let isOK: boolean = true;
+                computedStats.stats.forEach((computedStat) => {
+                    if (computedStat.weight > 1 || computedStat.weight < 0) { isOK = false; }
+                });
+                return isOK;
+            });
         } catch (err) {
             assert.ifError(err, "error computing CTR");
         }

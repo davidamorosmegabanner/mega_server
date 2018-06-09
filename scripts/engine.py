@@ -1,3 +1,6 @@
+## Source kind of everything involving probabilities here:
+## https://www.datascience.com/blog/introduction-to-bayesian-inference-learn-data-science-tutorials
+
 ## Imports
 import numpy as np
 import pymc3 as pm

@@ -22,6 +22,7 @@ export class AdService {
     ): Promise<any> {
         // Twitter
         if (adType.platform.key === "TW") {
+            if (!twitterParams) { throw new Error("No twitter params specified for Twitter Ad"); }
             const ad: TwitterAd = new this.twitterAdModel({
                 name: (name),
                 owner: (owner),
@@ -92,7 +93,7 @@ export class AdService {
             .lean();
     }
 
-    public async remove(id: string): Promise<Creativity> {
+    public async remove(id: string): Promise<Ad> {
         if (id === undefined) { throw new Error("Param id is required"); }
 
         return await this.mongoModel.findOneAndUpdate({_id: id}, {$set: {deleted: true}});

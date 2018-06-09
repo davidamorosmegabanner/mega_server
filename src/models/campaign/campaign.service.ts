@@ -36,7 +36,7 @@ export class CampaignService {
     public async findById(user:User, id: string): Promise<Campaign> {
         return await this.mongoModel
             .findOne({
-                owner: user,
+                owner: user._id,
                 _id: id,
             }, {
                 _id: 1,

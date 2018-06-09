@@ -16,7 +16,7 @@ export interface TwitterAd extends Ad {
 const TwitterAdSchema = new Schema({
     twitterCampaign: {
         type: String,
-        required: true,
+        required: false,
         default: undefined,
     },
     text: {
