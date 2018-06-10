@@ -1,3 +1,5 @@
+import {secrets} from "../secrets";
+
 export default {
     db: "mongodb://localhost:27017/mega",
     port: 3000,
@@ -25,15 +27,15 @@ export default {
         "video/mov",
     ],
     facebookAPI: {
-        clientId: "172396770149832",
-        clientSecret: "b2cd9fae79287d0a4c55ab0a5298a45f",
+        clientId: secrets.facebook.clientId,
+        clientSecret: secrets.facebook.secret,
         apiVersion: "v2.12",
         redirectUri: `http://localhost:3000/facebook/authCode/`,
         facebookURL: `https://graph.facebook.com`,
     },
     twitterAPI: {
-        apiKey: "r7L0QOwT6fbLbIiyy4hqcPOy5",
-        apiSecret: "zDy5Xm1qLYTbiuK231TksHzhdbIoPWRagTVHVcXi5fvoP8c3EL",
+        apiKey: secrets.twitter.apiKey,
+        apiSecret: secrets.twitter.apiSecret,
         redirectUri: `http://localhost:3000/twitter/authTokens`,
         redirectURL: "https://twitter.com/oauth/authenticate?oauth_token=",
     },

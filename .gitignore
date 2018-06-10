@@ -68,3 +68,6 @@ dist
 
 # media files
 media
+
+# secret keys file
+src/config/secrets.ts
