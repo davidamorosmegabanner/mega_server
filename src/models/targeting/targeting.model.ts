@@ -2,7 +2,6 @@ import {Document, Model, Schema} from "mongoose";
 import * as mongoose from "mongoose";
 import {SubCategory} from "../category/subCategory.model";
 import {Location, LocationSchema} from "./location.model";
-import {OperatingSystem} from "./operatingSystem.model";
 
 export interface Targeting extends Document {
     age?: [number, number];
@@ -13,7 +12,7 @@ export interface Targeting extends Document {
     location?: Location;
     language?: string;
     interests?: SubCategory[];
-    operatingSystem?: OperatingSystem;
+    operatingSystemKey?: [string];
 }
 
 const TargetingSchema = new Schema({
@@ -41,7 +40,7 @@ const TargetingSchema = new Schema({
     interests: [{
         type: String,
     }],
-    operatingSystem: [{
+    operatingSystemKey: [{
         type: String,
     }],
 });
