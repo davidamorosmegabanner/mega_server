@@ -29,7 +29,7 @@ const twitterPublisher = new TwitterPublisher();
 
 export class PublisherCron {
 
-    public interval = "5MIN";
+    public interval = "1MIN";
 
     public async start() {
         logger.info("Publisher cron started...");
@@ -37,7 +37,6 @@ export class PublisherCron {
         try {
             // First we publish unpublished ads
             const unpublishedAdsArray: Ad[] = await adService.getUnpublished();
-            console.log(unpublishedAdsArray);
 
             await Promise.all(unpublishedAdsArray.map(async (unpublishedAd) => {
                 const published: boolean = await this.publishUnpublishedAd(unpublishedAd);
@@ -48,7 +47,6 @@ export class PublisherCron {
 
             // Then we look for stats and publish those ads that have new stats
             const unpublishedStatsArray: DummyStats[] = await dummyStatsService.getUnpublished();
-            console.log(unpublishedStatsArray);
 
             await Promise.all(unpublishedStatsArray.map(async (unpublishedStats) => {
                 const published: boolean = await this.publishStat(unpublishedStats);
@@ -59,7 +57,6 @@ export class PublisherCron {
 
             // Finally we look for those ads with non valid or deleted campaigns and unpublish them
             const notValidAds: Ad[] = await adService.getPublishedAndNotValid();
-            console.log(notValidAds);
 
             await Promise.all(notValidAds.map(async (notValidAd) => {
                 const adType: AdType = await adTypeService.assignByKey(notValidAd.adTypeKey);
@@ -76,22 +73,25 @@ export class PublisherCron {
     }
 
     private async publishUnpublishedAd(unpublishedAd: Ad): Promise<boolean> {
-        const campaign = await campaignService.findById(unpublishedAd.owner, unpublishedAd.campaign._id);
+        const campaign = await campaignService.findById(unpublishedAd.campaign._id);
         const adType: AdType = await adTypeService.assignByKey(unpublishedAd.adTypeKey);
         // Just to make sure we have all user data
         const owner = await userService.findById(unpublishedAd.owner.toString());
 
-        // Get ad weight using dummy's computer
-        const stats = await dummyComputerService.firstTimer(campaign);
-        console.log(stats)
-        const weight = stats.stats[0].weight;
+        if (campaign) {
+            // Get ad weight using dummy's computer
+            const stats = await dummyComputerService.firstTimer(campaign);
+            const weight = stats.stats[0].weight;
 
-        const stat: ComputedUniqueStat = {
-            ad: unpublishedAd,
-            weight: (weight),
-        };
+            const stat: ComputedUniqueStat = {
+                ad: unpublishedAd,
+                weight: (weight),
+            };
 
-        return await this.publishAd(stat, campaign, unpublishedAd, adType, owner);
+            return await this.publishAd(stat, campaign, unpublishedAd, adType, owner);
+        } else {
+            return false;
+        }
     }
 
     private async publishStat(unpublishedStats: DummyStats): Promise<boolean> {

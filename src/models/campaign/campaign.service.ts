@@ -33,7 +33,29 @@ export class CampaignService {
         return await campaign.save();
     }
 
-    public async findById(user:User, id: string): Promise<Campaign> {
+    public async findById(id: string): Promise<Campaign> {
+        return await this.mongoModel
+            .findOne({
+                _id: id,
+            }, {
+                _id: 1,
+                name: 1,
+                description: 1,
+                owner: 1,
+                budget: 1,
+                dailyBudget: 1,
+                startDate: 1,
+                endDate: 1,
+                active: 1,
+                deleted: 1,
+                valid: 1,
+                created: 1,
+                updated: 1,
+            })
+            .lean();
+    }
+
+    public async findByOwnerAndId(user:User, id: string): Promise<Campaign> {
         return await this.mongoModel
             .findOne({
                 owner: user._id,

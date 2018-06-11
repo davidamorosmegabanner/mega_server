@@ -156,7 +156,7 @@ export class TwitterCampaignMiddleware {
         // Create request params
         const url = `https://ads-api${this.sandbox}.twitter.com/3/accounts/${accountId}/campaigns`;
         const params: any = {
-            daily_budget_amount_local_micro: (dailyBudget * 1000 * 1000).toFixed(0),
+            daily_budget_amount_local_micro: (Number(dailyBudget.toFixed(2)) * 1000 * 1000).toFixed(0),
             funding_instrument_id: fundingInstrumentId,
             name: (name),
             start_time: moment(startDate).format("YYYY-MM-DDTHH:mm:ss[Z]"),

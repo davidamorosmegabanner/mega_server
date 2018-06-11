@@ -16,7 +16,6 @@ export class TwitterAnalyticsMiddleware {
                     + `?entity=${entity}&entity_ids=${entityIds.join(",")}`
                     + `&start_time=${startTimeForm}&end_time=${endTimeForm}`
                     + `&granularity=HOUR&metric_groups=BILLING,ENGAGEMENT&placement=ALL_ON_TWITTER`;
-        console.log(url)
         return await requestTwitterService.get(accessToken, accessTokenSecret, url);
     }
 }

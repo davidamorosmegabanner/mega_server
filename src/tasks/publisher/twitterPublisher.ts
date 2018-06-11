@@ -68,32 +68,22 @@ export default class TwitterPublisher {
             const endDate = new Date();
             endDate.setDate(startDate.getDate() + 100); // "Random" value, just longer enough till delete next ad
 
-            console.log("budget: " + campaign.dailyBudget * stat.weight)
-
             const campaignId = (await twitterCampaignMiddleware.createCampaign(
                 owner.twToken, owner.twTokenSecret, owner.twAdAccount,
                 campaign.dailyBudget * stat.weight, fundingInstrumentId, ad.name,
                 startDate, endDate,
             )).data.id;
 
-            console.log(campaignId)
-
             const twitterAd: TwitterAd = await adService.getTwitterAd(ad._id);
-
-            console.log(twitterAd);
 
             const tweetId = (await twitterCreativeMiddleware.createTweet(
                 owner.twToken, owner.twTokenSecret, owner.twAdAccount, twitterAd.text,
             )).data.id_str;
 
-            console.log(tweetId)
-
             const lineItemId = (await twitterCampaignMiddleware.createLineItem(
                 owner.twToken, owner.twTokenSecret, owner.twAdAccount,
                 campaignId, "TWEET_ENGAGEMENTS", "ALL_ON_TWITTER", "PROMOTED_TWEETS",
             )).data.id;
-
-            console.log(lineItemId)
 
             await twitterCampaignMiddleware.createPromotedTweets(
                 owner.twToken, owner.twTokenSecret, owner.twAdAccount, lineItemId, [tweetId],

@@ -102,7 +102,7 @@ export let start: ExpressSignature = async (request, response, next) => {
     const xAccessToken = request.headers["x-access-token"].toString();
     try {
         const user: User = await userService.findByToken(xAccessToken);
-        let campaign: Campaign = await campaignService.findById(user, params.campaign);
+        let campaign: Campaign = await campaignService.findByOwnerAndId(user, params.campaign);
 
         await campaignService.start(campaign);
 
@@ -126,7 +126,7 @@ export let stop: ExpressSignature = async (request, response, next) => {
     const xAccessToken = request.headers["x-access-token"].toString();
     try {
         const user: User = await userService.findByToken(xAccessToken);
-        let campaign: Campaign = await campaignService.findById(user, params.campaign);
+        let campaign: Campaign = await campaignService.findByOwnerAndId(user, params.campaign);
 
         await campaignService.stop(campaign);
 

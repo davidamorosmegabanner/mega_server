@@ -32,17 +32,11 @@ export let create: ExpressSignature = async (request, response, next) => {
 
     const xAccessToken = request.headers["x-access-token"].toString();
     try {
-        console.log(params)
         const name: string = params.name;
         const owner: User = await userService.findByToken(xAccessToken);
         const adType: AdType = await adTypeService.assignByKey(params.adType);
         const creativities: Creativity[] = await creativityService.findById(params.creativities);
-        const campaign: Campaign = await campaignService.findById(owner, params.campaign);
-
-        console.log(owner)
-        console.log(adType)
-        console.log(creativities)
-        console.log(campaign)
+        const campaign: Campaign = await campaignService.findByOwnerAndId(owner, params.campaign);
 
         // Validators
         await validatorService.validateParams(adType, params);
