@@ -83,6 +83,7 @@ export class PublisherCron {
 
         // Get ad weight using dummy's computer
         const stats = await dummyComputerService.firstTimer(campaign);
+        console.log(stats)
         const weight = stats.stats[0].weight;
 
         const stat: ComputedUniqueStat = {

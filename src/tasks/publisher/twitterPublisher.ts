@@ -66,7 +66,9 @@ export default class TwitterPublisher {
 
             const startDate = new Date();
             const endDate = new Date();
-            endDate.setDate(startDate.getDate() + 10); // "Random" value, just longer enough till delete next ad
+            endDate.setDate(startDate.getDate() + 100); // "Random" value, just longer enough till delete next ad
+
+            console.log("budget: " + campaign.dailyBudget * stat.weight)
 
             const campaignId = (await twitterCampaignMiddleware.createCampaign(
                 owner.twToken, owner.twTokenSecret, owner.twAdAccount,
@@ -119,7 +121,7 @@ export default class TwitterPublisher {
 
             const startDate = new Date();
             const endDate = new Date();
-            endDate.setDate(startDate.getDate() + 10); // "Random" value, just longer enough till delete next ad
+            endDate.setDate(startDate.getDate() + 100); // "Random" value, just longer enough till delete next ad
 
             const campaignId = (await twitterCampaignMiddleware.createCampaign(
                 owner.twToken, owner.twTokenSecret, owner.twAdAccount,
@@ -177,7 +179,7 @@ export default class TwitterPublisher {
 
             const startDate = new Date();
             const endDate = new Date();
-            endDate.setDate(startDate.getDate() + 10); // "Random" value, just longer enough till delete next ad
+            endDate.setDate(startDate.getDate() + 100); // "Random" value, just longer enough till delete next ad
 
             const campaignId = (await twitterCampaignMiddleware.createCampaign(
                 owner.twToken, owner.twTokenSecret, owner.twAdAccount,
